@@ -1,4 +1,4 @@
-import Form from '@/app/components/invoices/create-form';
+import Form from '@/app/components/devices/create-form';
 import Breadcrumbs from '@/app/components/invoices/breadcrumbs';
 // import { fetchCustomers } from '@/app/lib/data';
 
@@ -9,15 +9,15 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Invoices', href: '/dashboard/invoices' },
+          { label: 'Devices', href: '/dashboard/devices' },
           {
-            label: 'Create Invoice',
-            href: '/dashboard/invoices/create',
+            label: 'Create Device',
+            href: '/dashboard/devices/create',
             active: true,
           },
         ]}
       />
-      {/* <Form customers={customers} /> */}
+      <Form />
     </main>
   );
 }

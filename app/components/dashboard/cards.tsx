@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from 'react';
 import {
   UserGroupIcon,
   InboxIcon,
@@ -12,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/store';
 
 import { selectUsers,selectUsersStatus, selectUsersError, getUsersAsync  } from '@/lib/features/users/usersSlice';
-import { useEffect } from 'react';
+import { selectDevices,getDevicesAsync } from '@/lib/features/devices/devicesSlice';
 const iconMap = {
   collected: DocumentIcon,
   customers: UserGroupIcon,
@@ -29,9 +30,11 @@ export default async function CardWrapper() {
   // } = await fetchCardData();
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectUsers);
+  const devices = useSelector(selectDevices);
   useEffect(() => {
     // Dispatch the getUsersAsync thunk action creator directly
     dispatch(getUsersAsync());
+    dispatch(getDevicesAsync());
   }, [dispatch]);
   return (
     <>
@@ -39,7 +42,7 @@ export default async function CardWrapper() {
 
       <Card title="Kullanıcı Sayısı" value={users.length} type="customers" />
       <Card title="Hayvan Türü" value={"totalPendingInvoices"} type="pending" />
-      <Card title="Cihaz Sayısı" value={"numberOfInvoices"} type="invoices" />
+      <Card title="Cihaz Sayısı" value={devices.length} type="invoices" />
       <Card
         title="Sim Kart Sayısı"
         value={"numberOfCustomers"}

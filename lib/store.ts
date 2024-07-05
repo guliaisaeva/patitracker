@@ -3,11 +3,13 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { counterSlice } from "./features/counter/counterSlice";
 import { quotesApiSlice } from "./features/quotes/quotesApiSlice";
 import { userSlice } from "./features/users/usersSlice";
-import { managerSlice } from "./features/managers/managersSlice"
+import { managerSlice } from "./features/managers/managersSlice";
+import { devicesSlice } from "./features/devices/devicesSlice";
+import { addDeviceSlice } from "./features/devices/addDeviceSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(counterSlice, quotesApiSlice,userSlice,managerSlice);
+const rootReducer = combineSlices(counterSlice, quotesApiSlice,userSlice,managerSlice,devicesSlice,addDeviceSlice);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 

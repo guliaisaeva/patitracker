@@ -34,7 +34,7 @@ export const getManagersAsync = createAsyncThunk('managers/getManagers', async (
   
       try {
         const response = await fetch(`http://185.46.55.50:50235/api/v1/SuperAdmin/DeleteAdmin?adminId=${adminId}`, {
-          method: 'DELETE',
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -47,7 +47,8 @@ export const getManagersAsync = createAsyncThunk('managers/getManagers', async (
   
         // Optionally, return some data if needed upon successful deletion
         // const data = await response.json();
-        // return data;
+        // return data.data;
+        return adminId;
   
       } catch (error:any) {
         // Use rejectWithValue to propagate the error back to the action creator

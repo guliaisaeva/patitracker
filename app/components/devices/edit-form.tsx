@@ -12,7 +12,7 @@ import { Button } from '@/app/components/button';
 // import { updateInvoice } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 
-export default function EditInvoiceForm({
+export default function EditDeviceForm({
   invoice,
   customers,
 }: {
