@@ -112,7 +112,29 @@ export const getDevicesAsync = createAsyncThunk('devices/getDevices', async () =
     return deviceData;
   });
 
-interface Devices {
+  export const getAllDevicesForConnectSim = async (): Promise<DevicesWithSim[]> => {
+    const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M';
+  
+    const response = await fetch('http://185.46.55.50:50235/api/v1/Device/GetAllDeviceForConnectSim', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (!response.ok) {
+      const errorDetail = await response.text();
+      throw new Error(`Failed to fetch devices: ${response.statusText} - ${errorDetail}`);
+    }
+  
+    const data = await response.json();
+    return data.data;
+  }
+  
+  export const getDevicesForConnectSimAsync = createAsyncThunk('devices/getDevicesForConnectSim', async () => {
+    const devicesData = await getAllDevicesForConnectSim();
+    return devicesData;
+  });
+export interface Devices {
   id: number;
   simCardId: number | null;
   simNumber: string;
@@ -138,14 +160,18 @@ export interface DeviceToAdd {
     deviceNumber: string;
     deviceModel: string;
     isDeviceToSim: boolean;
-    simCardId: string;
+    simCardId: number;
   }
   
+   interface DevicesWithSim{
+    deviceId: number;
+    deviceNumber: string;
+  }
 
   interface  DeviceSliceState {
     devices: Devices[] | null; 
     deviceDetails: DeviceDetail  | null;
-
+    devicesWithSim:DevicesWithSim[] | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   }
@@ -153,6 +179,7 @@ export interface DeviceToAdd {
   const initialState: DeviceSliceState = {
     devices: [] ,
     deviceDetails: null,
+    devicesWithSim:[],
     status: 'idle',
     error: null,
   };
@@ -197,6 +224,16 @@ export interface DeviceToAdd {
           .addCase(getDeviceDetailsAsync.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.error.message ?? 'Unknown error';
+          })  .addCase(getDevicesForConnectSimAsync.pending, (state) => {
+            state.status = 'loading';
+          })
+          .addCase(getDevicesForConnectSimAsync.fulfilled, (state, action: PayloadAction<DevicesWithSim[]>) => {
+            state.status = 'succeeded';
+            state.devicesWithSim = action.payload;
+          })
+          .addCase(getDevicesForConnectSimAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message ?? 'Unknown error';
           });
         
     },
@@ -208,6 +245,8 @@ export interface DeviceToAdd {
   export const selectDevicesStatus = (state: RootState) => state.devices.status;
   export const selectDevicesError = (state: RootState) => state.devices.error;
   export const selectDeviceDetails = (state: RootState) => state.devices.deviceDetails;
+  export const selectDevicesWithSim = (state: RootState) => state.devices.devicesWithSim;
+
 
   
   export default devicesSlice.reducer;

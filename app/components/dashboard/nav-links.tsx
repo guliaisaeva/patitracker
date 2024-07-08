@@ -5,7 +5,7 @@ import {
   HomeIcon,
   DocumentDuplicateIcon,
   UserIcon,
-  DeviceTabletIcon
+  DeviceTabletIcon,DevicePhoneMobileIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,6 +23,7 @@ const links = [
   },
   { name: 'Kullanıcılar', href: '/dashboard/customers', icon: UserGroupIcon },
   { name: 'Cihazlar', href: '/dashboard/devices', icon: DeviceTabletIcon },
+  { name: 'Sim Kartlar', href: '/dashboard/simcards', icon: DevicePhoneMobileIcon },
 ];
 
 export default function NavLinks() {

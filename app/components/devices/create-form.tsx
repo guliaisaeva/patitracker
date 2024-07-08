@@ -209,39 +209,60 @@
 "use client"
 
 
-    import { useState } from 'react';
+    import { useEffect, useState } from 'react';
     import { useDispatch, useSelector } from 'react-redux';
-    import { addDeviceAsync, selectDevicesStatus, selectDevicesError } from '@/lib/features/devices/addDeviceSlice';
+    import { addDeviceAsync, selectDevicesStatus, selectDevicesError, DeviceToAdd  } from '@/lib/features/devices/addDeviceSlice';
+    import { Devices, getDevicesForConnectSimAsync, selectDevicesWithSim } from '@/lib/features/devices/devicesSlice';
     import { AppDispatch, RootState } from '@/lib/store';
+import { getAllSimsForConnectDeviceAsync } from '@/lib/features/sims/simsSlice';
     
+   
     export default function Form() {
       const dispatch = useDispatch<AppDispatch>();
       const status = useSelector(selectDevicesStatus);
       const error = useSelector(selectDevicesError);
+      const devicesWithSim = useSelector(selectDevicesWithSim);
+
     
-      const [deviceData, setDeviceData] = useState({
+      const [deviceData, setDeviceData] = useState<DeviceToAdd>({
         deviceNumber: '',
         deviceModel: '',
-        isDeviceToSim: false, // Set default to false
-        simCardId: '', // Ensure simCardId is a string
+        isDeviceToSim: false, 
+        simCardId: 0, 
       });
     
+      useEffect(() => {
+        dispatch(getAllSimsForConnectDeviceAsync());
+      }, [dispatch]);
+
+
+
       const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-    
+
+
+        
         try {
-          await dispatch(addDeviceAsync(deviceData)).unwrap();
+          const dataToSend = {
+            ...deviceData,
+            simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
+          };
+      
+          await dispatch(addDeviceAsync(dataToSend));
           setDeviceData({
             deviceNumber: '',
             deviceModel: '',
             isDeviceToSim: false,
-            simCardId: '',
+            simCardId: 0, 
           });
+          alert("Device added successfully");
         } catch (err) {
           console.error('Failed to add device:', err);
+          alert("Failed to add device");
         }
       };
-    
+     
+
       const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = event.target;
         setDeviceData((prevData) => ({
@@ -249,6 +270,15 @@
           [name]: type === 'checkbox' ? checked : value,
         }));
       };
+
+      const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = event.target;
+    
+        setDeviceData((prevData) => ({
+          ...prevData,
+          [name]: parseInt(value, 10),        }));
+      };
+    
     
       return (
         <form onSubmit={handleSubmit}>
@@ -307,20 +337,28 @@
             </fieldset>
     
             {/* Sim Card ID */}
-            <div className="mb-4">
-              <label htmlFor="simCardId" className="mb-2 block text-sm font-medium">
-                Sim Card ID
-              </label>
-              <input
-                id="simCardId"
-                name="simCardId"
-                type="text"
-                value={deviceData.simCardId}
-                onChange={handleChange}
-                className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-                placeholder="Enter Sim Card ID"
-              />
-            </div>
+       {/* Sim Card ID */}
+       {deviceData.isDeviceToSim && (
+          <div className="mb-4">
+            <label htmlFor="simCardId" className="mb-2 block text-sm font-medium">
+              Sim Card ID
+            </label>
+            <select
+              id="simCardId"
+              name="simCardId"
+              value={deviceData.simCardId}
+              onChange={handleSelectChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            >
+              <option value="">Select Sim Card</option>
+              {devicesWithSim?.map((device) => (
+                <option key={device?.deviceId} value={device.deviceId}>
+                  {device.deviceNumber} 
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
     
             {/* Error Message */}
             {status === 'failed' && error && (

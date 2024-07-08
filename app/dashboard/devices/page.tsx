@@ -1,18 +1,22 @@
+"use client"
 import Pagination from '@/app/components/invoices/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/devices/table';
 import { CreateDevice } from '@/app/components/devices/buttons';
 import { lusitana } from '@/app/components/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
-import { Suspense } from 'react';
-// import { fetchInvoicesPages } from '@/app/lib/data';
-import { Metadata } from 'next';
+import { Suspense, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/lib/store';
 
-export const metadata: Metadata = {
-  title: 'Devices',
-};
+import { selectDevices,getDevicesAsync } from '@/lib/features/devices/devicesSlice';
 
-export default async function Page({
+// export const metadata: Metadata = {
+//   title: 'Devices',
+// };
+const ITEMS_PER_PAGE = 20; 
+
+export default  function Page({
   searchParams,
 }: {
   searchParams?: {
@@ -20,9 +24,18 @@ export default async function Page({
     page?: string;
   };
 }) {
+  const dispatch = useDispatch<AppDispatch>();
+
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 //   const totalPages = await fetchInvoicesPages(query);
+const devices = useSelector(selectDevices);
+  const totalDevices = devices ? devices.length : 0;
+const totalPages = Math.ceil(totalDevices / ITEMS_PER_PAGE);
+
+useEffect(() => {
+  dispatch(getDevicesAsync());
+}, [dispatch]);
 
   return (
     <div className="w-full">
@@ -37,7 +50,7 @@ export default async function Page({
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
-        {/* <Pagination totalPages={totalPages} /> */}
+        <Pagination totalPages={totalPages}/>
       </div>
     </div>
   );

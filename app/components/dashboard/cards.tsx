@@ -40,9 +40,9 @@ export default async function CardWrapper() {
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
 
-      <Card title="Kullanıcı Sayısı" value={users.length} type="customers" />
+      <Card title="Kullanıcı Sayısı" value={users?.length??0} type="customers" />
       <Card title="Hayvan Türü" value={"totalPendingInvoices"} type="pending" />
-      <Card title="Cihaz Sayısı" value={devices.length} type="invoices" />
+      <Card title="Cihaz Sayısı" value={devices?.length??0} type="invoices" />
       <Card
         title="Sim Kart Sayısı"
         value={"numberOfCustomers"}

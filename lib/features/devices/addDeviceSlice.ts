@@ -39,7 +39,7 @@ export interface DeviceToAdd {
     deviceNumber: string;
     deviceModel: string;
     isDeviceToSim: boolean;
-    simCardId: string;
+    simCardId: number;
   }
   
 
