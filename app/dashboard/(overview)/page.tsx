@@ -1,6 +1,6 @@
 import { Card } from '@/app/components/dashboard/cards';
 import RevenueChart from '@/app/components/dashboard/revenue-chart';
-import LatestInvoices from '@/app/components/dashboard/latest-invoices';
+import LineChart from '@/app/components/dashboard/lineCharts';
 import { lusitana } from '@/app/components/fonts';
 import { Suspense } from 'react';
 import {
@@ -32,7 +32,7 @@ export default async function Page() {
           <RevenueChart />
         </Suspense>
         <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <LatestInvoices />
+          <LineChart />
         </Suspense>
       </div>
     </main>

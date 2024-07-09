@@ -1,57 +1,53 @@
-// import { generateYAxis } from '@/app/lib/utils';
+'use client'
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/components/fonts';
-import { Revenue } from '@/lib/definitions';
-// import { fetchRevenue } from '@/app/lib/data';
+import { PieChart } from '@mui/x-charts/PieChart';
+import { useDrawingArea } from '@mui/x-charts/hooks';
+import { styled } from '@mui/material/styles';
 
-// This component is representational only.
-// For data visualization UI, check out:
-// https://www.tremor.so/
-// https://www.chartjs.org/
-// https://airbnb.io/visx/
+
 
 export default async function RevenueChart() {
-  // const revenue = await fetchRevenue();
+  const data = [
+    { value: 5, label: 'Mac' },
+    { value: 15, label: 'Windows' },
+    { value: 15, label: 'IOS' },
+    { value: 20, label: 'Android' },
+  ];
+  
+  const size = {
+    width: 500,
+    height: 300,
+  }
+  const StyledText = styled('text')(({ theme }) => ({
+    fill: theme.palette.text.primary,
+    textAnchor: 'middle',
+    dominantBaseline: 'central',
+    fontWeight: 'bold',
+    fontSize: 20,
+  }));
 
-  const chartHeight = 350;
-  // NOTE: comment in this code when you get to this point in the course
-
-  // const { yAxisLabels, topLabel } = generateYAxis(revenue);
-
-  // if (!revenue || revenue.length === 0) {
-  //   return <p className="mt-4 text-gray-400">No data available.</p>;
-  // }
-
+  function PieCenterLabel({ children }: { children: React.ReactNode }) {
+    const { width, height, left, top } = useDrawingArea();
+    return (
+      <StyledText x={left + width / 2} y={top + height / 2}>
+        {children}
+      </StyledText>
+    );
+  }
   return (
     <div className="w-full md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
       Mevcut İndirme Durumu      </h2>
-      {/* NOTE: comment in this code when you get to this point in the course */}
 
       <div className="rounded-xl bg-gray-50 p-4">
         <div className="mt-0 grid grid-cols-12 items-end gap-2 rounded-md bg-white p-4 sm:grid-cols-13 md:gap-4">
-          <div
-            className="mb-6 hidden flex-col justify-between text-sm text-gray-400 sm:flex"
-            style={{ height: `${chartHeight}px` }}
-          >
-            {/* {yAxisLabels.map((label) => (
-              <p key={label}>{label}</p>
-            ))} */}
-          </div>
-
-          {/* {revenue.map((month) => (
-            <div key={month.month} className="flex flex-col items-center gap-2">
-              <div
-                className="w-full rounded-md bg-blue-300"
-                style={{
-                  height: `${(chartHeight / topLabel) * month.revenue}px`,
-                }}
-              ></div>
-              <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
-                {month.month}
-              </p>
-            </div>
-          ))} */}
+     
+          <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
+      <PieCenterLabel>Total  188
+      </PieCenterLabel>
+    </PieChart>
+         
         </div>
         <div className="flex items-center pb-2 pt-6">
           <CalendarIcon className="h-5 w-5 text-gray-500" />
