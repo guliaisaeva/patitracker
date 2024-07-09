@@ -118,6 +118,30 @@ export const getAllSimsForConnectDeviceAsync = createAsyncThunk('sims/getSimForC
   return simData;
 });
 
+export const GetAllPhoneCode = async (): Promise<CountryPhoneCode[]> => {
+  const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M';
+
+  const response = await fetch('http://185.46.55.50:50235/api/v1/Information/GetAllPhoneCode', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.text();
+    throw new Error(`Failed to fetch devices: ${response.statusText} - ${errorDetail}`);
+  }
+
+  const data = await response.json();
+  return data.data;
+}
+
+export const GetAllPhoneCodeAsync = createAsyncThunk('sims/getCountryCodes', async () => {
+  const phoneCodeData = await GetAllPhoneCode();
+  return phoneCodeData;
+});
+
+
 interface SimCard {
     id:number;
     deviceId: number;
@@ -147,6 +171,10 @@ interface SimCard {
     simCardId: number;
     simCardNumber: string;
   }
+  interface CountryPhoneCode{
+    countryPhoneId: number,
+    phoneCode:string
+  }
 
 interface SimCardSliceState {
   sims: SimCard[]; 
@@ -155,6 +183,7 @@ interface SimCardSliceState {
   selectedSim: SimCard | null;
   simCardAdd: AddSimCard[]; 
   simWithDevices:SimWithDevice[] | null;
+  countryPhoneCode:CountryPhoneCode[] | null;
 
 }
 
@@ -166,6 +195,7 @@ const initialState: SimCardSliceState = {
   error: null,
   selectedSim: null,
   simWithDevices:[],
+  countryPhoneCode:[]
 
 
 };
@@ -231,9 +261,17 @@ export const simsSlice = createSlice({
       .addCase(getAllSimsForConnectDeviceAsync.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Unknown error';
-      });;
+      })
+      .addCase(GetAllPhoneCodeAsync.fulfilled, (state, action: PayloadAction<CountryPhoneCode[]>) => {
+        state.status = 'succeeded';
+        state.countryPhoneCode = action.payload;
+      })
+      .addCase(GetAllPhoneCodeAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message ?? 'Unknown error';
+      })
      
-  },
+  }
 });
 
 export const selectSims = (state: RootState) => state.sims.sims;
@@ -242,6 +280,7 @@ export const selectSimsError = (state: RootState) => state.sims.error;
 export const selectSelectedSim = (state: RootState) => state.sims.selectedSim; 
 export const addSimCard= (state: RootState) => state.sims.simCardAdd;
 export const selectSimWithDevice = (state: RootState) => state.sims.simWithDevices;
+export const selectCountryPhoneCode = (state: RootState) => state.sims.countryPhoneCode;
 
 
 export const { clearSelectedSim } = simsSlice.actions;

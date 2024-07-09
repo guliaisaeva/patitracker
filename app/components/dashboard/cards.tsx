@@ -14,6 +14,7 @@ import { AppDispatch, RootState } from '@/lib/store';
 
 import { selectUsers,selectUsersStatus, selectUsersError, getUsersAsync  } from '@/lib/features/users/usersSlice';
 import { selectDevices,getDevicesAsync } from '@/lib/features/devices/devicesSlice';
+import { selectSims,getAllSimsAsync } from '@/lib/features/sims/simsSlice';
 const iconMap = {
   collected: DocumentIcon,
   customers: UserGroupIcon,
@@ -31,10 +32,12 @@ export default async function CardWrapper() {
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectUsers);
   const devices = useSelector(selectDevices);
+  const sims =useSelector(selectSims)
   useEffect(() => {
     // Dispatch the getUsersAsync thunk action creator directly
     dispatch(getUsersAsync());
     dispatch(getDevicesAsync());
+    dispatch(getAllSimsAsync());
   }, [dispatch]);
   return (
     <>
@@ -45,7 +48,7 @@ export default async function CardWrapper() {
       <Card title="Cihaz Sayısı" value={devices?.length??0} type="invoices" />
       <Card
         title="Sim Kart Sayısı"
-        value={"numberOfCustomers"}
+        value={sims?.length??0}
         type="collected"
       />
     </>

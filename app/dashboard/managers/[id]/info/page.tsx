@@ -1,8 +1,8 @@
-import Form from '@/app/components/simcards/infoPage';
+import Form from '@/app/components/managers/infoPage';
 import Breadcrumbs from '@/app/components/managers/breadcrumbs';
 // import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 
-export default async function Page({ params }: { params: { id: number } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   // const [invoice, customers] = await Promise.all([
   //   fetchInvoiceById(id),
@@ -13,15 +13,15 @@ export default async function Page({ params }: { params: { id: number } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Sim Kartlar', href: '/dashboard/simcards' },
+          { label: 'Yöneticiler', href: '/dashboard/managers' },
           {
-            label: 'Sim Kart Bilgisi',
-            href: `/dashboard/simcards/${id}/info`,
+            label: 'Yönetici Bilgisi',
+            href: `/dashboard/managers/${id}/info`,
             active: true,
           },
         ]}
       />
-      <Form simCardId={id}  />
+      <Form managerId={id}  />
     </main>
   );
 }

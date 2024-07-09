@@ -1,4 +1,4 @@
-import Pagination from '@/app/components/invoices/pagination';
+import Pagination from '@/app/components/managers/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/simcards/table';
 import { CreateSimCard } from '@/app/components/simcards/buttons';

@@ -1,5 +1,5 @@
 import Form from '@/app/components/customers/infoPage';
-import Breadcrumbs from '@/app/components/invoices/breadcrumbs';
+import Breadcrumbs from '@/app/components/managers/breadcrumbs';
 // import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 
 export default async function Page({ params }: { params: { id: string } }) {

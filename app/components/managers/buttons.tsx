@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon ,InformationCircleIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/store';
@@ -26,6 +26,17 @@ export function UpdateInvoice({ id }: { id: string }) {
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
+    </Link>
+  );
+}
+export function InfoManagers({ id }: { id: string }) {
+
+  return (
+    <Link
+      href={`/dashboard/managers/${id}/info`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <InformationCircleIcon className="w-5" />
     </Link>
   );
 }

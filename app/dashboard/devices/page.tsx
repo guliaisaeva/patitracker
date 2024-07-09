@@ -1,5 +1,5 @@
 "use client"
-import Pagination from '@/app/components/invoices/pagination';
+import Pagination from '@/app/components/managers/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/devices/table';
 import { CreateDevice } from '@/app/components/devices/buttons';

@@ -2,13 +2,14 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/components/invoices/buttons';
-import InvoiceStatus from '@/app/components/invoices/status';
+import { UpdateInvoice, DeleteInvoice, InfoManagers } from '@/app/components/managers/buttons';
+import InvoiceStatus from '@/app/components/managers/status';
 // import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 // import { fetchFilteredInvoices } from '@/app/lib/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch} from '@/lib/store';
 import {selectManagers, selectManagersStatus, selectManagersError, getManagersAsync } from '@/lib/features/managers/managersSlice';
+import ManagersInfoForm from './infoPage';
 
 
 export default async function ManagersTable({
@@ -148,6 +149,7 @@ Adresi                </th>
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
+                    <InfoManagers id={String(manager.userProfileId)} />
                     <UpdateInvoice id={String(manager.userProfileId)} />
                     <DeleteInvoice id={String(manager.userProfileId)} />
                     </div>
