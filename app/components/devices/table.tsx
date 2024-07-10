@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect } from 'react';
-import Image from 'next/image';
-import { UpdateDevice, DeleteDevice, DeviceInfo } from '@/app/components/devices/buttons';
+import { DeleteDevice, DeviceInfo } from '@/app/components/devices/buttons';
 import DeviceStatus from '@/app/components/devices/status';
-import { formatDateToLocal, formatCurrency } from '@/lib/utils';
-// import { fetchFilteredInvoices } from '@/app/lib/data';
+import { formatDateToLocal } from '@/lib/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch} from '@/lib/store';
 import {selectDevices, selectDevicesStatus, selectDevicesError, getDevicesAsync } from '@/lib/features/devices/devicesSlice';
+
+const ITEMS_PER_PAGE = 20;
 
 
 export default async function DevicesTable({
@@ -18,7 +18,7 @@ export default async function DevicesTable({
   query: string;
   currentPage: number;
 }) {
-  // const invoices = await fetchFilteredInvoices(query, currentPage);
+
   const dispatch = useDispatch<AppDispatch>();
   const devices = useSelector(selectDevices);
   const status = useSelector(selectDevicesStatus);
@@ -27,6 +27,19 @@ export default async function DevicesTable({
   useEffect(() => {
     dispatch(getDevicesAsync());
   }, [dispatch]);
+
+  
+    // Filter devices based on search query
+    const filteredDevices = devices?.filter(device =>
+      device.deviceNumber.toLowerCase().includes(query.toLowerCase()) ||
+      device.deviceModel.toLowerCase().includes(query.toLowerCase()) ||
+      device.simNumber.toLowerCase().includes(query.toLowerCase())
+    );
+  // Calculate pagination offsets
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const devicesToShow = filteredDevices?.slice(startIndex, endIndex);
+
 
   if (status === 'loading') {
     return <div>Loading devices...</div>;
@@ -41,7 +54,7 @@ export default async function DevicesTable({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {devices?.map((device:any) => (
+            {devicesToShow?.map((device:any) => (
               <div
                 key={device.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -97,7 +110,7 @@ Kayıt Tarihi             </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {devices?.map((device) => (
+              {devicesToShow?.map((device) => (
                 <tr
                   key={device.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
