@@ -1,3 +1,5 @@
+"use client"
+
 import Pagination from '@/app/components/managers/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/managers/table';
@@ -5,14 +7,13 @@ import { CreateInvoice } from '@/app/components/managers/buttons';
 import { lusitana } from '@/app/components/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
 import { Suspense } from 'react';
-// import { fetchInvoicesPages } from '@/app/lib/data';
-import { Metadata } from 'next';
+import { useSelector } from 'react-redux';
+import { selectManagers } from '@/lib/features/managers/managersSlice';
 
-export const metadata: Metadata = {
-  title: 'Admin',
-};
 
-export default async function Page({
+const ITEMS_PER_PAGE = 10; 
+
+export default  function Page({
   searchParams,
 }: {
   searchParams?: {
@@ -22,9 +23,12 @@ export default async function Page({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-//   const totalPages = await fetchInvoicesPages(query);
+const managers = useSelector(selectManagers);
+const totalManagers = managers ? managers.length : 0;
+const totalPages = Math.ceil(totalManagers / ITEMS_PER_PAGE);
 
-  return (
+
+return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${lusitana.className} text-2xl`}>Yöneticiler</h1>
@@ -37,7 +41,7 @@ export default async function Page({
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
-        {/* <Pagination totalPages={totalPages} /> */}
+        <Pagination totalPages={totalPages} />
       </div>
     </div>
   );

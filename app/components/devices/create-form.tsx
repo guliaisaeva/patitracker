@@ -1,16 +1,16 @@
 
 "use client"
-
-
     import { useEffect, useState } from 'react';
     import { useDispatch, useSelector } from 'react-redux';
     import { addDeviceAsync, selectDevicesStatus, selectDevicesError, DeviceToAdd  } from '@/lib/features/devices/addDeviceSlice';
     import { getDevicesForConnectSimAsync, selectDevicesWithSim } from '@/lib/features/devices/devicesSlice';
     import { AppDispatch} from '@/lib/store';
+    import { useRouter } from 'next/navigation'
     
    
     export default function Form() {
       const dispatch = useDispatch<AppDispatch>();
+      const router = useRouter(); 
       const status = useSelector(selectDevicesStatus);
       const error = useSelector(selectDevicesError);
       const devicesWithSim = useSelector(selectDevicesWithSim);
@@ -27,11 +27,8 @@
         dispatch(getDevicesForConnectSimAsync());
       }, [dispatch]);
 
-
       const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-
         
         try {
           const dataToSend = {
@@ -47,6 +44,8 @@
             simCardId: 0, 
           });
           alert("Device added successfully");
+          router.replace('/dashboard/devices');
+
         } catch (err) {
           console.error('Failed to add device:', err);
           alert("Failed to add device");
@@ -74,7 +73,6 @@
       return (
         <form onSubmit={handleSubmit}>
           <div className="rounded-md bg-gray-50 p-4 md:p-6">
-            {/* Device Number */}
             <div className="mb-4">
               <label htmlFor="deviceNumber" className="mb-2 block text-sm font-medium">
                 Device Number
@@ -89,9 +87,7 @@
                 required
               />
             </div>
-    
-            {/* Device Model */}
-            <div className="mb-4">
+                <div className="mb-4">
               <label htmlFor="deviceModel" className="mb-2 block text-sm font-medium">
                 Device Model
               </label>
@@ -107,7 +103,6 @@
               />
             </div>
     
-            {/* Is Device To Sim */}
             <fieldset className="mb-4">
               <legend className="block text-sm font-medium">Is Device To Sim</legend>
               <div className="flex gap-4 mt-2">
@@ -149,12 +144,10 @@
           </div>
         )}
     
-            {/* Error Message */}
             {status === 'failed' && error && (
               <div className="mb-4 text-red-500">{error}</div>
             )}
     
-            {/* Submit Button */}
             <div className="flex justify-end">
               <button
                 type="submit"

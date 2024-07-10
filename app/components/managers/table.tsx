@@ -3,14 +3,12 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { UpdateInvoice, DeleteInvoice, InfoManagers } from '@/app/components/managers/buttons';
-import InvoiceStatus from '@/app/components/managers/status';
-// import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-// import { fetchFilteredInvoices } from '@/app/lib/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch} from '@/lib/store';
 import {selectManagers, selectManagersStatus, selectManagersError, getManagersAsync } from '@/lib/features/managers/managersSlice';
-import ManagersInfoForm from './infoPage';
+import NoResultsMessage from '../noResultMessage';
 
+const ITEMS_PER_PAGE = 10;
 
 export default async function ManagersTable({
   query,
@@ -29,6 +27,16 @@ export default async function ManagersTable({
     dispatch(getManagersAsync());
   }, [dispatch]);
 
+  const filteredManagers =managers?.filter(manager =>
+    manager.fullName.toLowerCase().includes(query.toLowerCase()) ||
+    manager.userName.toLowerCase().includes(query.toLowerCase()) ||
+    manager.email.toLowerCase().includes(query.toLowerCase()) ||
+    manager.address.toLowerCase().includes(query.toLowerCase())
+  );
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const managersToShow = filteredManagers?.slice(startIndex, endIndex);
+
   if (status === 'loading') {
     return <div>Loading managers...</div>;
   }
@@ -36,13 +44,16 @@ export default async function ManagersTable({
   if (status === 'failed') {
     return <div>Error loading managers:{error}</div>;
   }
+  if (!managersToShow ||managersToShow?.length === 0) {
+    return <NoResultsMessage />;
 
+  }
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {managers.map((manager) => (
+            {managersToShow.map((manager) => (
               <div
                 key={manager.userProfileId}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -71,19 +82,17 @@ export default async function ManagersTable({
                     </div>
                     <p className="text-sm text-gray-500">{manager.email}</p>
                   </div>
-                  {/* <InvoiceStatus status={manager.phoneNumber} /> */}
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
-                  {/* <div>
-                    <p className="text-xl font-medium">
-                      {formatCurrency(invoice.amount)}
-                    </p>
-                    <p>{formatDateToLocal(invoice.date)}</p>
-                  </div> */}
-                  {/* <div className="flex justify-end gap-2">
+                  <div>
+                  {manager.phoneNumber}
+
+                  </div>
+                  <div className="flex justify-end gap-2">
+                  <InfoManagers id={String(manager.userProfileId)} />
                     <UpdateInvoice id={String(manager.userProfileId)} />
                     <DeleteInvoice id={String(manager.userProfileId)} />
-                  </div> */}
+                  </div>
                 </div>
               </div>
             ))}
@@ -110,7 +119,7 @@ Adresi                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {managers?.map((manager) => (
+              {managersToShow?.map((manager) => (
                 <tr
                   key={manager.userProfileId}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"

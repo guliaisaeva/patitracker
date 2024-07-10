@@ -14,7 +14,7 @@ import { selectDevices,getDevicesAsync } from '@/lib/features/devices/devicesSli
 // export const metadata: Metadata = {
 //   title: 'Devices',
 // };
-const ITEMS_PER_PAGE = 20; 
+const ITEMS_PER_PAGE = 10; 
 
 export default  function Page({
   searchParams,

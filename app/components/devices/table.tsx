@@ -7,8 +7,9 @@ import { formatDateToLocal } from '@/lib/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch} from '@/lib/store';
 import {selectDevices, selectDevicesStatus, selectDevicesError, getDevicesAsync } from '@/lib/features/devices/devicesSlice';
+import NoResultsMessage from '../noResultMessage';
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 
 export default async function DevicesTable({
@@ -48,7 +49,10 @@ export default async function DevicesTable({
   if (status === 'failed') {
     return <div>Error loading devices:{error}</div>;
   }
+  if (!devicesToShow ||devicesToShow?.length === 0) {
+    return <NoResultsMessage />;
 
+  }
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -67,19 +71,15 @@ export default async function DevicesTable({
                     </div>
                     <p className="text-sm text-gray-500">{device.deviceNumber}</p>
                   </div>
-                  {/* <DeviceStatus status={device.deviceModel} /> */}
+                  <DeviceStatus statusType="active" status={device.isActive} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
-                  {/* <div>
-                    <p className="text-xl font-medium">
-                      {formatCurrency(invoice.amount)}
-                    </p>
-                    <p>{formatDateToLocal(invoice.date)}</p>
-                  </div> */}
-                  {/* <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={String(manager.userProfileId)} />
-                    <DeleteInvoice id={String(manager.userProfileId)} />
-                  </div> */}
+                <p>{device.deviceModel}</p>
+
+                  <div className="flex justify-end gap-2">
+                  <DeviceInfo id={String(device.id)} />
+                  <DeleteDevice id={String(device.id)} />
+                  </div>
                 </div>
               </div>
             ))}
