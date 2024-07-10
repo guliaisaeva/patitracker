@@ -1,18 +1,20 @@
+"use client"
+
 import Pagination from '@/app/components/managers/pagination';
 import Search from '@/app/components/search';
 import Table from '@/app/components/simcards/table';
 import { CreateSimCard } from '@/app/components/simcards/buttons';
 import { lusitana } from '@/app/components/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
-import { Suspense } from 'react';
-// import { fetchInvoicesPages } from '@/app/lib/data';
-import { Metadata } from 'next';
+import { Suspense, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/lib/store';
 
-export const metadata: Metadata = {
-  title: 'Sim Cards',
-};
+import { getAllSimsAsync, selectSims } from '@/lib/features/sims/simsSlice';
 
-export default async function Page({
+const ITEMS_PER_PAGE = 10; 
+
+export default  function Page({
   searchParams,
 }: {
   searchParams?: {
@@ -20,10 +22,17 @@ export default async function Page({
     page?: string;
   };
 }) {
+  const dispatch = useDispatch<AppDispatch>();
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-//   const totalPages = await fetchInvoicesPages(query);
+const sims = useSelector(selectSims);
+const totalSims = sims ? sims.length : 0;
+const totalPages = Math.ceil(totalSims / ITEMS_PER_PAGE);
 
+  useEffect(() => {
+    dispatch(getAllSimsAsync());
+  }, [dispatch]);
+  
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -37,7 +46,7 @@ export default async function Page({
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
-        {/* <Pagination totalPages={totalPages} /> */}
+        <Pagination totalPages={totalPages} />
       </div>
     </div>
   );

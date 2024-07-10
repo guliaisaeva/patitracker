@@ -7,6 +7,7 @@
     import { selectCountryPhoneCode,addSimCardAsync,AddSimCard, getAllSimsForConnectDeviceAsync, selectSimWithDevice, GetAllPhoneCodeAsync } from '@/lib/features/sims/simsSlice';
     import { AppDispatch, RootState } from '@/lib/store';
     import DatePicker from 'react-datepicker';
+import { getDevicesForConnectSimAsync, selectDevicesWithSim } from '@/lib/features/devices/devicesSlice';
 
     const dataSizeList = [
       { id: 0, value: '100 MB' },
@@ -24,6 +25,7 @@
       const error = useSelector(selectDevicesError);
       const SimWithDevice = useSelector(selectSimWithDevice);
       const CountryPhoneCodes = useSelector(selectCountryPhoneCode);
+      const devicesWithSim = useSelector(selectDevicesWithSim);
 
     
       const [simData, setSimData] = useState<AddSimCard>({
@@ -40,7 +42,8 @@
     
       useEffect(() => {
         // Fetch devices for SIM connection on component mount or when dependencies change
-        dispatch(getAllSimsForConnectDeviceAsync());
+        dispatch(getDevicesForConnectSimAsync());
+
         dispatch(GetAllPhoneCodeAsync());
       }, [dispatch]);
 
@@ -233,28 +236,28 @@ className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
 Cihaza Kaydet      </label>
     </div>
 
-  {/* Sim Card ID */}
-  {simData.isSimToDevice && (
+
+   
+{simData.isSimToDevice && (
     <div className="md:w-3/4">
-      <label htmlFor="deviceId" className="mb-2 block text-sm font-medium">
-        Cihaz ID
-      </label>
-      <select
-        id="deviceId"
-        name="deviceId"
-        value={simData.deviceId}
-        onChange={handleSelectChange}
-        className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-      >
-        <option value="">Select Sim Card</option>
-        {SimWithDevice?.map((sim) => (
-          <option key={sim?.simCardId} value={sim.simCardId}>
-            {sim.simCardNumber}
-          </option>
-        ))}
-      </select>
-    </div>
-  )}
+            <label htmlFor="simCardId" className="mb-2 block text-sm font-medium">
+Cihaz Numarası            </label>
+            <select
+              id="deviceId"
+              name="deviceId"
+              value={simData.deviceId}
+              onChange={handleSelectChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            >
+              <option value="">Cihaz Numarası Seçin</option>
+              {devicesWithSim?.map((device) => (
+                <option key={device?.deviceId} value={device?.deviceId}>
+                  {device.deviceNumber} 
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 </div>
             {/* Error Message */}
             {status === 'failed' && error && (
