@@ -167,7 +167,7 @@ Yötetici Telefon Numarası         </label>
           </div>
         </div>
 
-        <label htmlFor="userAddressModel" className="mb-2 block text-sm font-medium flex justify-center">
+        <label htmlFor="userAddressModel" className="mb-2 block text-sm font-medium justify-center">
         Yönetici Adres Bilgileri            </label>
     
         <div className="mb-4">

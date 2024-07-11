@@ -39,12 +39,12 @@ const links = [
   { name: 'Cihazlar', href: '/dashboard/devices', icon: DeviceHub},
   { name: 'Sim Kartlar', href: '/dashboard/simcards', icon: SimCard },
   {
-    name: 'Hayvan ',
+    name: 'Evcil Hayvan Yönetimi ',
     href: '#',
     icon: Pets,
     submenu: [
-      { name: 'Hayvan Türü', href: '/dashboard/pets/petType',icon: Grain},
-      { name: 'Hayvan Cinsi', href: '/dashboard/pets/petBreed',icon:Apps },
+      { name: 'Evcil Hayvan Türü', href: '/dashboard/pets/petType',icon: Grain},
+      { name: 'Evcil Hayvan Cinsi', href: '/dashboard/pets/petBreed',icon:Apps },
     ],
   },
 ];

@@ -1,28 +1,28 @@
-import { PlusIcon, TrashIcon,InformationCircleIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { AppDispatch} from '@/lib/store';
+import { AppDispatch, RootState } from '@/lib/store';
 import { deleteDeviceAsync } from '@/lib/features/devices/devicesSlice';
+import { deleteSimCardAsync } from '@/lib/features/sims/simsSlice';
 
 // import { deleteInvoice } from '@/app/lib/actions';
 
-export function CreateDevice() {
+export function CreatePetBreed() {
   return (
     <Link
-      href="/dashboard/devices/create"
+      href="/dashboard/simcards/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Cihaz Ekle</span>{' '}
+      <span className="hidden md:block">Sim Kart Ekle</span>{' '}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
 }
-
-export function UserInfo({ id }: { id: string }) {
+export function PetBreedInfo({ id }: { id: string }) {
 
   return (
     <Link
-      href={`/dashboard/customers/${id}/info`}
+      href={`/dashboard/simcards/${id}/info`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <InformationCircleIcon className="w-5" />
@@ -30,16 +30,33 @@ export function UserInfo({ id }: { id: string }) {
   );
 }
 
-export function DeleteDevice({ id }: { id: string }) {
+
+export function UpdatePetBreed({ id }: { id: string }) {
+
+  return (
+    <Link
+      href={`/dashboard/devices/${id}/edit`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <PencilIcon className="w-5" />
+    </Link>
+  );
+}
+
+export function DeletePetBreed({ id }: { id: number }) {
+  // const deleteInvoiceWithId = deleteInvoice.bind(null, id);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
     try {
-      await dispatch(deleteDeviceAsync(id));
+      // Dispatch the delete action asynchronously
+      await dispatch(deleteSimCardAsync(id));
     alert(`Device with ID ${id} deleted successfully.`);
+      // Optionally, handle success actions like showing a notification or updating state
     } catch (error) {
       console.error('Failed to delete invoice:', error);
+      // Handle errors, such as showing an error message to the user
     }
   };
   return (

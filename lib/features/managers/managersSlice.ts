@@ -254,6 +254,3 @@ export const getManagersAsync = createAsyncThunk('managers/getManagers', async (
   
   export default managerSlice.reducer;
 
-function rejectWithValue(message: any): Managers[] | PromiseLike<Managers[]> {
-  throw new Error('Function not implemented.');
-}
