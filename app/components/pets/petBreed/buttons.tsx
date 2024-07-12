@@ -10,10 +10,10 @@ import { deleteSimCardAsync } from '@/lib/features/sims/simsSlice';
 export function CreatePetBreed() {
   return (
     <Link
-      href="/dashboard/simcards/create"
+      href="/dashboard/pets/petBreed/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Sim Kart Ekle</span>{' '}
+      <span className="hidden md:block">Evcil Hayvan Cinsi Ekle</span>{' '}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
@@ -22,7 +22,7 @@ export function PetBreedInfo({ id }: { id: string }) {
 
   return (
     <Link
-      href={`/dashboard/simcards/${id}/info`}
+      href={`/dashboard/pets/petBreed/${id}/info`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <InformationCircleIcon className="w-5" />
@@ -35,7 +35,7 @@ export function UpdatePetBreed({ id }: { id: string }) {
 
   return (
     <Link
-      href={`/dashboard/devices/${id}/edit`}
+      href={`/dashboard/pets/petBreed/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />

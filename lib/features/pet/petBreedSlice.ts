@@ -1,175 +1,70 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
+
+const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M';
 
 
 export const getAllPetBreeds = createAsyncThunk(
-    'pets/getAllPetTypes',
-    async (_, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzE4MjA0MDE5LCJleHAiOjE3NDk3NDAwMTksImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.GMxVmEzjHTCO9O2fiz11MbIVHknFD_-ghPw2ghE_yS8'; // Your token
-  
-      try {
-        const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/GetAllPetType', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to fetch pet types: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data.data;
-      } catch (error: any) {
-        return rejectWithValue(error.message);
+  'pets/getAllPetBreeds',
+  async (petTypeId: string, { rejectWithValue }) => {
+    try {
+    
+      const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/GetAllPetBreed?petTypeId=${petTypeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        throw new Error(`Failed to fetch pet breeds: ${response.statusText} - ${errorDetail}`);
       }
+
+      const data = await response.json();
+      return data.data; // Adjust this based on your API response structure
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
-  );
-
-
-  export const getPetDetail = createAsyncThunk(
-    'pets/getPetDetail',
-    async (petTypeId: number, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJeyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9odHRwOi8vd3d3LnczLm9y...'; // Your token
-  
-      try {
-        const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/GetPetType?petTypeId=${petTypeId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data.data;
-      } catch (error: any) {
-        return rejectWithValue(error.message);
-      }
-    }
-  );
-
-
-
-  export const addPetType = createAsyncThunk(
-    'pets/addPetType',
-    async (newPetType: AddPetType, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9'; 
-  
-      try {
-        const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/AddPetType', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify([newPetType]),
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to add pet type: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data;
-      } catch (error: any) {
-        return rejectWithValue(error.message);
-      }
-    }
-  );
-  
-  export const fetchLanguages = createAsyncThunk(
-    'languages/fetchLanguages',
-    async (_, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M'; // Replace with your token
-  
-      try {
-        const response = await fetch('http://185.46.55.50:50235/api/v1/Information/GetAllMobileLanguage', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to fetch languages: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data.data;
-      } catch (error: any) {
-        return rejectWithValue(error.message);
-      }
-    }
-  );
-
-export const deletePetType = createAsyncThunk(
-    'petTypes/deletePetType',
-    async (petTypeId: number, { rejectWithValue }) => {
-        const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9'; // Replace with your JWT token
-
-    const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/DeletePetType?petTypeId=${petTypeId}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorDetail = await response.text();
-      throw new Error(`Failed to delete SIM card: ${response.statusText} - ${errorDetail}`);
-    }
-    return petTypeId;
   }
 );
 
-export const updatePetType = createAsyncThunk(
-    'petTypes/updatePetType',
-    async (updatedPetType: PetType, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9';
-  
-      try {
-        const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/UpdatePetType', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedPetType),
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to update pet type: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data.data; // Assuming the API returns the updated PetType object
-      } catch (error: any) {
-        return rejectWithValue(error.message);
+export const addPetBreed = createAsyncThunk(
+  'petBreeds/addPetBreed',
+  async (newPetBreed: PetBreed, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/AddPetBreed', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([newPetBreed]),
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        throw new Error(`Failed to add pet breed: ${response.statusText} - ${errorDetail}`);
       }
+
+      const data = await response.json();
+      return data.data; 
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
-  );
-export interface PetType {
-    typeId: number;
-    typeName: string;
-    languageId: number;
   }
-  interface PetDetail {
-    typeId: number;
-    typeName: string;
+);
+
+
+
+  interface PetBreed {
+    breedId: number;
+    petTypeId: number;
     languageId: number;
+    breedName: string;
   }
+  
 
   export interface AddPetType {
     petType: string;
@@ -183,9 +78,8 @@ export interface PetType {
   }
 
 
-interface PetTypeSliceState {
-  petTypes: PetType[]; 
-  petDetail: PetDetail | null;
+interface PetBreedSliceState {
+  petBreeds:PetBreed[];
   addPetType:AddPetType[],
   languages: Language[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -197,9 +91,8 @@ interface PetTypeSliceState {
 }
 
 
-const initialState: PetTypeSliceState = {
-    petTypes: [],
-    petDetail: null,
+const initialState: PetBreedSliceState = {
+    petBreeds:[],
     simCardAdd: [],
     addPetType:[],
     languages: [],
@@ -209,100 +102,53 @@ const initialState: PetTypeSliceState = {
   error: null,
 };
 
-export const petTypeSlice = createSlice({
-  name: 'petTypes',
+export const petBreedSlice = createSlice({
+  name: 'petBreeds',
   initialState,
   reducers: {
     },
   extraReducers: (builder) => {
     builder
-    builder
     .addCase(getAllPetBreeds.pending, (state) => {
       state.loading = true;
       state.error = null;
     })
-    .addCase(getAllPetBreeds.fulfilled, (state, action: PayloadAction<PetType[]>) => {
+    .addCase(getAllPetBreeds.fulfilled, (state, action: PayloadAction<PetBreed[]>) => {
       state.loading = false;
-      state.petTypes = action.payload;
+      state.petBreeds = action.payload;
     })
     .addCase(getAllPetBreeds.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
-    })  .addCase(getPetDetail.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getPetDetail.fulfilled, (state, action: PayloadAction<PetDetail>) => {
-        state.loading = false;
-        state.petDetail = action.payload;
-      })
-      .addCase(getPetDetail.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })  .addCase(addPetType.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(addPetType.fulfilled, (state, action: PayloadAction<AddPetType>) => {
-        state.loading = false;
-        state.addPetType.push(action.payload);
-        state.success = true;
-      })
-      .addCase(addPetType.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-        state.success = false;
-      }) .addCase(fetchLanguages.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchLanguages.fulfilled, (state, action: PayloadAction<Language[]>) => {
-        state.loading = false;
-        state.languages = action.payload;
-      })
-      .addCase(fetchLanguages.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(deletePetType.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(deletePetType.fulfilled, (state, action: PayloadAction<number | string>) => {
-        state.loading = true;
-        state.petTypes = state.petTypes.filter(petType => petType.typeId !== action.payload);
-        state.loading = false;       })
-      .addCase(deletePetType.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message ?? 'Unknown error';
-      }).addCase(updatePetType.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(updatePetType.fulfilled, (state, action: PayloadAction<PetType>) => {
-        state.status = 'succeeded';
-        const index = state.petTypes.findIndex(petType => petType.typeId === action.payload.typeId);
-        if (index !== -1) {
-          state.petTypes[index] = action.payload;
-        }
-      })
-      .addCase(updatePetType.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload as string;
-      });
+    }) 
+    .addCase(addPetBreed.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(addPetBreed.fulfilled, (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.success = true; 
+    })
+    .addCase(addPetBreed.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+      state.success = false; 
+    });
+
      
   }
 });
 
-export const selectPetTypes = (state: RootState) => state.petTypes.petTypes;
-export const selectPetTypesStatus = (state: RootState) => state.petTypes.status;
-export const selectPetTypesError = (state: RootState) => state.petTypes.error;
-export const selectLoading = (state: RootState) => state.petTypes.loading;
-export const selectPetDetail = (state: RootState) => state.petTypes.petDetail;
-export const selectAddPetType = (state: RootState) => state.petTypes.addPetType;
-export const selectLanguages = (state: RootState) => state.petTypes.languages;
+export const selectPetBreeds = (state: RootState) => state.petBreeds.petBreeds;
+export const selectLoading = (state: RootState) => state.petBreeds.loading;
+export const selectError = (state: RootState) => state.petBreeds.error;
+export const selectSuccess = (state: RootState) => state.petBreeds.success;
 
+export const selectPetBreedsByPetType = createSelector(
+  [selectPetBreeds, (_, petTypeId: number) => petTypeId],
+  (petBreeds, petTypeId) => petBreeds.filter(breed => breed.petTypeId === petTypeId)
+);
 
-export const {  } = petTypeSlice.actions;
+export const {  } = petBreedSlice.actions;
 
-
-export default petTypeSlice.reducer;
+export default petBreedSlice.reducer;

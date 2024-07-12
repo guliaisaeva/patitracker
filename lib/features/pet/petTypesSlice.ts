@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
 
+const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M';
 
 export const getAllPetTypes = createAsyncThunk(
     'pets/getAllPetTypes',
     async (_, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzE4MjA0MDE5LCJleHAiOjE3NDk3NDAwMTksImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.GMxVmEzjHTCO9O2fiz11MbIVHknFD_-ghPw2ghE_yS8'; // Your token
   
       try {
         const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/GetAllPetType', {
@@ -32,7 +32,6 @@ export const getAllPetTypes = createAsyncThunk(
   export const getPetDetail = createAsyncThunk(
     'pets/getPetDetail',
     async (petTypeId: number, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJeyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9odHRwOi8vd3d3LnczLm9y...'; // Your token
   
       try {
         const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/GetPetType?petTypeId=${petTypeId}`, {
@@ -60,7 +59,6 @@ export const getAllPetTypes = createAsyncThunk(
   export const addPetType = createAsyncThunk(
     'pets/addPetType',
     async (newPetType: AddPetType, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9'; 
   
       try {
         const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/AddPetType', {
@@ -89,7 +87,6 @@ export const getAllPetTypes = createAsyncThunk(
   export const fetchLanguages = createAsyncThunk(
     'languages/fetchLanguages',
     async (_, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M'; // Replace with your token
   
       try {
         const response = await fetch('http://185.46.55.50:50235/api/v1/Information/GetAllMobileLanguage', {
@@ -115,7 +112,6 @@ export const getAllPetTypes = createAsyncThunk(
 export const deletePetType = createAsyncThunk(
     'petTypes/deletePetType',
     async (petTypeId: number, { rejectWithValue }) => {
-        const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9'; // Replace with your JWT token
 
     const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/DeletePetType?petTypeId=${petTypeId}`, {
       method: 'POST',
@@ -133,33 +129,36 @@ export const deletePetType = createAsyncThunk(
 );
 
 export const updatePetType = createAsyncThunk(
-    'petTypes/updatePetType',
-    async (updatedPetType: PetType, { rejectWithValue }) => {
-      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9';
-  
-      try {
-        const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/UpdatePetType', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedPetType),
-        });
-  
-        if (!response.ok) {
-          const errorDetail = await response.text();
-          throw new Error(`Failed to update pet type: ${response.statusText} - ${errorDetail}`);
-        }
-  
-        const data = await response.json();
-        return data.data; // Assuming the API returns the updated PetType object
-      } catch (error: any) {
-        return rejectWithValue(error.message);
+
+  'petTypes/updatePetType',
+  async (updatedPetType: UpdatePetType, { rejectWithValue }) => {
+
+    try {
+      const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/UpdatePetType', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPetType),
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        throw new Error(`Failed to update pet type: ${response.statusText} - ${errorDetail}`);
       }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
-  );
+  }
+);
+
+
+
 export interface PetType {
     typeId: number;
     typeName: string;
@@ -182,6 +181,11 @@ export interface PetType {
     languageAbbreviation: string;
   }
 
+  export interface UpdatePetType {
+    petTypeId: number;
+    languageId: number;
+    petType: string;
+  }
 
 interface PetTypeSliceState {
   petTypes: PetType[]; 
@@ -215,7 +219,6 @@ export const petTypeSlice = createSlice({
   reducers: {
     },
   extraReducers: (builder) => {
-    builder
     builder
     .addCase(getAllPetTypes.pending, (state) => {
       state.loading = true;
@@ -278,11 +281,13 @@ export const petTypeSlice = createSlice({
       }).addCase(updatePetType.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(updatePetType.fulfilled, (state, action: PayloadAction<PetType>) => {
+      .addCase(updatePetType.fulfilled, (state, action: PayloadAction<PetType | null>) => {
         state.status = 'succeeded';
-        const index = state.petTypes.findIndex(petType => petType.typeId === action.payload.typeId);
-        if (index !== -1) {
-          state.petTypes[index] = action.payload;
+        if (action.payload) {
+          const index = state.petTypes.findIndex((petType) => petType.typeId === action.payload?.typeId);
+          if (index !== -1) {
+            state.petTypes[index] = action.payload;
+          }
         }
       })
       .addCase(updatePetType.rejected, (state, action) => {

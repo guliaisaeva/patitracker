@@ -13,7 +13,10 @@ export default function SideNav() {
         href="/"
       >
     <div className="w-32 h-full text-white flex items-center justify-center md:w-40">
-    <Image src="/logo/patitracker_logo.png" alt='logo' width={100 * (138 / 162)} height={100} />
+    <Image src="/logo/patitracker_logo.png"              
+ alt='logo' width={100 * (138 / 162)} height={100}  
+ className="w-16 h-16 md:w-24 md:h-24"/>
+
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
@@ -31,6 +34,8 @@ export default function SideNav() {
           </button>
         </form>
       </div>
+
+
     </div>
   );
 }
