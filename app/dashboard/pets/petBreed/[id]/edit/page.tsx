@@ -1,8 +1,7 @@
-import Form from '@/app/components/managers/edit-form';
+import Form from '@/app/components/pets/petBreed/edit-form';
 import Breadcrumbs from '@/app/components/managers/breadcrumbs';
-// import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: number } }) {
   const id = params.id;
   // const [invoice, customers] = await Promise.all([
   //   fetchInvoiceById(id),
@@ -13,15 +12,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Yöneticiler', href: '/dashboard/managers' },
+          { label: 'Evcil Hayvan Cinsi', href: '/dashboard/pets/petBreed' },
           {
             label: 'Edit Managers',
-            href: `/dashboard/managers/${id}/edit`,
+            href: `/dashboard//pets/petBreed/${id}/edit`,
             active: true,
           },
         ]}
       />
-      {/* <Form invoice={invoice} customers={customers} /> */}
+      <Form breedId={id}  />
     </main>
   );
 }

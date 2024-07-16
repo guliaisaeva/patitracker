@@ -29,6 +29,32 @@ export const getAllPetBreeds = createAsyncThunk(
   }
 );
 
+export const getPetBreedDetail = createAsyncThunk(
+  'pets/getPetBreedDetail',
+  async (petBreedId : number, { rejectWithValue }) => {
+
+    try {
+      const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/GetPetBreed?petBreedId=${petBreedId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        throw new Error(`Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`);
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 export const addPetBreed = createAsyncThunk(
   'petBreeds/addPetBreed',
   async (newPetBreed: PetBreed, { rejectWithValue }) => {
@@ -56,6 +82,32 @@ export const addPetBreed = createAsyncThunk(
   }
 );
 
+export const updatePetBreed = createAsyncThunk(
+  'petBreeds/updatePetBreed',
+  async (updatedPetBreed: PetBreed, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://185.46.55.50:50235/api/v1/Pet/UpdatePetBreed', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPetBreed),
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.text();
+        throw new Error(`Failed to update pet breed: ${response.statusText} - ${errorDetail}`);
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
   interface PetBreed {
@@ -81,6 +133,7 @@ export const addPetBreed = createAsyncThunk(
 interface PetBreedSliceState {
   petBreeds:PetBreed[];
   addPetType:AddPetType[],
+  breedDetail: PetBreed | null;
   languages: Language[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   loading: boolean;
@@ -95,6 +148,7 @@ const initialState: PetBreedSliceState = {
     petBreeds:[],
     simCardAdd: [],
     addPetType:[],
+    breedDetail:null,
     languages: [],
     loading: false,
     success: false,
@@ -133,7 +187,27 @@ export const petBreedSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
       state.success = false; 
-    });
+    })
+    .addCase(updatePetBreed.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(updatePetBreed.fulfilled, (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.success = true;
+    })
+    .addCase(updatePetBreed.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+      state.success = false;
+    }).addCase(getPetBreedDetail.fulfilled, (state, action: PayloadAction<PetBreed>) => {
+      state.loading = false;
+      state.breedDetail = action.payload;
+    })
+    .addCase(getPetBreedDetail.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    }) 
 
      
   }
@@ -143,6 +217,7 @@ export const selectPetBreeds = (state: RootState) => state.petBreeds.petBreeds;
 export const selectLoading = (state: RootState) => state.petBreeds.loading;
 export const selectError = (state: RootState) => state.petBreeds.error;
 export const selectSuccess = (state: RootState) => state.petBreeds.success;
+export const selectBreedDetail = (state: RootState) => state.petBreeds.breedDetail;
 
 export const selectPetBreedsByPetType = createSelector(
   [selectPetBreeds, (_, petTypeId: number) => petTypeId],
