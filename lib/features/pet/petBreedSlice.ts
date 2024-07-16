@@ -109,6 +109,24 @@ export const updatePetBreed = createAsyncThunk(
   }
 );
 
+export const deletePetBreed = createAsyncThunk(
+  'petBreed/deletePetBreed',
+  async (petBreedId: number, { rejectWithValue }) => {
+
+  const response = await fetch(`http://185.46.55.50:50235/api/v1/Pet/DeletePetBreed?petId=${petBreedId}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorDetail = await response.text();
+    throw new Error(`Failed to delete Pet Breed: ${response.statusText} - ${errorDetail}`);
+  }
+  return petBreedId;
+}
+);
 
   interface PetBreed {
     breedId?: number;
@@ -208,6 +226,16 @@ export const petBreedSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     }) 
+    .addCase(deletePetBreed.pending, (state) => {
+      state.status = 'loading';
+    })
+    .addCase(deletePetBreed.fulfilled, (state, action: PayloadAction<number | string>) => {
+      state.loading = true;
+      state.petBreeds = state.petBreeds.filter(petBreed => petBreed.breedId !== action.payload);
+      state.loading = false;       })
+    .addCase(deletePetBreed.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message ?? 'Unknown error';  })
 
      
   }

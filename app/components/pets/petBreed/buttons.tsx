@@ -1,9 +1,8 @@
 import { InformationCircleIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/lib/store';
-import { deleteDeviceAsync } from '@/lib/features/devices/devicesSlice';
-import { deleteSimCardAsync } from '@/lib/features/sims/simsSlice';
+import { AppDispatch } from '@/lib/store';
+import { deletePetBreed, getAllPetBreeds } from '@/lib/features/pet/petBreedSlice';
 
 // import { deleteInvoice } from '@/app/lib/actions';
 
@@ -43,20 +42,22 @@ export function UpdatePetBreed({ id }: { id: string }) {
   );
 }
 
-export function DeletePetBreed({ id }: { id: number }) {
-  // const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+export function DeleteBreed({ id, petTypeId }: { id: number; petTypeId: string }) {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
     try {
-      // Dispatch the delete action asynchronously
-      await dispatch(deleteSimCardAsync(id));
-    alert(`Device with ID ${id} deleted successfully.`);
-      // Optionally, handle success actions like showing a notification or updating state
+      // Dispatch delete action
+      await dispatch(deletePetBreed(id));
+
+      // After deletion, fetch updated list
+      await dispatch(getAllPetBreeds(petTypeId));
+
+      alert(`Pet Breed with ID ${id} deleted successfully.`);
     } catch (error) {
-      console.error('Failed to delete invoice:', error);
-      // Handle errors, such as showing an error message to the user
+      console.error('Failed to delete pet breed:', error);
+      alert('Failed to delete pet breed. Please try again.');
     }
   };
   return (

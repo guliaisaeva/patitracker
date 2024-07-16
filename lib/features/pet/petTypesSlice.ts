@@ -122,7 +122,7 @@ export const deletePetType = createAsyncThunk(
 
     if (!response.ok) {
       const errorDetail = await response.text();
-      throw new Error(`Failed to delete SIM card: ${response.statusText} - ${errorDetail}`);
+      throw new Error(`Failed to delete Pet Types: ${response.statusText} - ${errorDetail}`);
     }
     return petTypeId;
   }

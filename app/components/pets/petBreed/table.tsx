@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/store';
 import { selectPetBreeds, getAllPetBreeds } from '@/lib/features/pet/petBreedSlice';
 import NoResultsMessage from '@/app/components/noResultMessage';
-import { DeletePetBreed, PetBreedInfo, UpdatePetBreed } from './buttons';
+import { DeleteBreed,  PetBreedInfo, UpdatePetBreed } from './buttons';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -36,9 +36,9 @@ export default function PetBreedTable({
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const petBreedsToShow = filteredPetBreeds?.slice(startIndex, endIndex);
 
-  if (status === 'loading') {
-    return <div>Loading pet breeds...</div>;
-  }
+  // if (status === 'loading') {
+  //   return <div>Loading pet breeds...</div>;
+  // }
 
   if (status === 'failed') {
     return <div>Error loading pet breeds: {error}</div>;
@@ -69,7 +69,7 @@ export default function PetBreedTable({
                   <div className="flex justify-end gap-2">
                   <PetBreedInfo id={String(petBreed.breedId)} />
                     <UpdatePetBreed id={String(petBreed.breedId)} />
-                    <DeletePetBreed id={Number(petBreed.breedId)} />
+                    <DeleteBreed id={petBreed.breedId ||0} petTypeId={String(petBreed.petTypeId)} />
                   </div>
                 </div>
             ))}
@@ -103,7 +103,7 @@ export default function PetBreedTable({
                     <div className="flex justify-end gap-3">
                     <PetBreedInfo id={String(petBreed.breedId)} />
                     <UpdatePetBreed id={petBreed.breedId} />
-                    <DeletePetBreed id={petBreed.breedId} />
+                    <DeleteBreed id={petBreed.breedId} petTypeId={petBreed.petTypeId} />
                     </div>
                   </td>
                 </tr>
