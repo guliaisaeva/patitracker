@@ -178,18 +178,14 @@ export default function Form() {
 
   const [selectedPetType, setSelectedPetType] = useState<string>(''); // State to hold selected pet type ID
 
-  const [petTypeData, setPetTypeData] = useState({
-    petType: '',
-    languageId: 1, // Turkish language ID
-    petBreedId: 0,
+  const [petBreedData, setPetBreedData] = useState({
     breedName: '',
+    languageId: 1, // Turkish language ID
   });
 
-  const [petTypeDataEn, setPetTypeDataEn] = useState({
-    petType: '',
-    languageId: 2, // English language ID
-    petBreedId: 0,
+  const [petBreedDataEn, setPetBreedDataEn] = useState({
     breedName: '',
+    languageId: 2, // English language ID
   });
 
   useEffect(() => {
@@ -205,71 +201,54 @@ export default function Form() {
   const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const typeId = event.target.value;
     setSelectedPetType(typeId);
-
-    // Reset pet breed selection when pet type changes
-    setPetTypeData(prevData => ({
-      ...prevData,
-      petBreedId: 0,
-    }));
-    setPetTypeDataEn(prevData => ({
-      ...prevData,
-      petBreedId: 0,
-    }));
   };
 
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name === 'petType_tr') {
-      setPetTypeData(prevData => ({
+    if (name === 'breedName_tr') {
+      setPetBreedData(prevData => ({
         ...prevData,
         breedName: value,
       }));
-    } else if (name === 'petType_en') {
-      setPetTypeDataEn(prevData => ({
+    } else if (name === 'breedName_en') {
+      setPetBreedDataEn(prevData => ({
         ...prevData,
         breedName: value,
       }));
     }
   };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       // Add Turkish pet breed if fields are filled
-      if (petTypeData.breedName && petTypeData.petBreedId) {
+      if (petBreedData.breedName && selectedPetType) {
         await dispatch(addPetBreed({
-          breedId: Number(petTypeData.petBreedId),
-          languageId: petTypeData.languageId,
-          breedName: petTypeData.breedName,
-          petTypeId: 0
+          petTypeId: Number(selectedPetType),
+          languageId: petBreedData.languageId,
+          breedName: petBreedData.breedName,
         }));
       }
 
       // Add English pet breed if fields are filled
-      if (petTypeDataEn.breedName && petTypeDataEn.petBreedId) {
+      if (petBreedDataEn.breedName && selectedPetType) {
         await dispatch(addPetBreed({
-          breedId: Number(petTypeDataEn.petBreedId),
-          languageId: petTypeDataEn.languageId,
-          breedName: petTypeDataEn.breedName,
-          petTypeId: 0
+          petTypeId: Number(selectedPetType),
+          languageId: petBreedDataEn.languageId,
+          breedName: petBreedDataEn.breedName,
         }));
       }
 
       // Reset the form inputs after successful submission
-      setPetTypeData({
-        petType: '',
+      setPetBreedData({
+        breedName: '',
         languageId: 1,
-        petBreedId: 0,
-        breedName: '',
       });
-      setPetTypeDataEn({
-        petType: '',
-        languageId: 2,
-        petBreedId: 0,
+      setPetBreedDataEn({
         breedName: '',
+        languageId: 2,
       });
 
       alert('Pet breeds added successfully');
@@ -297,7 +276,7 @@ export default function Form() {
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="petType_tr" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
+          <label htmlFor="breedName_tr" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
             <Image
               src="/turkey.png"
               alt="Turkish Flag"
@@ -310,9 +289,9 @@ export default function Form() {
           </label>
           <input
             type="text"
-            id="petType_tr"
-            name="petType_tr"
-            value={petTypeData.breedName}
+            id="breedName_tr"
+            name="breedName_tr"
+            value={petBreedData.breedName}
             onChange={handleChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder="Örn: Köpek"
@@ -320,7 +299,7 @@ export default function Form() {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="petType_en" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
+          <label htmlFor="breedName_en" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
             <Image
               src="/uk.png"
               alt="English Flag"
@@ -329,27 +308,24 @@ export default function Form() {
               objectFit="cover"
               className="rounded-full"
             />
-            New Pet Type
+            New Pet Breed
           </label>
           <input
             type="text"
-            id="petType_en"
-            name="petType_en"
-            value={petTypeDataEn.breedName}
+            id="breedName_en"
+            name="breedName_en"
+            value={petBreedDataEn.breedName}
             onChange={handleChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="Exp: Dog"
+            placeholder="e.g., Dog"
           />
         </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Add Pet Breed(s)
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Add Pet Breed
+        </button>
       </div>
     </form>
   );

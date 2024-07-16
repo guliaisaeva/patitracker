@@ -59,7 +59,7 @@ export const addPetBreed = createAsyncThunk(
 
 
   interface PetBreed {
-    breedId: number;
+    breedId?: number;
     petTypeId: number;
     languageId: number;
     breedName: string;
