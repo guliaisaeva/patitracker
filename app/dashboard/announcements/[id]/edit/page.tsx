@@ -1,4 +1,4 @@
-import Form from '@/app/components/pets/petBreed/infoPage';
+import Form from '@/app/components/announcements/edit-form';
 import Breadcrumbs from '@/app/components/managers/breadcrumbs';
 
 export default async function Page({ params }: { params: { id: number } }) {
@@ -9,15 +9,15 @@ export default async function Page({ params }: { params: { id: number } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Evcil Hayvan Cinsi', href: '/dashboard/pets/petBreed' },
+          { label: 'Duyurular', href: '/dashboard/announcements' },
           {
-            label: 'Evcil Hayvan Cins Bilgisi',
-            href: `/dashboard/pets/petBreed/${id}/info`,
+            label: 'Edit Duyurular',
+            href: `/dashboard/announcements/${id}/edit`,
             active: true,
           },
         ]}
       />
-      <Form breedId={id}   />
+      <Form announcementId={id}   />
     </main>
   );
 }

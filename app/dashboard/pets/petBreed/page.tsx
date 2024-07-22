@@ -10,6 +10,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPetTypes, selectLanguages, selectPetTypes } from '@/lib/features/pet/petTypesSlice';
 import { AppDispatch } from '@/lib/store';
+import { selectPetBreeds } from '@/lib/features/pet/petBreedSlice';
 const ITEMS_PER_PAGE = 10; 
 export default  function Page({
   searchParams,
@@ -24,10 +25,11 @@ export default  function Page({
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 const petTypes = useSelector(selectPetTypes);
+const petBreeds = useSelector(selectPetBreeds);
 
 
-const totalPetTypes = petTypes ? petTypes.length : 0;
-const totalPages = Math.ceil(totalPetTypes / ITEMS_PER_PAGE);
+const totalPetBreeds = petBreeds ? petBreeds.length : 0;
+const totalPages = Math.ceil(totalPetBreeds / ITEMS_PER_PAGE);
 
 const [selectedPetType, setSelectedPetType] = useState<string>('');
 

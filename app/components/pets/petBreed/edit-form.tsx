@@ -100,7 +100,9 @@ import { AppDispatch } from '@/lib/store';
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import {
+  fetchLanguages,
   getAllPetTypes,
+  selectLanguages,
   selectPetDetail,
   selectPetTypes,
 } from "@/lib/features/pet/petTypesSlice";
@@ -115,6 +117,8 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const petTypes = useSelector(selectPetTypes);
+  const languages = useSelector(selectLanguages);
+
   const selectedBreedDetail = useSelector(selectBreedDetail);
   const [formState, setFormState] = useState({
     breedId: 0,
@@ -125,6 +129,8 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
 
   useEffect(() => {
     dispatch(getAllPetTypes());
+    dispatch(fetchLanguages());
+
     if (breedId) {
       dispatch(getPetBreedDetail(breedId));
     }
@@ -231,8 +237,15 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               onChange={handleInputChange}
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
-              <option value="1">Türkçe</option>
-              <option value="2">İngilizce</option>
+               <option value="">Dil Seçin</option>
+                {languages?.map((language) => (
+                  <option
+                    key={language?.languageId}
+                    value={language.languageId.toString()}
+                  >
+                    {language.languageName}
+                  </option>
+                           ))}
             </select>
           </div>
           <div id="languageId-error" aria-live="polite" aria-atomic="true">

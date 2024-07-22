@@ -261,7 +261,8 @@ export default function Form() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <div className="flex mt-6 gap-4">
+             <div className="mb-6 block w-full ">
+
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
@@ -320,12 +321,13 @@ export default function Form() {
             placeholder="e.g., Dog"
           />
         </div>
-        <button
-          type="submit"
-          className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Add Pet Breed
-        </button>
+        <div className="flex justify-end">
+          <button             type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+           disabled={status === "loading"}
+           >
+             {status === "loading" ? "Creating..." : "Add Pet Type(s)"}        </button>
+        </div>
       </div>
     </form>
   );

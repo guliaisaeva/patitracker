@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/store';
 
 export const getUsers = async () => {
@@ -93,9 +93,10 @@ interface UserSliceState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   selectedUser: User | null;
-  searchResults: User[]; // Add searchResults state
-  searchStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; // Add searchStatus state
-  searchError: string | null; // Add searchError state
+  searchResults: User[];
+  searchStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
+  searchError: string | null; 
+  userProfileId: number | null;
 }
 
 const initialState: UserSliceState = {
@@ -103,9 +104,10 @@ const initialState: UserSliceState = {
   status: 'idle',
   error: null,
   selectedUser: null,
-  searchResults: [], // Initialize searchResults state
-  searchStatus: 'idle', // Initialize searchStatus state
-  searchError: null, // Initialize searchError state
+  searchResults: [], 
+  searchStatus: 'idle',
+  searchError: null, 
+  userProfileId: null,
 };
 
 export const userSlice = createSlice({
@@ -114,7 +116,9 @@ export const userSlice = createSlice({
   reducers: {
     clearSelectedUser: (state) => {
       state.selectedUser = null;
-    },  },
+    }, setUserProfileId: (state, action: PayloadAction<number>) => {
+      state.userProfileId = action.payload;
+    }, },
   extraReducers: (builder) => {
     builder
       .addCase(getUsersAsync.pending, (state) => {
@@ -134,6 +138,8 @@ export const userSlice = createSlice({
       .addCase(getUserByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.selectedUser = action.payload;
+        state.userProfileId = action.payload[0]?.userProfileId || null; // Example of setting userProfileId
+
       })
       .addCase(getUserByIdAsync.rejected, (state, action) => {
         state.status = 'failed';
@@ -163,8 +169,9 @@ export const selectSelectedUser = (state: RootState) => state.users.selectedUser
 export const selectSearchResults = (state: RootState) => state.users.searchResults; // Selector for searchResults
 export const selectSearchStatus = (state: RootState) => state.users.searchStatus; // Selector for searchStatus
 export const selectSearchError = (state: RootState) => state.users.searchError; // Selector for searchError
+export const selectUserProfileId = (state: RootState) => state.users.userProfileId;
 
-export const { clearSelectedUser } = userSlice.actions;
+export const { clearSelectedUser,setUserProfileId } = userSlice.actions;
 
 
 export default userSlice.reducer;
