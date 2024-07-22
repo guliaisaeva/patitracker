@@ -10,10 +10,23 @@ import { simsSlice } from "./features/sims/simsSlice";
 import { petTypeSlice } from "./features/pet/petTypesSlice";
 import { petBreedSlice } from "./features/pet/petBreedSlice";
 import { announcementSlice } from "./features/announcement/announceSlice";
+import { questionSlice } from "./features/faq/faqSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(counterSlice, quotesApiSlice,userSlice,managerSlice,devicesSlice,addDeviceSlice,simsSlice,petTypeSlice,petBreedSlice,announcementSlice);
+const rootReducer = combineSlices(
+  counterSlice,
+  quotesApiSlice,
+  userSlice,
+  managerSlice,
+  devicesSlice,
+  addDeviceSlice,
+  simsSlice,
+  petTypeSlice,
+  petBreedSlice,
+  announcementSlice,
+  questionSlice
+);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 

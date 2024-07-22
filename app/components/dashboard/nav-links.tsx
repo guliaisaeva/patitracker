@@ -146,6 +146,7 @@ import {
   Grain,
   Apps,
   Campaign,
+  QuestionMark
 } from '@mui/icons-material';
 
 import Link from 'next/link';
@@ -169,6 +170,7 @@ const links = [
     ],
   },
   { name: 'Duyurular', href: '/dashboard/announcements', icon: Campaign },
+  { name: 'Sık Sorulan Sorular', href: '/dashboard/faqs', icon: QuestionMark },
 ];
 
 export default function NavLinks() {

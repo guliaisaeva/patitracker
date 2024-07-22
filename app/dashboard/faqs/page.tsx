@@ -2,7 +2,7 @@
 
 import Pagination from '@/app/components/managers/pagination';
 import Search from '@/app/components/search';
-import Table from '@/app/components/announcements/table';
+import Table from '@/app/components/faqs/table';
 import { lusitana } from '@/app/components/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
 import { Suspense, useEffect } from 'react';
@@ -10,7 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/store';
 import { getAllSimsAsync, selectSims } from '@/lib/features/sims/simsSlice';
 import { CreateAnnouncement } from '@/app/components/announcements/buttons';
-import { getAllAnnouncement, selectAnnouncements } from '@/lib/features/announcement/announceSlice';
+import { getAllQuestions, selectQuestions } from '@/lib/features/faq/faqSlice';
+import { CreateQuestion } from '@/app/components/faqs/buttons';
 
 const ITEMS_PER_PAGE = 10; 
 
@@ -25,12 +26,12 @@ export default  function Page({
   const dispatch = useDispatch<AppDispatch>();
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-const announcements = useSelector(selectAnnouncements);
-const totalAnnouncements = announcements ? announcements.length : 0;
-const totalPages = Math.ceil(totalAnnouncements / ITEMS_PER_PAGE);
+const questions = useSelector(selectQuestions);
+const totalQuestions = questions ? questions.length : 0;
+const totalPages = Math.ceil(totalQuestions / ITEMS_PER_PAGE);
 
   useEffect(() => {
-    dispatch(getAllAnnouncement());
+    dispatch(getAllQuestions());
   }, [dispatch]);
   
   return (
@@ -39,8 +40,8 @@ const totalPages = Math.ceil(totalAnnouncements / ITEMS_PER_PAGE);
         <h1 className={`${lusitana.className} text-2xl`}>Duyurular</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Duyuru Ara..." />
-        <CreateAnnouncement />
+        <Search placeholder="Soru Ara..." />
+        <CreateQuestion />
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />

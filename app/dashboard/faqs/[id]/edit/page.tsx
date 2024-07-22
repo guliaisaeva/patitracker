@@ -1,4 +1,4 @@
-import Form from '@/app/components/announcements/infoPage';
+import Form from '@/app/components/announcements/edit-form';
 import Breadcrumbs from '@/app/components/managers/breadcrumbs';
 
 export default async function Page({ params }: { params: { id: number } }) {
@@ -11,8 +11,8 @@ export default async function Page({ params }: { params: { id: number } }) {
         breadcrumbs={[
           { label: 'Duyurular', href: '/dashboard/announcements' },
           {
-            label: 'Duyuru Bilgileri',
-            href: `/dashboard/announcements/${id}/info`,
+            label: 'Edit Duyurular',
+            href: `/dashboard/announcements/${id}/edit`,
             active: true,
           },
         ]}

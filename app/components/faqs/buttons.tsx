@@ -6,22 +6,22 @@ import { deleteDeviceAsync } from '@/lib/features/devices/devicesSlice';
 import { deleteAnnouncement } from '@/lib/features/announcement/announceSlice';
 
 
-export function CreateAnnouncement() {
+export function CreateQuestion() {
   return (
     <Link
-      href="/dashboard/announcements/create"
+      href="/dashboard/faqs/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Yeni Duyuru Ekle</span>{' '}
+      <span className="hidden md:block">Yeni Soru Ekle</span>{' '}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
 }
-export function AnnouncementInfo({ id }: { id: string }) {
+export function QuestionInfo({ id }: { id: string }) {
 
   return (
     <Link
-      href={`/dashboard/announcements/${id}/info`}
+      href={`/dashboard/faqs/${id}/info`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <InformationCircleIcon className="w-5" />
@@ -30,11 +30,11 @@ export function AnnouncementInfo({ id }: { id: string }) {
 }
 
 
-export function UpdateAnnouncement({ id }: { id: string }) {
+export function UpdateQuestion({ id }: { id: string }) {
 
   return (
     <Link
-      href={`/dashboard/announcements/${id}/edit`}
+      href={`/dashboard/faqs/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -42,7 +42,7 @@ export function UpdateAnnouncement({ id }: { id: string }) {
   );
 }
 
-export function DeleteAnnouncement({ id }: { id: number }) {
+export function DeleteQuestion({ id }: { id: number }) {
   // const deleteInvoiceWithId = deleteInvoice.bind(null, id);
   const dispatch = useDispatch<AppDispatch>();
 

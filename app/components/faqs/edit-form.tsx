@@ -13,7 +13,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../button';
 
-export default function UpdateAnnouncementForm({ announcementId }: { announcementId: number }) {
+export default function UpdateFaqForm({ announcementId }: { announcementId: number }) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const selectedAnnouncementDetail = useSelector(selectAnnouncementDetail);

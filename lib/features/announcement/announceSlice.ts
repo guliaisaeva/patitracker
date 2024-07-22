@@ -52,6 +52,30 @@ export const getAllAnnouncement = createAsyncThunk(
     }
   );
 
+  export const deleteAnnouncement = createAsyncThunk(
+    'announcement/deleteAnnouncement',
+    async (announcementId: number, { rejectWithValue }) => {
+  
+      try {
+        const response = await fetch(`http://185.46.55.50:50235/api/v1/Information/DeleteAnnouncement?announcementId=${announcementId}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          const errorDetail = await response.text();
+          throw new Error(`Failed to delete announcement: ${response.statusText} - ${errorDetail}`);
+        }
+  
+        return announcementId; 
+      } catch (error: any) {
+        return rejectWithValue(error.message);
+      }
+    }
+  );
 
   export const addAnnouncement = createAsyncThunk(
     'announcement/addAnnouncement',
@@ -82,7 +106,7 @@ export const getAllAnnouncement = createAsyncThunk(
   export const updateAnnouncement = createAsyncThunk(
     'announcement/updateAnnouncement',
 
-    async (updatedPetType: UpdateAnnouncement, { rejectWithValue }) => {
+    async (updateAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
   
       try {
         const response = await fetch('http://185.46.55.50:50235/api/v1/Information/UpdateAnnouncement', {
@@ -92,7 +116,7 @@ export const getAllAnnouncement = createAsyncThunk(
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedPetType),
+          body: JSON.stringify(updateAnnouncement),
         });
   
         if (!response.ok) {
@@ -222,6 +246,22 @@ export const announcementSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(deleteAnnouncement.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteAnnouncement.fulfilled, (state, action: PayloadAction<number>) => {
+        state.status = 'succeeded';
+        state.announcement = state.announcement.filter(
+          (announce) => announce.id !== action.payload
+        );
+        state.loading = false;
+      })
+      .addCase(deleteAnnouncement.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
+        state.loading = false;
+      });
   }
 });
 
