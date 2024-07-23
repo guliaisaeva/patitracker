@@ -1,23 +1,22 @@
-import Form from '@/app/components/announcements/edit-form';
-import Breadcrumbs from '@/app/components/managers/breadcrumbs';
+import Form from "@/app/components/faqs/edit-form";
+import Breadcrumbs from "@/app/components/managers/breadcrumbs";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const id = params.id;
-
 
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Duyurular', href: '/dashboard/announcements' },
+          { label: "Sorular", href: "/dashboard/faqs" },
           {
-            label: 'Edit Duyurular',
-            href: `/dashboard/announcements/${id}/edit`,
+            label: "Edit Sorular",
+            href: `/dashboard/faqs/${id}/edit`,
             active: true,
           },
         ]}
       />
-      <Form announcementId={id}   />
+      <Form questionId={id} />
     </main>
   );
 }

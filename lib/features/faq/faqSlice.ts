@@ -127,7 +127,7 @@ export const updateQuestion = createAsyncThunk(
   async (updatedQuestion: UpdateQuestion, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/UpdateAnnouncement",
+        "http://185.46.55.50:50235/api/v1/Information/UpdateFrequentlyAskedQuestion",
         {
           method: "POST",
           headers: {
@@ -142,14 +142,13 @@ export const updateQuestion = createAsyncThunk(
       if (!response.ok) {
         const errorDetail = await response.text();
         throw new Error(
-          `Failed to update pet type: ${response.statusText} - ${errorDetail}`
+          `Failed to update question: ${response.statusText} - ${errorDetail}`
         );
       }
 
       const data = await response.json();
       return data.data;
     } catch (error: any) {
-      console.error("Error adding question:", error);
       return rejectWithValue(error.message);
     }
   }
@@ -237,10 +236,10 @@ export const questionSlice = createSlice({
       })
       .addCase(
         updateQuestion.fulfilled,
-        (state, action: PayloadAction<UpdateQuestion>) => {
+        (state, action: PayloadAction<UpdateQuestion | null>) => {
           state.status = "succeeded";
           const index = state.question.findIndex(
-            (faq) => faq.id === action.payload.id
+            (faq) => faq?.id === action.payload?.id
           );
           if (index !== -1) {
             state.question[index] = {
@@ -296,7 +295,7 @@ export const questionSlice = createSlice({
 });
 
 export const selectQuestions = (state: RootState) => state.question.question;
-export const selectAnnouncementDetail = (state: RootState) =>
+export const selectQuestionDetail = (state: RootState) =>
   state.question.questionDetail;
 export const selectQuestionsStatus = (state: RootState) =>
   state.question.status;
