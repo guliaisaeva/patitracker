@@ -4,12 +4,6 @@ import { useEffect } from "react";
 import { DeleteDevice, DeviceInfo } from "@/app/components/devices/buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import {
-  selectDevices,
-  selectDevicesStatus,
-  selectDevicesError,
-  getDevicesAsync,
-} from "@/lib/features/devices/devicesSlice";
 import NoResultsMessage from "../noResultMessage";
 
 import { DeleteQuestion, QuestionInfo, UpdateQuestion } from "./buttons";
@@ -26,11 +20,10 @@ export default function QuestionTable({
 }) {
   const dispatch = useDispatch<AppDispatch>();
   const questions = useSelector(selectQuestions);
-
+console.log(questions)
 
   useEffect(() => {
     dispatch(getAllQuestions());
-
   }, [dispatch]);
 
 

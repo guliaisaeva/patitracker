@@ -7,9 +7,7 @@ import { lusitana } from '@/app/components/fonts';
 import { InvoicesTableSkeleton } from '@/app/components/skeletons';
 import { Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/lib/store';
-import { getAllSimsAsync, selectSims } from '@/lib/features/sims/simsSlice';
-import { CreateAnnouncement } from '@/app/components/announcements/buttons';
+import { AppDispatch } from '@/lib/store';
 import { getAllQuestions, selectQuestions } from '@/lib/features/faq/faqSlice';
 import { CreateQuestion } from '@/app/components/faqs/buttons';
 

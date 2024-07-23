@@ -1,153 +1,291 @@
+// "use client";
+// import { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import Image from "next/image";
+// import { AppDispatch } from "@/lib/store";
+// import { useRouter } from "next/navigation";
+// import {
+//   addQuestion,
+//   selectQuestionsError,
+//   selectQuestionsStatus,
+// } from "@/lib/features/faq/faqSlice";
+
+// export default function Form() {
+//   const dispatch = useDispatch<AppDispatch>();
+//   const router = useRouter();
+//   const status = useSelector(selectQuestionsStatus);
+//   const error = useSelector(selectQuestionsError);
+
+//   const [trTitle, setTrTitle] = useState("");
+//   const [trDetail, setTrDetail] = useState("");
+//   const [enTitle, setEnTitle] = useState("");
+//   const [enDetail, setEnDetail] = useState("");
+
+//   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+//     event.preventDefault();
+
+//     const questionsToSend = [];
+
+//     // Turkish Question
+//     if (trTitle || trDetail) {
+//       questionsToSend.push({
+//         title: trTitle,
+//         detail: trDetail,
+//         mobileLanguageId: 1, // Turkish
+//       });
+//     }
+
+//     // English Question
+//     if (enTitle || enDetail) {
+//       questionsToSend.push({
+//         title: enTitle,
+//         detail: enDetail,
+//         mobileLanguageId: 2, // English
+//       });
+//     }
+//     console.log("Questions to Send:", questionsToSend);
+
+//     try {
+//       // Send questions to API
+//       for (const question of questionsToSend) {
+//         await dispatch(addQuestion(question));
+//       }
+//       setTrTitle("");
+//       setTrDetail("");
+//       setEnTitle("");
+//       setEnDetail("");
+//       alert("Question(s) added successfully");
+//       router.replace("/dashboard/faqs");
+//     } catch (err) {
+//       console.error("Failed to add question:", err);
+//       alert("Failed to add question");
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+//         <Image
+//           src="/turkey.png"
+//           alt="Turkish Flag"
+//           width={36}
+//           height={36}
+//           objectFit="cover"
+//           className="rounded-full"
+//         />
+//         <div className="mb-4">
+//           <label htmlFor="title" className="mb-2 block text-sm font-medium">
+//             Soru Başlığı{" "}
+//           </label>
+//           <input
+//             id="trTitle"
+//             name="trTitle"
+//             value={trTitle}
+//             onChange={(e) => setTrTitle(e.target.value)}
+//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+//             required
+//             placeholder="Soru Başlığı Girin"
+//           />
+//         </div>
+//         <div className="mb-4">
+//           <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+//             Soru Detayı{" "}
+//           </label>
+//           <textarea
+//             id="trDetail"
+//             name="trDetail"
+//             value={trDetail}
+//             onChange={(e) => setTrDetail(e.target.value)}
+//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+//             placeholder="Soru Detayi Girin"
+//           />
+//         </div>
+//         <Image
+//           src="/uk.png"
+//           alt="English Flag"
+//           width={36}
+//           height={36}
+//           objectFit="cover"
+//           className="rounded-full"
+//         />
+//         <div className="mb-4">
+//           <label htmlFor="title" className="mb-2 block text-sm font-medium">
+//             Question Title{" "}
+//           </label>
+//           <input
+//             id="enTitle"
+//             name="enTitle"
+//             value={enTitle}
+//             placeholder="Enter Question Title"
+//             onChange={(e) => setEnTitle(e.target.value)}
+//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+//           />
+//         </div>
+//         <div className="mb-4">
+//           <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+//             Question Details{" "}
+//           </label>
+//           <textarea
+//             id="enDetail"
+//             name="enDetail"
+//             value={enDetail}
+//             onChange={(e) => setEnDetail(e.target.value)}
+//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+//             placeholder="Enter Question Detail"
+//           />
+//         </div>
+
+//         {status === "failed" && error && (
+//           <div className="mb-4 text-red-500">{error}</div>
+//         )}
+//         <div className="flex justify-end">
+//           <button
+//             type="submit"
+//             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//             disabled={status === "loading"}
+//           >
+//             {status === "loading" ? "Creating..." : "Create Device"}
+//           </button>
+//         </div>
+//       </div>
+//     </form>
+//   );
+// }
+
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDevicesStatus,
-  selectDevicesError,
-} from "@/lib/features/devices/addDeviceSlice";
-import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
-import { addAnnouncement } from "@/lib/features/announcement/announceSlice";
-import { getUsersAsync, selectUserProfileId } from "@/lib/features/users/usersSlice";
+import {
+  addQuestion,
+  selectQuestionsError,
+  selectQuestionsStatus,
+} from "@/lib/features/faq/faqSlice";
+import Image from "next/image";
 
 export default function Form() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const status = useSelector(selectDevicesStatus);
-  const error = useSelector(selectDevicesError);
-  const userProfileId = useSelector(selectUserProfileId);
+  const status = useSelector(selectQuestionsStatus);
+  const error = useSelector(selectQuestionsError);
 
-  const [trTitle, setTrTitle] = useState('');
-  const [trDetail, setTrDetail] = useState('');
-  const [enTitle, setEnTitle] = useState('');
-  const [enDetail, setEnDetail] = useState('');
-  const announcementTypeId = 1;  
-  const mobileLanguageId = 1; 
-  const DEFAULT_USER_PROFILE_ID = 1;
+  const [trTitle, setTrTitle] = useState("");
+  const [trDetail, setTrDetail] = useState("");
+  const [enTitle, setEnTitle] = useState("");
+  const [enDetail, setEnDetail] = useState("");
 
-  useEffect(() => {
-     dispatch(getUsersAsync());
-  }, [dispatch]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const userProfileIds: number[] = Array.isArray(userProfileId)
-    ? userProfileId.filter((id): id is number => id !== null) // Filter out null values
-    : [userProfileId].filter((id): id is number => id !== null); // Handle single number
 
-  // Use default ID if no valid userProfileId
-  if (userProfileIds.length === 0) {
-    userProfileIds.push(DEFAULT_USER_PROFILE_ID);
-  }
+    const questionsToSend = [];
 
-  
-    const announcementsToSend = [];
-    // Turkish Announcement
+    // Turkish Question
     if (trTitle || trDetail) {
-      announcementsToSend.push({
+      questionsToSend.push({
         title: trTitle,
         detail: trDetail,
-        announcementTypeId,
-        mobileLanguageId: 1,  // Turkish
-        userProfileId: userProfileIds,      });
+        mobileLanguageId: 1, // Turkish
+      });
     }
 
-    // English Announcement
+    // English Question
     if (enTitle || enDetail) {
-      announcementsToSend.push({
+      questionsToSend.push({
         title: enTitle,
         detail: enDetail,
-        announcementTypeId,
-        mobileLanguageId: 2,  // English
-        userProfileId: userProfileIds,     });
+        mobileLanguageId: 2, // English
+      });
     }
+    console.log("Questions to Send:", questionsToSend);
 
     try {
-      // Send announcements to API
-      for (const announcement of announcementsToSend) {
-        await dispatch(addAnnouncement(announcement));
+      // Send questions to API
+      for (const question of questionsToSend) {
+        await dispatch(addQuestion(question)).unwrap();
       }
-      setTrTitle('');
-      setTrDetail('');
-      setEnTitle('');
-      setEnDetail('');
-      alert("Announcement(s) added successfully");
-      router.replace("/dashboard/announcements");
+      setTrTitle("");
+      setTrDetail("");
+      setEnTitle("");
+      setEnDetail("");
+      alert("Question(s) added successfully");
+      router.replace("/dashboard/faqs");
     } catch (err) {
-      console.error("Failed to add announcement:", err);
-      alert("Failed to add announcement");
+      console.error("Failed to add question:", err);
+      alert("Failed to add question");
     }
   };
-
-
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-      <Image
-              src="/turkey.png"
-              alt="Turkish Flag"
-              width={36}
-              height={36}
-              objectFit="cover"
-              className="rounded-full"
-            />
+        <Image
+          src="/turkey.png"
+          alt="Turkish Flag"
+          width={36}
+          height={36}
+          objectFit="cover"
+          className="rounded-full"
+        />
         <div className="mb-4">
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
-     Duyuru Başlığı          </label>
+          <label htmlFor="trTitle" className="mb-2 block text-sm font-medium">
+            Soru Başlığı
+          </label>
           <input
-   id="trTitle"
-   name="trTitle"
-   value={trTitle}
-   onChange={(e) => setTrTitle(e.target.value)}
+            id="trTitle"
+            name="trTitle"
+            value={trTitle}
+            onChange={(e) => setTrTitle(e.target.value)}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
+            placeholder="Soru Başlığı Girin"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-    
-  Duyuru Detayı          </label>
-<textarea
-           id="trDetail"
-           name="trDetail"
-           value={trDetail}
-           onChange={(e) => setTrDetail(e.target.value)}
+          <label htmlFor="trDetail" className="mb-2 block text-sm font-medium">
+            Soru Detayı
+          </label>
+          <textarea
+            id="trDetail"
+            name="trDetail"
+            value={trDetail}
+            onChange={(e) => setTrDetail(e.target.value)}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="Enter Announcement Detail"
+            placeholder="Soru Detayı Girin"
           />
         </div>
         <Image
-              src="/uk.png"
-              alt="English Flag"
-              width={36}
-              height={36}
-              objectFit="cover"
-              className="rounded-full"
-            />
+          src="/uk.png"
+          alt="English Flag"
+          width={36}
+          height={36}
+          objectFit="cover"
+          className="rounded-full"
+        />
         <div className="mb-4">
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
-     Announcement Title          </label>
+          <label htmlFor="enTitle" className="mb-2 block text-sm font-medium">
+            Question Title
+          </label>
           <input
-      id="enTitle"
-      name="enTitle"
-      value={enTitle}
-      placeholder="Enter Title"
-      onChange={(e) => setEnTitle(e.target.value)}
+            id="enTitle"
+            name="enTitle"
+            value={enTitle}
+            placeholder="Enter Question Title"
+            onChange={(e) => setEnTitle(e.target.value)}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="detail" className="mb-2 block text-sm font-medium">
-    
-  Announcement Details          </label>
-<textarea
-    id="enDetail"
-    name="enDetail"
-    value={enDetail}
-    onChange={(e) => setEnDetail(e.target.value)}
+          <label htmlFor="enDetail" className="mb-2 block text-sm font-medium">
+            Question Details
+          </label>
+          <textarea
+            id="enDetail"
+            name="enDetail"
+            value={enDetail}
+            onChange={(e) => setEnDetail(e.target.value)}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="Enter Announcement Detail"
+            placeholder="Enter Question Detail"
           />
         </div>
 
@@ -160,7 +298,7 @@ export default function Form() {
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={status === "loading"}
           >
-            {status === "loading" ? "Creating..." : "Create Device"}
+            {status === "loading" ? "Creating..." : "Create Question"}
           </button>
         </div>
       </div>

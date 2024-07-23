@@ -1,18 +1,16 @@
-import Form from '@/app/components/announcements/create-form';
+import Form from '@/app/components/faqs/create-form';
 import Breadcrumbs from '@/app/components/managers/breadcrumbs';
-// import { fetchCustomers } from '@/app/lib/data';
 
 export default async function Page() {
-  // const customers = await fetchCustomers();
 
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Duyurular', href: '/dashboard/announcements' },
+          { label: 'Sorular', href: '/dashboard/faqs' },
           {
-            label: 'Create Device',
-            href: '/dashboard/announcements/create',
+            label: 'Create Question',
+            href: '/dashboard/faqs/create',
             active: true,
           },
         ]}

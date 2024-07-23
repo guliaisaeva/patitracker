@@ -9,7 +9,7 @@ export const getAllQuestions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/GetAllAnnouncementWeb",
+        "http://185.46.55.50:50235/api/v1/Information/GetAllFrequentlyAskedQuestion",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ export const addQuestion = createAsyncThunk(
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newQuestion),
+          body: JSON.stringify([newQuestion]),
         }
       );
 
@@ -149,6 +149,7 @@ export const updateQuestion = createAsyncThunk(
       const data = await response.json();
       return data.data;
     } catch (error: any) {
+      console.error("Error adding question:", error);
       return rejectWithValue(error.message);
     }
   }
@@ -297,5 +298,8 @@ export const questionSlice = createSlice({
 export const selectQuestions = (state: RootState) => state.question.question;
 export const selectAnnouncementDetail = (state: RootState) =>
   state.question.questionDetail;
+export const selectQuestionsStatus = (state: RootState) =>
+  state.question.status;
+export const selectQuestionsError = (state: RootState) => state.question.error;
 
 export default questionSlice.reducer;
