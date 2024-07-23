@@ -1,4 +1,6 @@
-import SideNav from '@/app/components/dashboard/sidenav';
+"use client";
+import SideNav from "@/app/components/dashboard/sidenav";
+import Profile from "../components/profile";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -6,7 +8,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="w-full flex-none md:w-64">
         <SideNav />
       </div>
-      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
+      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+        <Profile />
+        {children}
+      </div>
     </div>
   );
 }

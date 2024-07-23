@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+import { i18n } from './next-i18next.config.mjs';
+
+
 const nextConfig = {
   reactStrictMode: true,
 
@@ -8,7 +11,9 @@ const nextConfig = {
       hostname: '185.46.55.50',
     },
   ],
-}
+},
+
+i18n,
 };
 
 export default nextConfig;

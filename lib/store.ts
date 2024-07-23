@@ -11,6 +11,8 @@ import { petTypeSlice } from "./features/pet/petTypesSlice";
 import { petBreedSlice } from "./features/pet/petBreedSlice";
 import { announcementSlice } from "./features/announcement/announceSlice";
 import { questionSlice } from "./features/faq/faqSlice";
+import { authSlice } from "./features/login/loginSlice";
+import { languageSlice } from "./features/languages/languagesSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -25,7 +27,9 @@ const rootReducer = combineSlices(
   petTypeSlice,
   petBreedSlice,
   announcementSlice,
-  questionSlice
+  questionSlice,
+  authSlice,
+  languageSlice
 );
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;

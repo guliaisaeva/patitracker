@@ -1,21 +1,65 @@
-'use client';
+"use client";
 
-import { lusitana } from '@/app/components/fonts';
+import { lusitana } from "@/app/components/fonts";
 import {
   AtSymbolIcon,
   KeyIcon,
   ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Button } from './button';
-import { useFormState, useFormStatus } from 'react-dom';
+} from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import { Button } from "./button";
+import { useFormState, useFormStatus } from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import {
+  loginUser,
+  selectAuthError,
+  selectAuthStatus,
+  selectAuthToken,
+} from "@/lib/features/login/loginSlice";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 // import { authenticate } from '@/app/lib/actions';
 
 export default function LoginForm() {
-  // const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const status = useSelector(selectAuthStatus);
+  const error = useSelector(selectAuthError);
+  const token = useSelector(selectAuthToken);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const [formError, setFormError] = useState<string | null>(null);
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const mobileDeviceToken =
+  //     "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
+  //   dispatch(loginUser({ email, password, mobileDeviceToken }));
+  // };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const mobileDeviceToken =
+      "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9";
+
+    const resultAction = await dispatch(
+      loginUser({ email, password, mobileDeviceToken })
+    );
+
+    if (loginUser.fulfilled.match(resultAction)) {
+      router.replace("/dashboard");
+    } else if (loginUser.rejected.match(resultAction)) {
+      setFormError(resultAction.payload as string);
+      setEmail("");
+      setPassword("");
+      router.replace("/");
+    }
+  };
 
   return (
-    <form  className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Please log in to continue.
@@ -34,6 +78,8 @@ export default function LoginForm() {
                 id="email"
                 type="email"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 required
               />
@@ -55,6 +101,8 @@ export default function LoginForm() {
                 name="password"
                 placeholder="Enter password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 minLength={6}
               />
               <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -67,12 +115,12 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {/* {errorMessage && (
+          {formError && (
             <>
               <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{errorMessage}</p>
+              <p className="text-sm text-red-500">{formError}</p>
             </>
-          )} */}
+          )}
           {/* Add form errors here */}
         </div>
       </div>

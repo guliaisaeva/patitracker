@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "@/lib/store";
 interface AuthState {
-  user: any | null; // Adjust type based on user structure
+  user: any | null;
   token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -51,12 +50,11 @@ export const loginUser = createAsyncThunk(
 );
 
 // Create slice
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     logout(state) {
-      state.user = null;
       state.token = null;
     },
   },
@@ -84,8 +82,8 @@ const authSlice = createSlice({
 export const { logout } = authSlice.actions;
 
 export const selectAuthToken = (state: any) => state.auth.token;
-export const selectAuthUser = (state: any) => state.auth.user;
 export const selectAuthStatus = (state: any) => state.auth.status;
 export const selectAuthError = (state: any) => state.auth.error;
+export const selectAuthUser = (state: any) => state.auth.user;
 
 export default authSlice.reducer;
