@@ -1,10 +1,15 @@
-"use client";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import i18n from "@/lib/i18n";
-import { RootState, AppDispatch } from "@/lib/store";
+"use client"
+import React, { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '@/lib/store';
+import i18n from '@/lib/i18n';
+import { setLanguage } from '@/lib/features/languages/languagesSlice';
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+interface LanguageProviderProps {
+  children: ReactNode;
+}
+
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const language = useSelector((state: RootState) => state.language.language);
 
@@ -12,5 +17,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     i18n.changeLanguage(language);
   }, [language]);
 
+  // Ensure the default language is set on mount
+  useEffect(() => {
+    dispatch(setLanguage(i18n.language as 'en' | 'tr'));
+  }, [dispatch]);
+
   return <>{children}</>;
-}
+};

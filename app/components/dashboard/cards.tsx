@@ -1,19 +1,27 @@
-"use client"
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import {
   UserGroupIcon,
   InboxIcon,
   DocumentIcon,
-IdentificationIcon
-} from '@heroicons/react/24/outline';
-import { lusitana } from '@/app/components/fonts';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '@/lib/store';
-import { selectUsers,selectUsersStatus, selectUsersError, getUsersAsync  } from '@/lib/features/users/usersSlice';
-import { selectDevices,getDevicesAsync } from '@/lib/features/devices/devicesSlice';
-import { selectSims,getAllSimsAsync } from '@/lib/features/sims/simsSlice';
-import { getAllPetTypes, selectPetTypes } from '@/lib/features/pet/petTypesSlice';
+  IdentificationIcon,
+} from "@heroicons/react/24/outline";
+import { lusitana } from "@/app/components/fonts";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { selectUsers, getUsersAsync } from "@/lib/features/users/usersSlice";
+import {
+  selectDevices,
+  getDevicesAsync,
+} from "@/lib/features/devices/devicesSlice";
+import { selectSims, getAllSimsAsync } from "@/lib/features/sims/simsSlice";
+import {
+  getAllPetTypes,
+  selectPetTypes,
+} from "@/lib/features/pet/petTypesSlice";
+import { useTranslation } from "react-i18next";
+
 const iconMap = {
   collected: DocumentIcon,
   customers: UserGroupIcon,
@@ -22,11 +30,11 @@ const iconMap = {
 };
 
 export default async function CardWrapper() {
-
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectUsers);
   const devices = useSelector(selectDevices);
-  const sims =useSelector(selectSims)
+  const sims = useSelector(selectSims);
   const petTypes = useSelector(selectPetTypes);
 
   useEffect(() => {
@@ -34,17 +42,28 @@ export default async function CardWrapper() {
     dispatch(getDevicesAsync());
     dispatch(getAllSimsAsync());
     dispatch(getAllPetTypes());
-
   }, [dispatch]);
+
   return (
     <>
-
-      <Card title="Kullanıcı Sayısı" value={users?.length??0} type="customers" />
-      <Card title="Hayvan Türü" value={petTypes?.length??0} type="pending" />
-      <Card title="Cihaz Sayısı" value={devices?.length??0} type="invoices" />
       <Card
-        title="Sim Kart Sayısı"
-        value={sims?.length??0}
+        title={t("userCount")}
+        value={users?.length ?? 0}
+        type="customers"
+      />
+      <Card
+        title={t("petTypeCount")}
+        value={petTypes?.length ?? 0}
+        type="pending"
+      />
+      <Card
+        title={t("deviceCount")}
+        value={devices?.length ?? 0}
+        type="invoices"
+      />
+      <Card
+        title={t("simCardCount")}
+        value={sims?.length ?? 0}
         type="collected"
       />
     </>
@@ -58,7 +77,7 @@ export function Card({
 }: {
   title: string;
   value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  type: "invoices" | "customers" | "pending" | "collected";
 }) {
   const Icon = iconMap[type];
 

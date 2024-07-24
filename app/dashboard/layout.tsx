@@ -1,6 +1,7 @@
 "use client";
 import SideNav from "@/app/components/dashboard/sidenav";
 import Profile from "../components/profile";
+import LanguageSwitcher from "../components/languageSwitcher";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,7 +10,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav />
       </div>
       <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-        <Profile />
+        <div className="flex  justify-end items-center gap-2">
+          <LanguageSwitcher />
+          <Profile />
+        </div>
+
         {children}
       </div>
     </div>

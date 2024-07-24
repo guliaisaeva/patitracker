@@ -1,6 +1,29 @@
 {
+  "DASHBOARD": "DASHBOARD",
+
+  "dashboard": "Panel",
+  "userCount": "Kullanıcı Sayısı",
+  "petTypeCount": "Hayvan Türü Sayısı",
+   "deviceCount": "Cihaz Sayısı",
+   "simCardCount": "Sim Kart Sayısı",
+
+
+
+
+
+  
+
     "welcome": "Hoşgeldiniz",
     "login": "Giriş yap",
     "logout": "Çıkış yap",
-    "profile": "Profil"
+    "profile": "Profil",
+    "managers": "Yöneticiler",
+    "customers": "Müşteriler",
+    "devices": "Cihazlar",
+    "simcards": "SIM Kartlar",
+    "petsManagement": "Evcil Hayvan Yönetimi",
+    "petType": "Evcil Hayvan Türü",
+    "petBreed": "Evcil Hayvan Cinsi",
+    "announcements": "Duyurular",
+    "faqs": "Sık Sorulan Sorular"
   }

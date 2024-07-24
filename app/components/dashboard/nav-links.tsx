@@ -63,7 +63,7 @@
 //     <>
 //       {links.map((link) => {
 //         const LinkIcon = link.icon;
-      
+
 //         if (link.submenu) {
 //           return (
 //             <div key={link.name} className="relative flex-grow">
@@ -99,7 +99,7 @@
 //                             'bg-sky-100 text-blue-600': pathname === submenuItem.href,
 //                           },
 //                         )}                  >
-//                       {submenuItem.icon && <submenuItem.icon className="w-6" />} 
+//                       {submenuItem.icon && <submenuItem.icon className="w-6" />}
 
 //                         {submenuItem.name}
 //                       </Link>
@@ -132,8 +132,7 @@
 //   );
 // }
 
-
-'use client';
+"use client";
 
 import {
   AdminPanelSettings,
@@ -146,38 +145,52 @@ import {
   Grain,
   Apps,
   Campaign,
-  QuestionMark
-} from '@mui/icons-material';
+  QuestionMark,
+} from "@mui/icons-material";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
-import { useState } from 'react';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const links = [
-  { name: 'Panel', href: '/dashboard', icon: Home },
-  { name: 'Yöneticiler', href: '/dashboard/managers', icon: AdminPanelSettings },
-  { name: 'Kullanıcılar', href: '/dashboard/customers', icon: Group },
-  { name: 'Cihazlar', href: '/dashboard/devices', icon: DeviceHub },
-  { name: 'Sim Kartlar', href: '/dashboard/simcards', icon: SimCard },
+  { name: "Panel", href: "/dashboard", icon: Home },
   {
-    name: 'Evcil Hayvan Yönetimi ',
-    href: '#',
+    name: "Yöneticiler",
+    href: "/dashboard/managers",
+    icon: AdminPanelSettings,
+  },
+  { name: "Kullanıcılar", href: "/dashboard/customers", icon: Group },
+  { name: "Cihazlar", href: "/dashboard/devices", icon: DeviceHub },
+  { name: "Sim Kartlar", href: "/dashboard/simcards", icon: SimCard },
+  {
+    name: "Evcil Hayvan Yönetimi ",
+    href: "#",
     icon: Pets,
     submenu: [
-      { name: 'Evcil Hayvan Türü', href: '/dashboard/pets/petType', icon: Grain },
-      { name: 'Evcil Hayvan Cinsi', href: '/dashboard/pets/petBreed', icon: Apps },
+      {
+        name: "Evcil Hayvan Türü",
+        href: "/dashboard/pets/petType",
+        icon: Grain,
+      },
+      {
+        name: "Evcil Hayvan Cinsi",
+        href: "/dashboard/pets/petBreed",
+        icon: Apps,
+      },
     ],
   },
-  { name: 'Duyurular', href: '/dashboard/announcements', icon: Campaign },
-  { name: 'Sık Sorulan Sorular', href: '/dashboard/faqs', icon: QuestionMark },
+  { name: "Duyurular", href: "/dashboard/announcements", icon: Campaign },
+  { name: "Sık Sorulan Sorular", href: "/dashboard/faqs", icon: QuestionMark },
 ];
 
 export default function NavLinks() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  const toggleDropdown = (name:any) => {
+  const toggleDropdown = (name: any) => {
     setOpenDropdown(openDropdown === name ? null : name);
   };
 
@@ -192,10 +205,12 @@ export default function NavLinks() {
               <button
                 onClick={() => toggleDropdown(link.name)}
                 className={clsx(
-                  'flex items-center justify-between gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full',
+                  "flex items-center justify-between gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full",
                   {
-                    'bg-sky-100 text-blue-600': link.submenu.some(submenuItem => pathname.startsWith(submenuItem.href)), // Check if any submenu item is active
-                  },
+                    "bg-sky-100 text-blue-600": link.submenu.some(
+                      (submenuItem) => pathname.startsWith(submenuItem.href)
+                    ), // Check if any submenu item is active
+                  }
                 )}
               >
                 <div className="flex items-center gap-2">
@@ -214,13 +229,16 @@ export default function NavLinks() {
                         href={submenuItem.href}
                         passHref
                         className={clsx(
-                          'flex items-center justify-start gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full',
+                          "flex items-center justify-start gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full",
                           {
-                            'bg-sky-100 text-blue-600': pathname === submenuItem.href,
-                          },
+                            "bg-sky-100 text-blue-600":
+                              pathname === submenuItem.href,
+                          }
                         )}
                       >
-                        {submenuItem.icon && <submenuItem.icon className="w-6" />}
+                        {submenuItem.icon && (
+                          <submenuItem.icon className="w-6" />
+                        )}
                         {submenuItem.name}
                       </Link>
                     ))}
@@ -236,10 +254,10 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              'flex h-[48px] items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full md:flex-none md:justify-start md:p-2 md:px-3',
+              "flex h-[48px] items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full md:flex-none md:justify-start md:p-2 md:px-3",
               {
-                'bg-sky-100 text-blue-600': pathname === link.href,
-              },
+                "bg-sky-100 text-blue-600": pathname === link.href,
+              }
             )}
           >
             <LinkIcon className="w-6" />

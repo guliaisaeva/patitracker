@@ -1,6 +1,23 @@
 {
+    "DASHBOARD": "DASHBOARD",
+
+    "dashboard": "Dashboard",
+    "userCount": "User Count",
+    "petTypeCount": "Pet Type Count",
+    "deviceCount": "Device Count",
+    "simCardCount": "SIM Card Count",
+
     "welcome": "Welcome",
     "login": "Login",
     "logout": "Logout",
-    "profile": "Profile"
-  }
+    "profile": "Profile",
+    "managers": "Managers",
+    "customers": "Customers",
+    "devices": "Devices",
+    "simcards": "SIM Cards",
+    "petsManagement": "Pet Management",
+    "petType": "Pet Type",
+    "petBreed": "Pet Breed",
+    "announcements": "Announcements",
+    "faqs": "FAQs"
+ }

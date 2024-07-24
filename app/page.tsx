@@ -1,12 +1,13 @@
-// import AcmeLogo from "@/app/ui/acme-logo";
+"use client";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import styles from "@/app/styles/home.module.css";
 import { lusitana } from "@/app/components/fonts";
 import Image from "next/image";
+import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "react-i18next";
 
-export default function Page() {
+function Page() {
   const { t } = useTranslation();
 
   return (
@@ -33,21 +34,22 @@ export default function Page() {
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           {/* Add Hero Images Here */}
           <Image
-            src="/dog.png"
+            src="/images/dog.png"
             width={1000}
             height={760}
             className="hidden md:block"
             alt="Screenshots of the dashboard project showing desktop version"
           />
-          <Image
-            src="/hero-mobile.png"
+          {/* <Image
+            src="/dog.png"
             width={560}
             height={620}
             className="block md:hidden"
             alt="Screenshot of the dashboard project showing mobile version"
-          />
+          /> */}
         </div>
       </div>
     </main>
   );
 }
+export default appWithTranslation(Page);
