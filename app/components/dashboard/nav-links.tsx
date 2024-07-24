@@ -155,45 +155,35 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const links = [
-  { name: "Panel", href: "/dashboard", icon: Home },
+  { name: "home", href: "/dashboard", icon: Home },
+  { name: "managers", href: "/dashboard/managers", icon: AdminPanelSettings },
+  { name: "users", href: "/dashboard/customers", icon: Group },
+  { name: "devices", href: "/dashboard/devices", icon: DeviceHub },
+  { name: "simCards", href: "/dashboard/simcards", icon: SimCard },
   {
-    name: "Yöneticiler",
-    href: "/dashboard/managers",
-    icon: AdminPanelSettings,
-  },
-  { name: "Kullanıcılar", href: "/dashboard/customers", icon: Group },
-  { name: "Cihazlar", href: "/dashboard/devices", icon: DeviceHub },
-  { name: "Sim Kartlar", href: "/dashboard/simcards", icon: SimCard },
-  {
-    name: "Evcil Hayvan Yönetimi ",
+    name: "pet.management",
     href: "#",
     icon: Pets,
     submenu: [
-      {
-        name: "Evcil Hayvan Türü",
-        href: "/dashboard/pets/petType",
-        icon: Grain,
-      },
-      {
-        name: "Evcil Hayvan Cinsi",
-        href: "/dashboard/pets/petBreed",
-        icon: Apps,
-      },
+      { name: "pet.type", href: "/dashboard/pets/petType", icon: Grain },
+      { name: "pet.breed", href: "/dashboard/pets/petBreed", icon: Apps },
     ],
   },
-  { name: "Duyurular", href: "/dashboard/announcements", icon: Campaign },
-  { name: "Sık Sorulan Sorular", href: "/dashboard/faqs", icon: QuestionMark },
+  { name: "announcements", href: "/dashboard/announcements", icon: Campaign },
+  { name: "faqs", href: "/dashboard/faqs", icon: QuestionMark },
 ];
 
 export default function NavLinks() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const toggleDropdown = (name: any) => {
     setOpenDropdown(openDropdown === name ? null : name);
   };
-
+  if (i18n.isInitializing) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       {links.map((link) => {
@@ -215,7 +205,9 @@ export default function NavLinks() {
               >
                 <div className="flex items-center gap-2">
                   <LinkIcon className="w-6" />
-                  <p className="hidden md:block">{link.name}</p>
+                  <p className="hidden md:block">
+                    {t(`navLinks.${link.name}`)}
+                  </p>
                 </div>
                 <ArrowDropDown className="w-5 ml-2 -mr-1" />
               </button>
@@ -239,7 +231,7 @@ export default function NavLinks() {
                         {submenuItem.icon && (
                           <submenuItem.icon className="w-6" />
                         )}
-                        {submenuItem.name}
+                        {t(`navLinks.${submenuItem.name}`)}
                       </Link>
                     ))}
                   </div>
@@ -261,7 +253,7 @@ export default function NavLinks() {
             )}
           >
             <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
+            <p className="hidden md:block">{t(`navLinks.${link.name}`)}</p>
           </Link>
         );
       })}

@@ -1,23 +1,92 @@
 {
-    "DASHBOARD": "DASHBOARD",
+  "GLOBAL": "GLOBAL",
+  "sign.out": "Sign Out",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "update": "Update",
+  "close": "Close",
+  "edit":"Edit",
+  "noResults": "No results found.",
 
-    "dashboard": "Dashboard",
-    "userCount": "User Count",
-    "petTypeCount": "Pet Type Count",
-    "deviceCount": "Device Count",
-    "simCardCount": "SIM Card Count",
+  "DASHBOARD": "DASHBOARD",
 
-    "welcome": "Welcome",
-    "login": "Login",
-    "logout": "Logout",
-    "profile": "Profile",
+  "dashboard": "Dashboard",
+  "user.count": "User Count",
+  "pet.type.count": "Pet Type Count",
+  "device.count": "Device Count",
+  "sim.card.count": "SIM Card Count",
+
+  "charts.title": "Usage Areas",
+  "charts.updated": "Updated just now",
+  "charts.series.america": "America",
+  "charts.series.asia": "Asia",
+  "charts.xLabels": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+
+  "revenueChart": {
+    "title": "Current Download Status",
+    "total": "Total 188",
+    "last12Months": "Last 12 months"
+  },
+
+  "SIDEBAR": "SIDEBAR",
+  "navLinks": {
+    "home": "Dashboard",
     "managers": "Managers",
-    "customers": "Customers",
+    "users": "Users",
     "devices": "Devices",
-    "simcards": "SIM Cards",
-    "petsManagement": "Pet Management",
-    "petType": "Pet Type",
-    "petBreed": "Pet Breed",
+    "simCards": "SIM Cards",
+    "pet.management": "Pet Management",
+    "pet.type": "Pet Type",
+    "pet.breed": "Pet Breed",
     "announcements": "Announcements",
     "faqs": "FAQs"
- }
+  },
+
+  "ANNOUNCEMENT": "ANNOUNCEMENT SECTION",
+
+  "announcement": {
+    "create": "Create Announcement",
+    "info": "Announcement Info",
+    "update": "Update Announcement",
+    "errorLoadingAnnouncement": "Error loading Announcement",
+
+    "messages": {
+      "deleteSuccess": "Announcement deleted successfully.",
+      "deleteFailure": "Failed to delete announcement. Please try again.",
+      "createSuccess": "Announcement(s) added successfully",
+      "createFailure": "Failed to add announcement",
+      "updateSuccess": "Announcement(s) updated successfully.",
+      "updateFailure": "Failed to update announcement. Please try again."
+    },
+    "form": {
+      "title": "Announcement Title ",
+      "detail": "Announcement Details",
+      "enterTitleEn": "Enter English Announcement Title",
+      "enterDetailEn": "Enter English Announcement Detail",
+      "enterTitleTr": "Enter Turkish Announcement Title",
+      "enterDetailTr": "Enter Turkish Announcement Detail"
+    },
+    "submit": {
+      "create": "Create Announcement",
+      "creating": "Creating..."
+    },
+    "status": {
+      "read": "Read",
+      "notRead": "Not Read",
+      "status": "Read Status"
+    }
+  }
+}

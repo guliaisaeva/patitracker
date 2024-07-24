@@ -47,22 +47,22 @@ export default async function CardWrapper() {
   return (
     <>
       <Card
-        title={t("userCount")}
+        title={t("user.count")}
         value={users?.length ?? 0}
         type="customers"
       />
       <Card
-        title={t("petTypeCount")}
+        title={t("pet.type.count")}
         value={petTypes?.length ?? 0}
         type="pending"
       />
       <Card
-        title={t("deviceCount")}
+        title={t("device.count")}
         value={devices?.length ?? 0}
         type="invoices"
       />
       <Card
-        title={t("simCardCount")}
+        title={t("sim.card.count")}
         value={sims?.length ?? 0}
         type="collected"
       />

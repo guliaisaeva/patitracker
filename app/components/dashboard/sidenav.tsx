@@ -7,12 +7,15 @@ import { useRouter } from "next/navigation";
 import { AppDispatch } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/lib/features/login/loginSlice";
+import { useTranslation } from "react-i18next";
+import logo from "@/public/logo/patitracker_logo.png";
 
 // import { signOut } from '@/auth';
 
 export default function SideNav() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -27,11 +30,12 @@ export default function SideNav() {
       >
         <div className="w-32 h-full text-white flex items-center justify-center md:w-40">
           <Image
-            src="/logo/patitracker_logo.png"
+            src={logo}
             alt="logo"
             width={100 * (138 / 162)}
             height={100}
             className="w-16 h-16 md:w-24 md:h-24"
+            priority
           />
         </div>
       </Link>
@@ -49,7 +53,7 @@ export default function SideNav() {
           className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
         >
           <PowerIcon className="w-6" />
-          <div className="hidden md:block">Sign Out</div>
+          <div className="hidden md:block">{t("sign.out")}</div>
         </button>
         {/* </form> */}
       </div>

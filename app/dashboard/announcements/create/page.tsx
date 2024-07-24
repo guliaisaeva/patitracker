@@ -1,5 +1,5 @@
-import Form from '@/app/components/announcements/create-form';
-import Breadcrumbs from '@/app/components/managers/breadcrumbs';
+import Form from "@/app/components/announcements/create-form";
+import Breadcrumbs from "@/app/components/managers/breadcrumbs";
 // import { fetchCustomers } from '@/app/lib/data';
 
 export default async function Page() {
@@ -9,10 +9,10 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Duyurular', href: '/dashboard/announcements' },
+          { label: "Duyurular", href: "/dashboard/announcements" },
           {
-            label: 'Create Device',
-            href: '/dashboard/announcements/create',
+            label: "Create Announcement",
+            href: "/dashboard/announcements/create",
             active: true,
           },
         ]}

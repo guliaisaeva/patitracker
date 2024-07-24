@@ -1,29 +1,89 @@
 {
+  "GLOBAL": "GLOBAL",
+  "sign.out": "Oturumu Kapat",
+  "delete": "Sil",
+  "cancel": "İptal",
+  "update": "Güncelle",
+  "close": "Kapat",
+  "edit":"Güncelle",
+  "noResults": "Sonuç bulunamadı.",
+
   "DASHBOARD": "DASHBOARD",
 
   "dashboard": "Panel",
-  "userCount": "Kullanıcı Sayısı",
-  "petTypeCount": "Hayvan Türü Sayısı",
-   "deviceCount": "Cihaz Sayısı",
-   "simCardCount": "Sim Kart Sayısı",
+  "user.count": "Kullanıcı Sayısı",
+  "pet.type.count": "Hayvan Türü Sayısı",
+  "device.count": "Cihaz Sayısı",
+  "sim.card.count": "Sim Kart Sayısı",
 
+  "charts.title": "Kullanıldığı Alanlar",
+  "charts.updated": "Az önce güncellendi",
+  "charts.series.america": "Amerika",
+  "charts.series.asia": "Asya",
+  "charts.xLabels": {
+    "january": "Ocak",
+    "february": "Şubat",
+    "march": "Mart",
+    "april": "Nisan",
+    "may": "Mayıs",
+    "june": "Haziran",
+    "july": "Temmuz",
+    "august": "Ağustos",
+    "september": "Eylül",
+    "october": "Ekim",
+    "november": "Kasım",
+    "december": "Aralık"
+  },
+  "revenueChart": {
+    "title": "Mevcut İndirme Durumu",
+    "total": "Toplam 188",
+    "last12Months": "Son 12 ay"
+  },
 
-
-
-
-  
-
-    "welcome": "Hoşgeldiniz",
-    "login": "Giriş yap",
-    "logout": "Çıkış yap",
-    "profile": "Profil",
+  "SIDEBAR": "SIDEBAR",
+  "navLinks": {
+    "home": "Panel",
     "managers": "Yöneticiler",
-    "customers": "Müşteriler",
+    "users": "Kullanıcılar",
     "devices": "Cihazlar",
-    "simcards": "SIM Kartlar",
-    "petsManagement": "Evcil Hayvan Yönetimi",
-    "petType": "Evcil Hayvan Türü",
-    "petBreed": "Evcil Hayvan Cinsi",
+    "simCards": "Sim Kartlar",
+    "pet.management": "Evcil Hayvan Yönetimi",
+    "pet.type": "Evcil Hayvan Türü",
+    "pet.breed": "Evcil Hayvan Cinsi",
     "announcements": "Duyurular",
     "faqs": "Sık Sorulan Sorular"
+  },
+
+  "announcement": {
+    "create": "Yeni Duyuru Ekle",
+    "info": "Duyuru Bilgisi",
+    "update": "Duyuruyu Güncelle",
+    "errorLoadingAnnouncement": "Hata: Duyuru yüklenirken hata oluştu",
+
+    "messages": {
+      "deleteSuccess": "Duyuru başarıyla silindi.",
+      "deleteFailure": "Duyuru silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Duyuru(lar) başarıyla eklendi.",
+      "createFailure": "Duyuru eklenemedi",
+      "updateSuccess": "Duyuru(lar) başarıyla güncellendi.",
+      "updateFailure": "Duyuru güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "title": "Duyuru Başlığı",
+      "detail": "Duyuru Detayı",
+      "enterTitleEn": "İngilizce Başlık Giriniz",
+      "enterDetailEn": "İngilizce Detayı Giriniz",
+      "enterTitleTr": "Türkçe Başlık Giriniz",
+      "enterDetailTr": "Türkçe Detayı Giriniz"
+    },
+    "submit": {
+      "create": "Duyuru Oluştur",
+      "creating": "Oluşturuluyor..."
+    },
+    "status": {
+      "read": "Okundu",
+      "notRead": "Okunmadı",
+      "status": "Okunma Durumu"
+    }
   }
+}
