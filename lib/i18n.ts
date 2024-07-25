@@ -3,21 +3,23 @@ import { initReactI18next } from "react-i18next";
 import HttpBackend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-// Initialize i18n
 i18n
-  .use(HttpBackend) // Load translations from backend
-  .use(LanguageDetector) // Detect the user language
-  .use(initReactI18next) // Initialize react-i18next
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
-    fallbackLng: "tr", // Default language if the user language is not available
+    fallbackLng: "tr", // Fallback language if the user language is not available
     lng: "tr", // Default language
-    ns: ["translation"], // Namespaces to load
+    ns: ["translation"], // Namespace for translation keys
     defaultNS: "translation", // Default namespace
     interpolation: {
-      escapeValue: false, // React already safely escapes values
+      escapeValue: false, // React already does escaping
     },
     backend: {
-      loadPath: "/locales/{{lng}}.json", // Path to your translation files
+      loadPath: "/locales/{{lng}}.json", // Path to translation files
+    },
+    react: {
+      useSuspense: false, // Set to false if you don't want to use React Suspense
     },
   });
 

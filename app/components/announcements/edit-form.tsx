@@ -12,6 +12,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../button";
 import { useTranslation } from "react-i18next";
+import trFlag from "@/public/images/turkey.png";
+import ukFlag from "@/public/images/uk.png";
 
 export default function UpdateAnnouncementForm({
   announcementId,
@@ -44,7 +46,7 @@ export default function UpdateAnnouncementForm({
     }
   }, [selectedAnnouncementDetail]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const announcementsToSend = [];
@@ -71,9 +73,7 @@ export default function UpdateAnnouncementForm({
 
     try {
       for (const announcement of announcementsToSend) {
-        const result = await dispatch(
-          updateAnnouncement(announcement)
-        ).unwrap();
+        const result = dispatch(updateAnnouncement(announcement)).unwrap();
         console.log("Update result:", result);
       }
       alert(t("announcement.messages.updateSuccess"));
@@ -87,11 +87,10 @@ export default function UpdateAnnouncementForm({
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <Image
-          src="/turkey.png"
+          src={trFlag}
           alt="Turkish Flag"
           width={36}
           height={36}
-          objectFit="cover"
           className="rounded-full"
         />
         <div className="mb-4">
@@ -122,11 +121,10 @@ export default function UpdateAnnouncementForm({
           />
         </div>
         <Image
-          src="/uk.png"
+          src={ukFlag}
           alt="English Flag"
           width={36}
           height={36}
-          objectFit="cover"
           className="rounded-full"
         />
         <div className="mb-4">

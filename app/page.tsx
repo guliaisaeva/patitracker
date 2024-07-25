@@ -4,10 +4,9 @@ import Link from "next/link";
 import styles from "@/app/styles/home.module.css";
 import { lusitana } from "@/app/components/fonts";
 import Image from "next/image";
-import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "react-i18next";
 
-function Page() {
+export default function Page() {
   const { t } = useTranslation();
 
   return (
@@ -52,4 +51,3 @@ function Page() {
     </main>
   );
 }
-export default appWithTranslation(Page);

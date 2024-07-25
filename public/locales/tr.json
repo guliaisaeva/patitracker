@@ -56,9 +56,11 @@
 
   "announcement": {
     "create": "Yeni Duyuru Ekle",
-    "info": "Duyuru Bilgisi",
-    "update": "Duyuruyu Güncelle",
+    "info": "Duyuru Bilgileri",
+    "update": "Duyuru Güncellenmesi",
     "errorLoadingAnnouncement": "Hata: Duyuru yüklenirken hata oluştu",
+    "announcements": "Duyurular",
+    "search.placeholder": "Duyuru Ara...",
 
     "messages": {
       "deleteSuccess": "Duyuru başarıyla silindi.",

@@ -62,6 +62,8 @@
     "info": "Announcement Info",
     "update": "Update Announcement",
     "errorLoadingAnnouncement": "Error loading Announcement",
+    "announcements": "Announcements",
+    "search.placeholder": "Search Announcement...",
 
     "messages": {
       "deleteSuccess": "Announcement deleted successfully.",

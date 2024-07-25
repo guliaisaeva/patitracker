@@ -28,18 +28,26 @@ const SafeHydrate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <SafeHydrate>
-      <StoreProvider>
-        <I18nextProvider i18n={i18n}>
-          <LanguageProvider>
-            <html lang="en">
-              <body className={`${inter.className} antialiased`}>
-                {children}
-              </body>
-            </html>
-          </LanguageProvider>
-        </I18nextProvider>
-      </StoreProvider>
-    </SafeHydrate>
+    // <SafeHydrate>
+    // <StoreProvider>
+    //   <I18nextProvider i18n={i18n}>
+    //     {/* <LanguageProvider> */}
+    //     <html lang="en">
+    //       <body className={`${inter.className} antialiased`}>{children}</body>
+    //     </html>
+    //     {/* </LanguageProvider> */}
+    //   </I18nextProvider>
+    // </StoreProvider>
+    // </SafeHydrate>
+
+    <html lang="en">
+      <body className={`${inter.className} antialiased`}>
+        <SafeHydrate>
+          <StoreProvider>
+            <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+          </StoreProvider>
+        </SafeHydrate>
+      </body>
+    </html>
   );
 }

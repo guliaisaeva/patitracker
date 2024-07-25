@@ -14,6 +14,8 @@ import {
   selectUserProfileId,
 } from "@/lib/features/users/usersSlice";
 import { useTranslation } from "react-i18next";
+import trFlag from "@/public/images/turkey.png";
+import ukFlag from "@/public/images/uk.png";
 
 export default function Form() {
   const { t } = useTranslation();
@@ -33,7 +35,7 @@ export default function Form() {
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const userProfileIds: number[] = Array.isArray(userProfileId)
       ? userProfileId.filter((id): id is number => id !== null) // Filter out null values
@@ -69,7 +71,7 @@ export default function Form() {
     try {
       // Send announcements to API
       for (const announcement of announcementsToSend) {
-        await dispatch(addAnnouncement(announcement));
+        dispatch(addAnnouncement(announcement));
       }
       setTrTitle("");
       setTrDetail("");
@@ -87,11 +89,10 @@ export default function Form() {
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <Image
-          src="/turkey.png"
+          src={trFlag}
           alt="Turkish Flag"
           width={36}
           height={36}
-          objectFit="cover"
           className="rounded-full"
         />
         <div className="mb-4">
@@ -104,7 +105,7 @@ export default function Form() {
             value={trTitle}
             onChange={(e) => setTrTitle(e.target.value)}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-                    placeholder={t("announcement.form.enterTitleTr")}
+            placeholder={t("announcement.form.enterTitleTr")}
           />
         </div>
         <div className="mb-4">
@@ -121,11 +122,10 @@ export default function Form() {
           />
         </div>
         <Image
-          src="/uk.png"
+          src={ukFlag}
           alt="English Flag"
           width={36}
           height={36}
-          objectFit="cover"
           className="rounded-full"
         />
         <div className="mb-4">
