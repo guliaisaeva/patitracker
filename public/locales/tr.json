@@ -7,6 +7,8 @@
   "close": "Kapat",
   "edit": "Güncelle",
   "noResults": "Maalesef, gösterilecek sonuç bulunmuyor.",
+  "load": "Yükleniyor...",
+  "detail": "Detay",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -80,6 +82,114 @@
     },
     "submit": {
       "create": "Duyuru Oluştur",
+      "creating": "Oluşturuluyor..."
+    },
+    "status": {
+      "read": "Okundu",
+      "notRead": "Okunmadı",
+      "status": "Okunma Durumu"
+    }
+  },
+
+  "user": {
+    "create": "Yeni Kullanıcı Ekle",
+    "info": "Kullanıcı Bilgileri",
+    "update": "Kullanıcı Güncellenmesi",
+    "errorLoadingUser": "Hata: Kullanıcı yüklenirken hata oluştu",
+    "users": "Kullanıcılar",
+    "search.placeholder": "Kullanıcı Ara...",
+    "userName": "Kullanıcı İsmi",
+    "fullName": "Tam İsmi",
+    "email": "E-postası",
+    "phoneNumber": "Telefon Numarası",
+    "address": "Adresi",
+    "search": "Ara",
+
+    "messages": {
+      "deleteSuccess": "Kullanıcı başarıyla silindi.",
+      "deleteFailure": "Kullanıcı silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Kullanıcı başarıyla eklendi.",
+      "createFailure": "Kullanıcı eklenemedi",
+      "updateSuccess": "Kullanıcı(lar) başarıyla güncellendi.",
+      "updateFailure": "Kullanıcı güncellenemedi. Lütfen tekrar deneyin."
+    }
+  },
+
+  "device": {
+    "create": "Yeni Cihaz Ekle",
+    "info": "Cihaz Bilgileri",
+    "update": "Cihaz Güncellenmesi",
+    "errorLoadingDevice": "Hata: Cihaz yüklenirken hata oluştu",
+    "devices": "Cihazlar",
+    "search.placeholder": "Cihaz Ara...",
+
+    "messages": {
+      "deleteSuccess": "Cihaz başarıyla silindi.",
+      "deleteFailure": "Cihaz silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Cihaz(lar) başarıyla eklendi.",
+      "createFailure": "Cihaz eklenemedi",
+      "updateSuccess": "Cihaz(lar) başarıyla güncellendi.",
+      "updateFailure": "Cihaz güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "deviceNumber": "Cihaz Numarası",
+      "enterDeviceNumber": "Cihaz Numarası Girin",
+      "deviceModel": "Cihaz Modeli",
+      "enterDeviceModel": "Cihaz Modelini Girin",
+      "saveToSimCard": "Sim Karta Kaydet",
+      "simNumber": "Sim Numarası",
+      "selectSimNumber": "Sim Numarası Seçin",
+
+      "userName": "Kullanıcı İsmi",
+      "userEmail": "Kullanıcı E-postası",
+      "memberShipStartDate": "Üyelik Başlangıç Tarihi",
+      "memberShipEndDate": "Üyelik Bitiş Tarihi",
+      "petName": "Evcil Hayvan İsmi",
+      "deviceId": "Cihaz ID",
+      "activityState": "Aktivite Durumu",
+      "faultState": "Arıza Durumu",
+      "active": "Aktif",
+      "notActive": "Aktif Değil",
+      "faulty": "Arızalı",
+      "working": "Çalışıyor"
+    },
+    "submit": {
+      "create": "Cihaz Oluştur",
+      "creating": "Oluşturuluyor..."
+    },
+    "status": {
+      "read": "Okundu",
+      "notRead": "Okunmadı",
+      "status": "Okunma Durumu"
+    }
+  },
+
+  "faq": {
+    "create": "Yeni Soru Ekle",
+    "info": "Soru Bilgileri",
+    "update": "Soru Güncellenmesi",
+    "errorLoadingFaq": "Hata: Soru yüklenirken hata oluştu",
+    "faqs": "Sorular",
+    "search.placeholder": "Soru Ara...",
+
+    "messages": {
+      "deleteSuccess": "Soru başarıyla silindi.",
+      "deleteFailure": "Soru silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Soru(lar) başarıyla eklendi.",
+      "createFailure": "Soru eklenemedi",
+      "updateSuccess": "Soru(lar) başarıyla güncellendi.",
+      "updateFailure": "Soru güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "title": "Soru Başlığı",
+      "detail": "Soru Detayı",
+      "enterTitleEn": "İngilizce Başlık Giriniz",
+      "enterDetailEn": "İngilizce Detayı Giriniz",
+      "enterTitleTr": "Türkçe Başlık Giriniz",
+      "enterDetailTr": "Türkçe Detayı Giriniz"
+    },
+    "submit": {
+      "create": "Soru Oluştur",
       "creating": "Oluşturuluyor..."
     },
     "status": {

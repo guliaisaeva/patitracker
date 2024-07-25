@@ -1,37 +1,40 @@
-
-"use client"
+"use client";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import Image from "next/image";
 import {
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { Button } from '@/app/components/button';
-import Image from 'next/image';
-import { selectDeviceDetails, getDeviceDetailsAsync } from '@/lib/features/devices/devicesSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/lib/store';
-import { useEffect } from 'react';
+  selectDeviceDetails,
+  getDeviceDetailsAsync,
+} from "@/lib/features/devices/devicesSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
-
+export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const selectedDevice = useSelector(selectDeviceDetails);
   useEffect(() => {
-    if ({deviceId}) {
+    if ({ deviceId }) {
       dispatch(getDeviceDetailsAsync(deviceId));
     }
   }, [dispatch, deviceId]);
 
   if (!selectedDevice) {
-    return <div>Loading...</div>; 
+    return <div>{t("load")}</div>;
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here if needed
   };
 
   const activityStatus = selectedDevice.activityState;
-  const activityClass = activityStatus ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600';
-  const activityText = activityStatus ? 'Aktif' : 'Not Aktif';
+  const activityClass = activityStatus
+    ? "bg-green-100 text-green-600"
+    : "bg-red-100 text-red-600";
+  const activityText = activityStatus
+    ? t("device.form.active")
+    : t("device.form.notActive");
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -42,29 +45,31 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
               <Image
                 src={selectedDevice.userImageUrl}
                 layout="fill"
-                objectFit="contain"
+                width={28}
+                height={28}
                 alt={`${selectedDevice.userName}'s profile picture`}
               />
             </div>
           ) : (
             <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full">
-              <span className="text-gray-600 text-lg">{selectedDevice?.userName?.charAt(0)}</span>
+              <span className="text-gray-600 text-lg">
+                {selectedDevice?.userName?.charAt(0)}
+              </span>
             </div>
           )}
         </div>
 
-
         {/* Display User Information */}
         <div className="mb-4">
           <label htmlFor="userName" className="mb-2 block text-sm font-medium">
-            Kullanıcı Ismi
+            {t("device.form.userName")}
           </label>
           <div className="relative">
             <input
               id="userName"
               name="userName"
               type="text"
-              value={selectedDevice?.userName || ''}
+              value={selectedDevice?.userName || ""}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
@@ -78,7 +83,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
 
         <div className="mb-4">
           <label htmlFor="email" className="mb-2 block text-sm font-medium">
-          Kullanıcı E-postası
+            {t("device.form.userEmail")}
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
@@ -86,7 +91,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
                 id="email"
                 name="email"
                 type="text"
-                value={selectedDevice?.email || ''}
+                value={selectedDevice?.email || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
@@ -100,15 +105,19 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="memberShipStartDate" className="mb-2 block text-sm font-medium">
-Üyelik Başlangıç Tarihi          </label>
+          <label
+            htmlFor="memberShipStartDate"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("device.form.memberShipStartDate")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="memberShipStartDate"
                 name="memberShipStartDate"
                 type="text"
-                defaultValue={selectedDevice?.memberShipStartDate || ''}
+                defaultValue={selectedDevice?.memberShipStartDate || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
@@ -122,15 +131,19 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="memberShipEndDate" className="mb-2 block text-sm font-medium">
-Üyelik Bitiş Tarihi          </label>
+          <label
+            htmlFor="memberShipEndDate"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("device.form.memberShipEndDate")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="memberShipEndDate"
                 name="memberShipEndDate"
                 type="text"
-                defaultValue={selectedDevice?.memberShipEndDate || ''}
+                defaultValue={selectedDevice?.memberShipEndDate || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="phoneNumber-error"
                 readOnly
@@ -149,26 +162,30 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string} ) {
               <Image
                 src={selectedDevice.userImageUrl}
                 layout="fill"
-                objectFit="contain"
+                width={28}
+                height={28}
                 alt={`${selectedDevice.userName}'s profile picture`}
               />
             </div>
           ) : (
             <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full">
-              <span className="text-gray-600 text-lg">{selectedDevice?.userName?.charAt(0)}</span>
+              <span className="text-gray-600 text-lg">
+                {selectedDevice?.userName?.charAt(0)}
+              </span>
             </div>
           )}
         </div>
         <div className="mb-4">
           <label htmlFor="petName" className="mb-2 block text-sm font-medium">
-Evcil Hayvan İsmi          </label>
+            {t("device.form.petName")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="petName"
                 name="petName"
                 type="text"
-                defaultValue={selectedDevice?.petName || ''}
+                defaultValue={selectedDevice?.petName || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
@@ -180,17 +197,18 @@ Evcil Hayvan İsmi          </label>
             {/* Error handling if needed */}
           </div>
         </div>
-  
+
         <div className="mb-4">
           <label htmlFor="simNumber" className="mb-2 block text-sm font-medium">
-Sim Numarası        </label>
+            {t("device.form.simNumber")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="simNumber"
                 name="simNumber"
                 type="text"
-                defaultValue={selectedDevice?.simNumber || ''}
+                defaultValue={selectedDevice?.simNumber || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
@@ -204,14 +222,15 @@ Sim Numarası        </label>
         </div>
         <div className="mb-4">
           <label htmlFor="deviceId" className="mb-2 block text-sm font-medium">
-Cihaz İD       </label>
+            {t("device.form.deviceId")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="deviceId"
                 name="deviceId"
                 type="text"
-                defaultValue={selectedDevice?.deviceId || ''}
+                defaultValue={selectedDevice?.deviceId || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
@@ -224,10 +243,12 @@ Cihaz İD       </label>
           </div>
         </div>
 
-
         <div className="mb-4">
-        <label htmlFor="activityState" className="mb-2 block text-sm font-medium">
-          Aktivite Durumu
+          <label
+            htmlFor="activityState"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("device.form.activityState")}
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
@@ -235,8 +256,7 @@ Cihaz İD       </label>
                 id="deviceId"
                 name="deviceId"
                 type="text"
-                defaultValue={activityText
-              }
+                defaultValue={activityText}
                 className={`${activityClass} peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
                 aria-describedby="address-error"
                 readOnly
@@ -248,9 +268,6 @@ Cihaz İD       </label>
             {/* Error handling if needed */}
           </div>
         </div>
-
- 
-
       </div>
 
       {/* Action Buttons */}
@@ -259,12 +276,10 @@ Cihaz İD       </label>
           href="/dashboard/devices"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Kapat
+          {t("close")}{" "}
         </Link>
         {/* <Button type="submit">Edit Device</Button> */}
       </div>
     </form>
   );
 }
-
-

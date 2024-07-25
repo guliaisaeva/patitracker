@@ -1,24 +1,29 @@
-import { InformationCircleIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/lib/store';
-import { deleteDeviceAsync } from '@/lib/features/devices/devicesSlice';
-
-// import { deleteInvoice } from '@/app/lib/actions';
+"use client";
+import {
+  InformationCircleIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import { deleteDeviceAsync } from "@/lib/features/devices/devicesSlice";
+import { useTranslation } from "react-i18next";
 
 export function CreateDevice() {
+  const { t } = useTranslation();
   return (
     <Link
       href="/dashboard/devices/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Cihaz Ekle</span>{' '}
+      <span className="hidden md:block">{t("device.create")}</span>
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
 }
 export function DeviceInfo({ id }: { id: string }) {
-
   return (
     <Link
       href={`/dashboard/devices/${id}/info`}
@@ -29,9 +34,7 @@ export function DeviceInfo({ id }: { id: string }) {
   );
 }
 
-
 export function UpdateDevice({ id }: { id: string }) {
-
   return (
     <Link
       href={`/dashboard/devices/${id}/edit`}
@@ -43,27 +46,26 @@ export function UpdateDevice({ id }: { id: string }) {
 }
 
 export function DeleteDevice({ id }: { id: string }) {
-  // const deleteInvoiceWithId = deleteInvoice.bind(null, id);
   const dispatch = useDispatch<AppDispatch>();
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
+  const { t } = useTranslation();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
-      // Dispatch the delete action asynchronously
-      await dispatch(deleteDeviceAsync(id));
-    alert(`Device with ID ${id} deleted successfully.`);
-      // Optionally, handle success actions like showing a notification or updating state
+      dispatch(deleteDeviceAsync(id));
+      alert(t("device.messages.deleteSuccess"));
     } catch (error) {
-      console.error('Failed to delete invoice:', error);
+      alert(t("device.messages.deleteFailure"));
+
+      console.error("Failed to delete user:", error);
       // Handle errors, such as showing an error message to the user
     }
   };
   return (
     <form onSubmit={handleSubmit}>
       <button className="rounded-md border p-2 hover:bg-gray-100">
-        <span className="sr-only">Delete</span>
+        <span className="sr-only">{t("delete")}</span>
         <TrashIcon className="w-4" />
       </button>
-     </form>
+    </form>
   );
 }

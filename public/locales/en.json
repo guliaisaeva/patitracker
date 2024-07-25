@@ -7,6 +7,9 @@
   "close": "Close",
   "edit": "Edit",
   "noResults": "Unfortunately, there are no results to show.",
+  "load": "Loading...",
+  "search": "Search",
+  "detail": "Detail",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -60,7 +63,7 @@
   "announcement": {
     "create": "Create Announcement",
     "info": "Announcement Info",
-    "update": "Update Announcement",
+    "update": "Edit Announcement",
     "errorLoadingAnnouncement": "Error loading Announcement",
     "announcements": "Announcements",
     "search.placeholder": "Search Announcement...",
@@ -83,6 +86,113 @@
     },
     "submit": {
       "create": "Create Announcement",
+      "creating": "Creating..."
+    },
+    "status": {
+      "read": "Read",
+      "notRead": "Not Read",
+      "status": "Read Status"
+    }
+  },
+
+  "user": {
+    "create": "Create User",
+    "info": "User Info",
+    "update": "Update User",
+    "errorLoadingAnnouncement": "Error loading  User",
+    "users": "Users",
+    "search.placeholder": "Search User...",
+    "userName": "User Name",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+
+    "messages": {
+      "deleteSuccess": "User deleted successfully.",
+      "deleteFailure": "Failed to delete user. Please try again.",
+      "createSuccess": "User added successfully",
+      "createFailure": "Failed to add user",
+      "updateSuccess": "User updated successfully.",
+      "updateFailure": "Failed to update user. Please try again."
+    }
+  },
+
+  "device": {
+    "create": "Create Device",
+    "info": "Device Info",
+    "update": "Edit Device",
+    "errorLoadingDevice": "Error loading Device",
+    "devices": "Devices",
+    "search.placeholder": "Search Device...",
+
+    "messages": {
+      "deleteSuccess": "Device deleted successfully.",
+      "deleteFailure": "Failed to delete device. Please try again.",
+      "createSuccess": "Device(s) added successfully",
+      "createFailure": "Failed to add device",
+      "updateSuccess": "Device(s) updated successfully.",
+      "updateFailure": "Failed to update device. Please try again."
+    },
+    "form": {
+      "deviceNumber": "Device Number",
+      "enterDeviceNumber": "Enter Device Number",
+      "deviceModel": "Device Model",
+      "enterDeviceModel": "Enter Device Model",
+      "saveToSimCard": "Save to Sim Card",
+      "simNumber": "Sim Number",
+      "selectSimNumber": "Select Sim Number",
+
+      "userName": "User Name",
+      "userEmail": "User Email",
+      "memberShipStartDate": "Membership Start Date",
+      "memberShipEndDate": "Membership End Date",
+      "petName": "Pet Name",
+      "deviceId": "Device ID",
+      "activityState": "Activity Status",
+      "faultState": "Fault Status",
+      "active": "Active",
+      "notActive": "Not Active",
+      "faulty": "Defective",
+      "working": "Working"
+    },
+    "submit": {
+      "create": "Create Device",
+      "creating": "Creating..."
+    },
+    "status": {
+      "read": "Read",
+      "notRead": "Not Read",
+      "status": "Read Status"
+    }
+  },
+
+  "faq": {
+    "create": "Create Question",
+    "info": "Question Info",
+    "update": "Edit Question",
+    "errorLoadingFaq": "Error loading Question",
+    "faqs": "Questions",
+    "search.placeholder": "Search Question...",
+
+    "messages": {
+      "deleteSuccess": "Question deleted successfully.",
+      "deleteFailure": "Failed to delete question. Please try again.",
+      "createSuccess": "Question(s) added successfully",
+      "createFailure": "Failed to add question",
+      "updateSuccess": "Question(s) updated successfully.",
+      "updateFailure": "Failed to update question. Please try again."
+    },
+    "form": {
+      "title": "Question Title ",
+      "detail": "Question Details",
+      "enterTitleEn": "Enter English Question Title",
+      "enterDetailEn": "Enter English Question Detail",
+      "enterTitleTr": "Enter Turkish Question Title",
+      "enterDetailTr": "Enter Turkish Question Detail"
+    },
+    "submit": {
+      "create": "Create Question",
       "creating": "Creating..."
     },
     "status": {

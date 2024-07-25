@@ -1,27 +1,24 @@
-import Form from '@/app/components/managers/edit-form';
-import Breadcrumbs from '@/app/components/managers/breadcrumbs';
-// import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
+import Form from "@/app/components/devices/edit-form";
+import Breadcrumbs from "@/app/components/managers/breadcrumbs";
+import { useTranslation } from "react-i18next";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  // const [invoice, customers] = await Promise.all([
-  //   fetchInvoiceById(id),
-  //   fetchCustomers(),
-  // ]);
+  const { t } = useTranslation();
 
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Cihazlar', href: '/dashboard/devices' },
+          { label: t("device.devices"), href: "/dashboard/devices" },
           {
-            label: 'Edit Devices',
+            label: t("device.update"),
             href: `/dashboard/devices/${id}/edit`,
             active: true,
           },
         ]}
       />
-      {/* <Form invoice={invoice} customers={customers} /> */}
+      <Form deviceId={id} />
     </main>
   );
 }

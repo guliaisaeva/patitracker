@@ -5,9 +5,9 @@ import { DeleteDevice, DeviceInfo } from "@/app/components/devices/buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import NoResultsMessage from "../noResultMessage";
-
 import { DeleteQuestion, QuestionInfo, UpdateQuestion } from "./buttons";
 import { getAllQuestions, selectQuestions } from "@/lib/features/faq/faqSlice";
+import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -18,20 +18,19 @@ export default function QuestionTable({
   query: string;
   currentPage: number;
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const questions = useSelector(selectQuestions);
-console.log(questions)
 
   useEffect(() => {
     dispatch(getAllQuestions());
   }, [dispatch]);
 
-
   // Filter devices based on search query
   const filteredAnnouncement = questions?.filter(
     (question) =>
       question?.title?.toLowerCase().includes(query.toLowerCase()) ||
-    question?.detail?.toLowerCase().includes(query.toLowerCase()) 
+      question?.detail?.toLowerCase().includes(query.toLowerCase())
   );
 
   // Calculate pagination offsets
@@ -42,8 +41,6 @@ console.log(questions)
   // if (status === "loading") {
   //   return <div>Loading devices...</div>;
   // }
-
-
 
   if (!questionsToShow || questionsToShow?.length === 0) {
     return <NoResultsMessage />;
@@ -68,7 +65,6 @@ console.log(questions)
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
-               
                   <div className="flex justify-end gap-2">
                     <DeviceInfo id={String(question.id)} />
                     <DeleteDevice id={String(question.id)} />
@@ -81,14 +77,15 @@ console.log(questions)
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                   İD
+                  İD
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-Soru Başlığı                </th>
+                  {t("announcement.form.title")}
+                </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-Soru Detayları                </th>
+                  {t("announcement.form.detail")}
+                </th>
 
-                
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -111,9 +108,7 @@ Soru Detayları                </th>
                   <td className="whitespace-nowrap px-3 py-3">
                     {question.detail}
                   </td>
-       
-              
-                 
+
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <QuestionInfo id={String(question.id)} />

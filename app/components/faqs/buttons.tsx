@@ -6,16 +6,18 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/store";
+import { AppDispatch } from "@/lib/store";
 import { deleteQuestion } from "@/lib/features/faq/faqSlice";
+import { useTranslation } from "react-i18next";
 
 export function CreateQuestion() {
+  const { t } = useTranslation();
   return (
     <Link
       href="/dashboard/faqs/create"
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
-      <span className="hidden md:block">Yeni Soru Ekle</span>{" "}
+      <span className="hidden md:block">{t("faq.create")}</span>{" "}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
@@ -43,22 +45,23 @@ export function UpdateQuestion({ id }: { id: string }) {
 }
 
 export function DeleteQuestion({ id }: { id: number }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await dispatch(deleteQuestion(id)).unwrap();
-      alert("Question deleted successfully.");
+      dispatch(deleteQuestion(id)).unwrap();
+      alert(t("faq.messages.deleteSuccess"));
     } catch (error) {
-      alert("Failed to delete Question. Please try again.");
+      alert(t("faq.messages.deleteFailure"));
       console.error("Delete Question Error:", error);
     }
   };
   return (
     <form onSubmit={handleSubmit}>
       <button className="rounded-md border p-2 hover:bg-gray-100">
-        <span className="sr-only">Delete</span>
+        <span className="sr-only">{t("delete")}</span>
         <TrashIcon className="w-4" />
       </button>
     </form>
