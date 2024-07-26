@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/lib/features/login/loginSlice";
 import { useTranslation } from "react-i18next";
 import logo from "@/public/logo/patitracker_logo.png";
+import Footer from "../footer";
 
 // import { signOut } from '@/auth';
 
@@ -56,6 +57,7 @@ export default function SideNav() {
           <div className="hidden md:block">{t("sign.out")}</div>
         </button>
         {/* </form> */}
+        {/* <Footer /> */}
       </div>
     </div>
   );

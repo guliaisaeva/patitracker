@@ -2,6 +2,7 @@
 import SideNav from "@/app/components/dashboard/sidenav";
 import Profile from "../components/profile";
 import LanguageSwitcher from "../components/languageSwitcher";
+import Footer from "../components/footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,8 +15,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <LanguageSwitcher />
           <Profile />
         </div>
-
-        {children}
+        <main>{children}</main>
+        <Footer />
       </div>
     </div>
   );
