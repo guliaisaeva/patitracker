@@ -1,18 +1,22 @@
-
-"use client"
+"use client";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import Image from "next/image";
 import {
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { Button } from '@/app/components/button';
-import Image from 'next/image';
-import { selectManagerById ,getManagerByIdAsync,getAllCitiesAsync,selectCities, selectDistricts, getAllDistrictsAsync} from '@/lib/features/managers/managersSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/lib/store';
-import { useEffect, useState } from 'react';
+  selectManagerById,
+  getManagerByIdAsync,
+  getAllCitiesAsync,
+  selectCities,
+  selectDistricts,
+  getAllDistrictsAsync,
+} from "@/lib/features/managers/managersSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
-
+export default function ManagersInfoForm({ managerId }: { managerId: string }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const selectedManagerById = useSelector(selectManagerById);
   const cities = useSelector(selectCities);
@@ -25,14 +29,12 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
   );
 
   useEffect(() => {
-    if ({managerId}) {
+    if ({ managerId }) {
       dispatch(getManagerByIdAsync(managerId));
     }
   }, [dispatch, managerId]);
   useEffect(() => {
- 
-      dispatch(getAllCitiesAsync());
-  
+    dispatch(getAllCitiesAsync());
   }, [dispatch]);
 
   useEffect(() => {
@@ -42,19 +44,17 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
   }, [dispatch, selectedCityId]);
 
   if (!selectedManagerById) {
-    return <div>Loading...</div>; 
+    return <div>{t("load")}</div>;
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here if needed
   };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = parseInt(e.target.value);
     setSelectedCityId(cityId);
-    setSelectedDistrictId(null); 
+    setSelectedDistrictId(null);
   };
-
 
   const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const districtId = parseInt(e.target.value);
@@ -63,35 +63,36 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Display Profile Image */}
         <div className="mb-4 flex items-center justify-center">
           {selectedManagerById?.profileImageUrl ? (
             <div className="relative w-20 h-20 rounded-full  overflow-hidden">
               <Image
                 src={selectedManagerById.profileImageUrl}
-                layout="fill"
-                objectFit="contain"
+                width={38}
+                height={38}
                 alt={`${selectedManagerById.firstName}'s profile picture`}
+                style={{ width: "38px", height: "38px", borderRadius: "50%" }}
               />
             </div>
           ) : (
             <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full">
-              <span className="text-gray-600 text-lg">{selectedManagerById?.firstName?.charAt(0)}</span>
+              <span className="text-gray-600 text-lg">
+                {selectedManagerById?.firstName?.charAt(0)}
+              </span>
             </div>
           )}
         </div>
 
-
         <div className="mb-4">
           <label htmlFor="firstName" className="mb-2 block text-sm font-medium">
-            Yönetici İsmi
+            {t("manager.form.manager.name")}
           </label>
           <div className="relative">
             <input
               id="firstName"
               name="firstName"
               type="text"
-              value={selectedManagerById?.firstName || ''}
+              value={selectedManagerById?.firstName || ""}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
@@ -103,15 +104,15 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="firstName" className="mb-2 block text-sm font-medium">
-            Yönetici İsmi
+          <label htmlFor="lastName" className="mb-2 block text-sm font-medium">
+            {t("manager.form.manager.last.name")}
           </label>
           <div className="relative">
             <input
               id="lastName"
               name="lastName"
               type="text"
-              value={selectedManagerById?.lastName || ''}
+              value={selectedManagerById?.lastName || ""}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
@@ -124,7 +125,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="mb-2 block text-sm font-medium">
-          Yönetici E-postası
+            {t("manager.form.manager.email")}
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
@@ -132,7 +133,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
                 id="email"
                 name="email"
                 type="text"
-                value={selectedManagerById?.email || ''}
+                value={selectedManagerById?.email || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
@@ -146,15 +147,19 @@ export default function ManagersInfoForm({ managerId }: { managerId: string} ) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="phoneNumber" className="mb-2 block text-sm font-medium">
-Yötetici Telefon Numarası         </label>
+          <label
+            htmlFor="phoneNumber"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("manager.form.manager.phone.number")}
+          </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
                 id="phoneNumber"
                 name="phoneNumber"
                 type="text"
-                defaultValue={selectedManagerById?.phoneNumber || ''}
+                defaultValue={selectedManagerById?.phoneNumber || ""}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
@@ -167,25 +172,29 @@ Yötetici Telefon Numarası         </label>
           </div>
         </div>
 
-        <label htmlFor="userAddressModel" className="mb-2 block text-sm font-medium justify-center">
-        Yönetici Adres Bilgileri            </label>
-    
+        <label
+          htmlFor="userAddressModel"
+          className="mb-2 block text-sm font-medium justify-center"
+        >
+          {t("manager.form.manager.address.information")}
+        </label>
+
         <div className="mb-4">
           <label htmlFor="userCity" className="mb-2 block text-sm font-medium">
-İl      </label>
+            {t("manager.form.city")}
+          </label>
           <div className="relative mt-2 rounded-md">
-    
             <select
-           id="userCity"
+              id="userCity"
               name="userCity"
-              value={selectedCityId || ''}
+              value={selectedCityId || ""}
               onChange={handleCityChange}
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
-              <option value="">İl Seçin</option>
+              <option value=""> {t("manager.form.select.city")}</option>
               {cities?.map((city) => (
                 <option key={city?.cityId} value={city?.cityId}>
-                  {city.cityName} 
+                  {city.cityName}
                 </option>
               ))}
             </select>
@@ -193,18 +202,21 @@ Yötetici Telefon Numarası         </label>
           <div id="phoneNumber-error" aria-live="polite" aria-atomic="true">
             {/* Error handling if needed */}
           </div>
-          <label htmlFor="districtId" className="mb-2 block text-sm font-medium">
-İlçe      </label>
+          <label
+            htmlFor="districtId"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("manager.form.district")}
+          </label>
           <div className="relative mt-2 rounded-md">
-    
             <select
-         id="userDistrict"
-         name="userDistrict"
-         value={selectedDistrictId || ''}
-           onChange={handleDistrictChange}
+              id="userDistrict"
+              name="userDistrict"
+              value={selectedDistrictId || ""}
+              onChange={handleDistrictChange}
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
-         <option value="">İlçe Seçin</option>
+              <option value=""> {t("manager.form.select.district")}</option>
               {districts?.map((district) => (
                 <option key={district?.districtId} value={district?.districtId}>
                   {district.districtName}
@@ -216,25 +228,18 @@ Yötetici Telefon Numarası         </label>
             {/* Error handling if needed */}
           </div>
         </div>
-        
-
- 
- 
-
       </div>
 
       {/* Action Buttons */}
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/devices"
+          href="/dashboard/managers"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Kapat
+          {t("close")}{" "}
         </Link>
         {/* <Button type="submit">Edit Device</Button> */}
       </div>
     </form>
   );
 }
-
-

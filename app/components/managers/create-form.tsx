@@ -1,153 +1,48 @@
-// 'use client';
+"use client";
 
-// import { CustomerField } from '@/lib/definitions';
-// import Link from 'next/link';
-// import {
-//   CheckIcon,
-//   ClockIcon,
-//   CurrencyDollarIcon,
-//   UserCircleIcon,
-// } from '@heroicons/react/24/outline';
-// import { Button } from '@/app/components/button';
-// // import { createInvoice } from '@/app/lib/actions';
-// import { useFormState } from 'react-dom';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addDeviceAsync } from "@/lib/features/devices/devicesSlice";
+import { AppDispatch } from "@/lib/store";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+interface UserAddress {
+  cityId: string;
+  cityName: string;
+  districtId: string;
+  districtName: string;
+  description: string;
+  direction: string;
+  zipCode: string;
+  countryPhoneCodeId: number;
+  phoneCode: string;
+  phoneNumber: string;
+}
 
-// export default function Form() {
-//   const initialState = { message: null, errors: {} };
-//   // const [state, dispatch] = useFormState(createInvoice, initialState);
-//   // console.log(state);
-//   return (
-//     <form action={"dispatch"}>
-//       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-//         {/* Device Number */}
-//         <div className="mb-4">
-//           <label htmlFor="deviceNumber" className="mb-2 block text-sm font-medium">
-//             Device Number
-//           </label>
-//           <input
-//             type="text"
-//             id="deviceNumber"
-//             name="deviceNumber"
-//             // value={deviceData.deviceNumber}
-//             // onChange={handleChange}
-//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-//             required
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label htmlFor="deviceModel" className="mb-2 block text-sm font-medium">
-// Device Model          </label>
-//           <div className="relative mt-2 rounded-md">
-//             <div className="relative">
-//               <input
-//                 id="deviceModel"
-//                 name="deviceModel"
-//                 type="text"
-//                 placeholder="Enter Device Model"
-//                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-//                 aria-describedby="amount-error"
-//               />
-//             </div>
-//           </div>
-
-//           <div id="amount-error" aria-live="polite" aria-atomic="true">
-//             {/* {state.errors?.amount &&
-//               state.errors.amount.map((error: string) => (
-//                 <p className="mt-2 text-sm text-red-500" key={error}>
-//                   {error}
-//                 </p>
-//               ))} */}
-//           </div>
-//         </div>
-
-//         {/* Invoice Status */}
-//         <fieldset>
-//           <legend className="mb-2 block text-sm font-medium">
-//           Is Device To Sim          </legend>
-//           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-//             <div className="flex gap-4">
-//               <div className="flex items-center">
-//                 <input
-//                   type="checkbox"
-//                   id="isDeviceToSim"
-//                   name="isDeviceToSim"
-//                   // checked={deviceData.isDeviceToSim}
-//                   // onChange={handleChange}
-//                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-//                   aria-describedby="status-error"
-//                 />
-//                 <label
-//                   htmlFor="pending"
-//                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-//                 >
-//                   Pending <ClockIcon className="h-4 w-4" />
-//                 </label>
-//               </div>
-//               <div className="flex items-center">
-//                 <input
-//                   id="paid"
-//                   name="status"
-//                   type="radio"
-//                   value="paid"
-//                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-//                   aria-describedby="status-error"
-//                 />
-//                 <label
-//                   htmlFor="paid"
-//                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
-//                 >
-//                   Paid <CheckIcon className="h-4 w-4" />
-//                 </label>
-//               </div>
-//             </div>
-//           </div>
-//           <div id="status-error" aria-live="polite" aria-atomic="true">
-//             {/* {state.errors?.status &&
-//               state.errors.status.map((error: string) => (
-//                 <p className="mt-2 text-sm text-red-500" key={error}>
-//                   {error}
-//                 </p>
-//               ))} */}
-//           </div>
-//         </fieldset>
-//       </div>
-//       <div className="mt-6 flex justify-end gap-4">
-//         <Link
-//           href="/dashboard/invoices"
-//           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-//         >
-//           Cancel
-//         </Link>
-//         <Button type="submit">Create Invoice</Button>
-//       </div>
-//     </form>
-//   );
-// }
-
-
-
-
-
-// Form.tsx
-
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addDeviceAsync } from '@/lib/features/devices/devicesSlice';
-interface DeviceToAdd {
-  deviceNumber: string;
-  deviceModel: string;
-  isDeviceToSim: boolean;
-  simCardId: string;
+interface User {
+  firstName: string;
+  lastName: string;
+  userAddress: UserAddress;
 }
 
 export default function Form() {
-  const dispatch = useDispatch();
-  const [deviceData, setDeviceData] = useState<DeviceToAdd>({
-    deviceNumber: '',
-    deviceModel: '',
-    isDeviceToSim: false,
-    simCardId: '',
+  const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const [userData, setUserData] = useState<User>({
+    firstName: "",
+    lastName: "",
+    userAddress: {
+      cityId: "",
+      cityName: "",
+      districtId: "",
+      districtName: "",
+      description: "",
+      direction: "",
+      zipCode: "",
+      countryPhoneCodeId: 0,
+      phoneCode: "",
+      phoneNumber: "",
+    },
   });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -156,92 +51,272 @@ export default function Form() {
     try {
       // await dispatch(addDeviceAsync(deviceData));
       // Optionally, handle success behavior (e.g., show a success message)
-      console.log('Device added successfully!');
+      console.log("Device added successfully!");
       // Reset form or clear input fields
-      setDeviceData({
-        deviceNumber: '',
-        deviceModel: '',
-        isDeviceToSim: false,
-        simCardId: '',
+      setUserData({
+        firstName: "",
+        lastName: "",
+        userAddress: {
+          cityId: "",
+          cityName: "",
+          districtId: "",
+          districtName: "",
+          description: "",
+          direction: "",
+          zipCode: "",
+          countryPhoneCodeId: 0,
+          phoneCode: "",
+          phoneNumber: "",
+        },
       });
     } catch (error) {
-      console.error('Failed to add device:', error);
+      console.error("Failed to add device:", error);
       // Handle error state or display error message
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = event.target;
-    setDeviceData((prevData:any) => ({
+  const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setUserData((prevData: any) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
   };
 
+  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setUserData((prevData: any) => ({
+      ...prevData,
+      userAddress: {
+        ...prevData.userAddress,
+        [name]: value,
+      },
+    }));
+  };
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Device Number */}
         <div className="mb-4">
-          <label htmlFor="deviceNumber" className="mb-2 block text-sm font-medium">
-            Device Number
+          <label htmlFor="firstName" className="mb-2 block text-sm font-medium">
+            First Name
           </label>
           <input
             type="text"
-            id="deviceNumber"
-            name="deviceNumber"
-            value={deviceData.deviceNumber}
-            onChange={handleChange}
+            id="firstName"
+            name="firstName"
+            value={userData.firstName}
+            onChange={handleUserChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
           />
         </div>
 
-        {/* Device Model */}
         <div className="mb-4">
-          <label htmlFor="deviceModel" className="mb-2 block text-sm font-medium">
-            Device Model
+          <label htmlFor="lastName" className="mb-2 block text-sm font-medium">
+            Last Name
           </label>
           <input
-            id="deviceModel"
-            name="deviceModel"
             type="text"
-            value={deviceData.deviceModel}
-            onChange={handleChange}
+            id="lastName"
+            name="lastName"
+            value={userData.lastName}
+            onChange={handleUserChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="Enter Device Model"
             required
           />
         </div>
 
-        {/* Is Device To Sim */}
-        <fieldset className="mb-4">
-          <legend className="block text-sm font-medium">Is Device To Sim</legend>
-          <div className="flex gap-4 mt-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="isDeviceToSim"
-                name="isDeviceToSim"
-                checked={deviceData.isDeviceToSim}
-                onChange={handleChange}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
-              />
-              <label htmlFor="isDeviceToSim" className="ml-2 cursor-pointer text-sm">
-                Device to SIM
-              </label>
-            </div>
+        <h3 className="text-lg font-medium mb-2">Address</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4">
+            <label htmlFor="cityId" className="mb-2 block text-sm font-medium">
+              City ID
+            </label>
+            <input
+              type="text"
+              id="cityId"
+              name="cityId"
+              value={userData.userAddress.cityId}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
           </div>
-        </fieldset>
 
-        {/* Submit Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Create Device
-          </button>
+          <div className="mb-4">
+            <label
+              htmlFor="cityName"
+              className="mb-2 block text-sm font-medium"
+            >
+              City Name
+            </label>
+            <input
+              type="text"
+              id="cityName"
+              name="cityName"
+              value={userData.userAddress.cityName}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="districtId"
+              className="mb-2 block text-sm font-medium"
+            >
+              District ID
+            </label>
+            <input
+              type="text"
+              id="districtId"
+              name="districtId"
+              value={userData.userAddress.districtId}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="districtName"
+              className="mb-2 block text-sm font-medium"
+            >
+              District Name
+            </label>
+            <input
+              type="text"
+              id="districtName"
+              name="districtName"
+              value={userData.userAddress.districtName}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4 col-span-2">
+            <label
+              htmlFor="description"
+              className="mb-2 block text-sm font-medium"
+            >
+              Description
+            </label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={userData.userAddress.description}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4 col-span-2">
+            <label
+              htmlFor="direction"
+              className="mb-2 block text-sm font-medium"
+            >
+              Direction
+            </label>
+            <input
+              type="text"
+              id="direction"
+              name="direction"
+              value={userData.userAddress.direction}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="zipCode" className="mb-2 block text-sm font-medium">
+              Zip Code
+            </label>
+            <input
+              type="text"
+              id="zipCode"
+              name="zipCode"
+              value={userData.userAddress.zipCode}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="countryPhoneCodeId"
+              className="mb-2 block text-sm font-medium"
+            >
+              Country Phone Code ID
+            </label>
+            <input
+              type="number"
+              id="countryPhoneCodeId"
+              name="countryPhoneCodeId"
+              value={userData.userAddress.countryPhoneCodeId}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="phoneCode"
+              className="mb-2 block text-sm font-medium"
+            >
+              Phone Code
+            </label>
+            <input
+              type="text"
+              id="phoneCode"
+              name="phoneCode"
+              value={userData.userAddress.phoneCode}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="phoneNumber"
+              className="mb-2 block text-sm font-medium"
+            >
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={userData.userAddress.phoneNumber}
+              onChange={handleAddressChange}
+              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="mt-6 flex justify-end gap-4">
+            <Link
+              href="/dashboard/faqs"
+              className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+            >
+              {t("cancel")}
+            </Link>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Create Device
+            </button>
+          </div>
         </div>
       </div>
     </form>

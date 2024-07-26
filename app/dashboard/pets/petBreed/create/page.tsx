@@ -1,16 +1,18 @@
-import Form from '@/app/components/pets/petBreed/create-form';
-import Breadcrumbs from '@/app/components/managers/breadcrumbs';
+"use client";
+import Form from "@/app/components/pets/petBreed/create-form";
+import Breadcrumbs from "@/app/components/managers/breadcrumbs";
+import { useTranslation } from "react-i18next";
 
-export default async function Page() {
-
+export default function Page() {
+  const { t } = useTranslation();
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Evcil Hayvan Cinsi ', href: '/dashboard/pets/petBreed' },
+          { label: t("petBreed.petBreeds"), href: "/dashboard/pets/petBreed" },
           {
-            label: 'Evcil Hayvan Cinsi Ekle',
-            href: '/dashboard/pets/petBreed/create',
+            label: t("petBreed.create"),
+            href: "/dashboard/pets/petBreed/create",
             active: true,
           },
         ]}

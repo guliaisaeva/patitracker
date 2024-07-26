@@ -1,119 +1,24 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   getAllPetBreeds,
-//   updatePetBreed,
-//   selectPetBreeds,
-// } from "@/lib/features/pet/petBreedSlice";
-// import { AppDispatch } from "@/lib/store";
-// import { getAllPetTypes, selectPetTypes } from "@/lib/features/pet/petTypesSlice";
-
-// export default function UpdateBreedForm({ PetBreedId }: { PetBreedId: number }) {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const petTypes = useSelector(selectPetTypes);
-
-//   const [petBreedData, setPetBreedData] = useState({
-//     breedId: 0,
-//     breedName: '',
-//     petTypeId: 0,
-//     languageId: 1, // Turkish language ID
-//   });
-
-//   useEffect(() => {
-//     dispatch(getAllPetTypes());
-//   }, [dispatch]);
-
-//   const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-//     const typeId = Number(event.target.value);
-//     setPetBreedData(prevData => ({
-//       ...prevData,
-//       petTypeId: typeId,
-//     }));
-//   };
-
-//   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = event.target;
-//     setPetBreedData(prevData => ({
-//       ...prevData,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-
-//     try {
-//       await dispatch(updatePetBreed(petBreedData));
-//       alert('Pet breed updated successfully');
-//     } catch (err) {
-//       console.error('Failed to update pet breed:', err);
-//       alert('Failed to update pet breed');
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-//         <div className="flex mt-6 gap-4">
-//           <select
-//             value={petBreedData.petTypeId !== 0 ? petBreedData.petTypeId.toString() : ''}
-//             onChange={handlePetTypeChange}
-//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-//           >
-//             <option value="">Select Pet Type</option>
-//             {petTypes.map((petType) => (
-//               <option key={petType.typeId} value={petType.typeId.toString()}>
-//                 {petType.typeName}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
-//         <div className="mt-4">
-//           <input
-//             type="text"
-//             name="breedName"
-//             value={petBreedData.breedName}
-//             onChange={handleChange}
-//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-//             placeholder="Enter Breed Name"
-//           />
-//         </div>
-//         <button
-//           type="submit"
-//           className="mt-4 w-full rounded-md bg-blue-500 py-2 px-4 text-white hover:bg-blue-600"
-//         >
-//           Update Pet Breed
-//         </button>
-//       </div>
-//     </form>
-//   );
-// }
-
-
-
 "use client";
-import { PetsOutlined, LanguageOutlined } from '@mui/icons-material';
-import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '@/lib/store';
-import { useEffect, useState } from 'react';
+import { PetsOutlined, LanguageOutlined } from "@mui/icons-material";
+import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   fetchLanguages,
   getAllPetTypes,
   selectLanguages,
-  selectPetDetail,
   selectPetTypes,
 } from "@/lib/features/pet/petTypesSlice";
 import {
   getPetBreedDetail,
   selectBreedDetail,
-  updatePetBreed,
 } from "@/lib/features/pet/petBreedSlice";
-import { Button } from '../../button';
+import { useTranslation } from "react-i18next";
 
 export default function InfoBreedForm({ breedId }: { breedId: number }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const petTypes = useSelector(selectPetTypes);
@@ -122,7 +27,7 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
   const selectedBreedDetail = useSelector(selectBreedDetail);
   const [formState, setFormState] = useState({
     breedId: 0,
-    breedName: '',
+    breedName: "",
     petTypeId: 0,
     languageId: 1,
   });
@@ -139,7 +44,8 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
   useEffect(() => {
     if (selectedBreedDetail) {
       setFormState({
-        breedId: selectedBreedDetail.breedId || 0,        breedName: selectedBreedDetail.breedName,
+        breedId: selectedBreedDetail.breedId || 0,
+        breedName: selectedBreedDetail.breedName,
         petTypeId: selectedBreedDetail.petTypeId,
         languageId: selectedBreedDetail.languageId,
       });
@@ -148,20 +54,20 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
- 
   };
 
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormState(prevState => ({
+    setFormState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
   if (!formState.breedId) {
-    return <div>Loading...</div>;
+    return <div>{t("load")}</div>;
   }
 
   return (
@@ -169,7 +75,7 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4">
           <label htmlFor="breedName" className="mb-2 block text-sm font-medium">
-            Evcil Hayvan Tür İsmi
+            {t("petType.form.petTypeTr")}{" "}
           </label>
           <div className="relative">
             <input
@@ -179,7 +85,8 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
               value={formState.breedName}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="breedName-error"
-              readOnly            />
+              readOnly
+            />
             <PetsOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="breedName-error" aria-live="polite" aria-atomic="true">
@@ -188,11 +95,9 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
         </div>
         <div className="mb-4">
           <label htmlFor="petTypeId" className="mb-2 block text-sm font-medium">
-            Evcil Hayvan Türü
+            {t("petType.petTypes")}{" "}
           </label>
           <div className="relative mt-2 rounded-md">
-           
-    
             <select
               id="petTypeId"
               name="petTypeId"
@@ -200,13 +105,10 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
               onChange={handleInputChange}
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               disabled
->
-              <option value="">Tür Seçin</option>
+            >
+              <option value="">{t("petBreed.select.petType")}</option>
               {petTypes.map((petType) => (
-                <option
-                  key={petType.typeId}
-                  value={petType.typeId}
-                >
+                <option key={petType.typeId} value={petType.typeId}>
                   {petType.typeName}
                 </option>
               ))}
@@ -217,8 +119,11 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="languageId" className="mb-2 block text-sm font-medium">
-            Dil
+          <label
+            htmlFor="languageId"
+            className="mb-2 block text-sm font-medium"
+          >
+            {t("petBreed.form.language")}{" "}
           </label>
           <div className="relative mt-2 rounded-md">
             <select
@@ -228,17 +133,16 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
               onChange={handleInputChange}
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               disabled
-
             >
-               <option value="">Dil Seçin</option>
-                {languages?.map((language) => (
-                  <option
-                    key={language?.languageId}
-                    value={language.languageId.toString()}
-                  >
-                    {language.languageName}
-                  </option>
-                           ))}
+              <option value="">Dil Seçin</option>
+              {languages?.map((language) => (
+                <option
+                  key={language?.languageId}
+                  value={language.languageId.toString()}
+                >
+                  {language.languageName}
+                </option>
+              ))}
             </select>
           </div>
           <div id="languageId-error" aria-live="polite" aria-atomic="true">
@@ -252,7 +156,7 @@ export default function InfoBreedForm({ breedId }: { breedId: number }) {
           href="/dashboard/pets/petBreed"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Kapat
+          {t("close")}
         </Link>
       </div>
     </form>

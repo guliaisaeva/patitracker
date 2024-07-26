@@ -200,5 +200,100 @@
       "notRead": "Not Read",
       "status": "Read Status"
     }
+  },
+  "manager": {
+    "create": "Create Manager",
+    "info": "Manager Info",
+    "update": "Edit Manager",
+    "errorLoadingManager": "Error loading Manager",
+    "managers": "Managers",
+    "search.placeholder": "Search Manager...",
+
+    "messages": {
+      "deleteSuccess": "Manager deleted successfully.",
+      "deleteFailure": "Failed to delete manager. Please try again.",
+      "createSuccess": "Manager added successfully",
+      "createFailure": "Failed to add manager",
+      "updateSuccess": "Manager updated successfully.",
+      "updateFailure": "Failed to update manager. Please try again."
+    },
+    "form": {
+      "manager.name": "Manager Name",
+      "manager.last.name": "Manager Last Name",
+      "manager.email": "Manager Email",
+      "manager.phone.number": "Manager Phone Number",
+      "manager.address.information": "Manager Address Information",
+      "city": "City",
+      "select.city": "Select City",
+      "district": "District",
+      "select.district": "Select District"
+    },
+    "submit": {
+      "create": "Create Manager",
+      "creating": "Creating..."
+    }
+  },
+
+  "petType": {
+    "create": "Create Pet Type",
+    "info": "Pet Type Info",
+    "update": "Edit Pet Type",
+    "errorLoadingPetType": "Error loading Pet Type",
+    "petTypes": "Pet Types",
+    "search.placeholder": "Search Pet Type...",
+
+    "messages": {
+      "deleteSuccess": "Pet Type deleted successfully.",
+      "deleteFailure": "Failed to delete pet type. Please try again.",
+      "createSuccess": "Pet Type(s) added successfully",
+      "createFailure": "Failed to add pet type",
+      "updateSuccess": "Pet Type(s) updated successfully.",
+      "updateFailure": "Failed to update Pet Type. Please try again."
+    },
+    "form": {
+      "newPetType": "New Pet Type",
+      "enterPetTypeEn": "Enter Pet Type in English",
+      "enterPetTypeTr": "Enter Pet Type in Turkish",
+      "petTypeTr": "Pet Type Name",
+      "petTypeEn": "Pet Type Name (English)",
+      "typeId": "Pet Type ID",
+      "language": "Language"
+    },
+    "submit": {
+      "create": "Create Pet Type",
+      "creating": "Creating..."
+    }
+  },
+
+  "petBreed": {
+    "create": "Create Pet Breed",
+    "info": "Pet Breed Info",
+    "update": "Edit Pet Breed",
+    "errorLoadingPetBreed": "Error loading Pet Breed",
+    "petBreeds": "Pet Breeds",
+    "search.placeholder": "Search Pet Breed...",
+    "select.petType": "Select Pet Type",
+
+    "messages": {
+      "deleteSuccess": "Pet Breed deleted successfully.",
+      "deleteFailure": "Failed to delete pet Breed. Please try again.",
+      "createSuccess": "Pet Breed(s) added successfully",
+      "createFailure": "Failed to add pet Breed",
+      "updateSuccess": "Pet Breed(s) updated successfully.",
+      "updateFailure": "Failed to update Pet Breed. Please try again."
+    },
+    "form": {
+      "newPetType": "New Pet Breed",
+      "enterPetTypeEn": "Enter Pet Breed in English",
+      "enterPetTypeTr": "Enter Pet Breed in Turkish",
+      "petTypeTr": "Pet Breed Name",
+      "petTypeEn": "Pet Breed Name (English)",
+      "typeId": "Pet Breed ID",
+      "language": "Language"
+    },
+    "submit": {
+      "create": "Create Pet Breed",
+      "creating": "Creating..."
+    }
   }
 }

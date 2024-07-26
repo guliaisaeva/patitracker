@@ -1,166 +1,7 @@
-
-// "use client";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   addDeviceAsync,
-//   selectDevicesStatus,
-//   selectDevicesError,
-//   DeviceToAdd,
-// } from "@/lib/features/devices/addDeviceSlice";
-// import { AppDispatch } from "@/lib/store";
-// import { useRouter } from "next/navigation";
-// import { addPetType, AddPetType, fetchLanguages, selectLanguages } from "@/lib/features/pet/petTypesSlice";
-// import Image from "next/image";
-
-// export default function Form() {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const router = useRouter();
-//   const status = useSelector(selectDevicesStatus);
-//   const error = useSelector(selectDevicesError);
-//   const languages = useSelector(selectLanguages);
-
-
-//   const [petTypeData, setPetTypeData] = useState<AddPetType>({
-//     petType: '',
-//     languageId: 1,
-//   });
-//   const [petTypeDataEn, setPetTypeDataEn] = useState<AddPetType>({
-//     petType: '',
-//     languageId: 2,
-//   });
-
-//   // useEffect(() => {
-//   //   if()
-//   //   dispatch(fetchLanguages());
-//   // }, [dispatch]);
-
-//   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-
-//     try {
-//       if (petTypeData.petType && petTypeDataEn.petType) {
-//         // Handle case where both Turkish and English inputs are filled
-//         await Promise.all([
-//           dispatch(addPetType(petTypeData)),
-//           dispatch(addPetType(petTypeDataEn)),
-//         ]);
-//       } else if (petTypeData.petType) {
-//         // Only Turkish input is filled
-//         await dispatch(addPetType(petTypeData));
-//       } else if (petTypeDataEn.petType) {
-//         // Only English input is filled
-//         await dispatch(addPetType(petTypeDataEn));
-//       } else {
-//         // Handle case where neither input is filled (optional)
-//         alert("Please fill at least one pet type.");
-//         return;
-//       }
-
-//       // Reset the form inputs after successful submission
-//       setPetTypeData({
-//         petType: '',
-//         languageId: 1,
-//       });
-//       setPetTypeDataEn({
-//         petType: '',
-//         languageId: 2,
-//       });
-
-//       alert('Pet types added successfully');
-//       router.replace('/dashboard/pets/petType');
-
-//     } catch (err) {
-//       console.error('Failed to add pet types:', err);
-//       alert('Failed to add pet types');
-//     }
-//   };
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     if (name === 'petType_tr') {
-//       setPetTypeData((prevData) => ({
-//         ...prevData,
-//         petType: value,
-//       }));
-//     } else if (name === 'petType_en') {
-//       setPetTypeDataEn((prevData) => ({
-//         ...prevData,
-//         petType: value,
-//       }));
-//     }
-//   };
-
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-//         <div className="mb-4">
-//           <label htmlFor="petType_tr" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
-//           <Image
-//           src="/turkey.png" 
-//           alt="Turkish Flag"
-//           width={36}
-//           height={36}
-//           objectFit="cover"      
-//            className="rounded-full"
-//         />   Yeni Evcil Hayvan Türü        </label>
-         
-//           <input
-//             type="text"
-//             id="petType_tr"
-//             name="petType_tr"
-//             value={petTypeData.petType}
-//             onChange={handleChange}
-//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-//             placeholder="Örn:Köpek"
-//           />
-//          </div>
-      
-//          <div className="mb-4">
-//           <label htmlFor="petType_en" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
-//           <Image
-//           src="/uk.png" 
-//           alt="Turkish Flag"
-//           width={36}
-//           height={36}
-//           objectFit="cover"      
-//            className="rounded-full"
-//         />   New Pet Type        </label>
-         
-//           <input
-//             type="text"
-//             id="petType_en"
-//             name="petType_en"
-//             value={petTypeDataEn.petType}
-//             onChange={handleChange}
-//             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            
-//             placeholder="Exp: Dog"
-
-//           />
-//          </div>
-   
-//         {status === "failed" && error && (
-//           <div className="mb-4 text-red-500">{error}</div>
-//         )}
-//         <div className="flex justify-end">
-//           <button
-//             type="submit"
-//             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             disabled={status === "loading"}
-//           >
-//             {status === "loading" ? "Creating..." : "Add Pet Type(s)"}
-//           </button>
-//         </div>
-//       </div>
-//     </form>
-//   );
-// }
-
-
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import {
   addPetBreed,
   getAllPetBreeds,
@@ -168,23 +9,31 @@ import {
 } from "@/lib/features/pet/petBreedSlice";
 import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
-import { getAllPetTypes, selectPetTypes } from "@/lib/features/pet/petTypesSlice";
-
+import {
+  getAllPetTypes,
+  selectPetTypes,
+} from "@/lib/features/pet/petTypesSlice";
+import { useTranslation } from "react-i18next";
+import trFlag from "@/public/images/turkey.png";
+import ukFlag from "@/public/images/uk.png";
+import Link from "next/link";
 
 export default function Form() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const petTypes = useSelector(selectPetTypes);
   const petBreeds = useSelector(selectPetBreeds);
 
-  const [selectedPetType, setSelectedPetType] = useState<string>(''); // State to hold selected pet type ID
+  const [selectedPetType, setSelectedPetType] = useState<string>(""); // State to hold selected pet type ID
 
   const [petBreedData, setPetBreedData] = useState({
-    breedName: '',
+    breedName: "",
     languageId: 1, // Turkish language ID
   });
 
   const [petBreedDataEn, setPetBreedDataEn] = useState({
-    breedName: '',
+    breedName: "",
     languageId: 2, // English language ID
   });
 
@@ -203,17 +52,15 @@ export default function Form() {
     setSelectedPetType(typeId);
   };
 
-
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name === 'breedName_tr') {
-      setPetBreedData(prevData => ({
+    if (name === "breedName_tr") {
+      setPetBreedData((prevData) => ({
         ...prevData,
         breedName: value,
       }));
-    } else if (name === 'breedName_en') {
-      setPetBreedDataEn(prevData => ({
+    } else if (name === "breedName_en") {
+      setPetBreedDataEn((prevData) => ({
         ...prevData,
         breedName: value,
       }));
@@ -223,52 +70,55 @@ export default function Form() {
     event.preventDefault();
 
     try {
-      // Add Turkish pet breed if fields are filled
       if (petBreedData.breedName && selectedPetType) {
-        await dispatch(addPetBreed({
-          petTypeId: Number(selectedPetType),
-          languageId: petBreedData.languageId,
-          breedName: petBreedData.breedName,
-        }));
+        await dispatch(
+          addPetBreed({
+            petTypeId: Number(selectedPetType),
+            languageId: petBreedData.languageId,
+            breedName: petBreedData.breedName,
+          })
+        );
       }
 
       // Add English pet breed if fields are filled
       if (petBreedDataEn.breedName && selectedPetType) {
-        await dispatch(addPetBreed({
-          petTypeId: Number(selectedPetType),
-          languageId: petBreedDataEn.languageId,
-          breedName: petBreedDataEn.breedName,
-        }));
+        await dispatch(
+          addPetBreed({
+            petTypeId: Number(selectedPetType),
+            languageId: petBreedDataEn.languageId,
+            breedName: petBreedDataEn.breedName,
+          })
+        );
       }
 
       // Reset the form inputs after successful submission
       setPetBreedData({
-        breedName: '',
+        breedName: "",
         languageId: 1,
       });
       setPetBreedDataEn({
-        breedName: '',
+        breedName: "",
         languageId: 2,
       });
 
-      alert('Pet breeds added successfully');
+      alert(t("petBreed.messages.createSuccess"));
+      router.replace("/dashboard/pets/petBreed");
     } catch (err) {
-      console.error('Failed to add pet breeds:', err);
-      alert('Failed to add pet breeds');
+      console.error("Failed to add pet breeds:", err);
+      alert(t("petBreed.messages.createFailure"));
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-             <div className="mb-6 block w-full ">
-
+        <div className="mb-6 block w-full ">
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           >
-            <option value="">Evcil Hayvan Türü Seçiniz</option>
+            <option value="">{t("petBreed.select.petType")}</option>
             {petTypes.map((petType) => (
               <option key={petType.typeId} value={petType.typeId.toString()}>
                 {petType.typeName}
@@ -277,16 +127,18 @@ export default function Form() {
           </select>
         </div>
         <div className="mb-4">
-          <label htmlFor="breedName_tr" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
+          <label
+            htmlFor="breedName_tr"
+            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium"
+          >
             <Image
-              src="/turkey.png"
+              src={trFlag}
               alt="Turkish Flag"
               width={36}
               height={36}
-              objectFit="cover"
               className="rounded-full"
             />
-            Yeni Evcil Hayvan Cinsi
+            {t("petBreed.form.newPetType")}
           </label>
           <input
             type="text"
@@ -295,21 +147,23 @@ export default function Form() {
             value={petBreedData.breedName}
             onChange={handleChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="Örn: Köpek"
+            placeholder={t("petBreed.form.enterPetTypeTr")}
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="breedName_en" className="mb-2 flex flex-row items-center gap-3 text-sm font-medium">
+          <label
+            htmlFor="breedName_en"
+            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium"
+          >
             <Image
-              src="/uk.png"
+              src={ukFlag}
               alt="English Flag"
               width={36}
               height={36}
-              objectFit="cover"
               className="rounded-full"
             />
-            New Pet Breed
+            {t("petBreed.form.newPetType")}
           </label>
           <input
             type="text"
@@ -318,15 +172,22 @@ export default function Form() {
             value={petBreedDataEn.breedName}
             onChange={handleChange}
             className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder="e.g., Dog"
+            placeholder={t("petBreed.form.enterPetTypeEn")}
           />
         </div>
-        <div className="flex justify-end">
-          <button             type="submit"
+        <div className="mt-6 flex justify-end gap-4">
+          <Link
+            href="/dashboard/pets/petBreed"
+            className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+          >
+            {t("cancel")}
+          </Link>
+          <button
+            type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-           disabled={status === "loading"}
-           >
-             {status === "loading" ? "Creating..." : "Add Pet Type(s)"}        </button>
+          >
+            {t("petBreed.submit.create")}{" "}
+          </button>
         </div>
       </div>
     </form>

@@ -197,5 +197,100 @@
       "notRead": "Okunmadı",
       "status": "Okunma Durumu"
     }
+  },
+
+  "manager": {
+    "create": "Yeni Yönetici Ekle",
+    "info": "Yönetici Bilgileri",
+    "update": "Yönetici Güncellenmesi",
+    "errorLoadingManager": "Hata: Yönetici yüklenirken hata oluştu",
+    "managers": "Yöneticiler",
+    "search.placeholder": "Yönetici Ara...",
+
+    "messages": {
+      "deleteSuccess": "Yönetici başarıyla silindi.",
+      "deleteFailure": "Yönetici silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Yönetici başarıyla eklendi.",
+      "createFailure": "Yönetici eklenemedi",
+      "updateSuccess": "Yönetici başarıyla güncellendi.",
+      "updateFailure": "Yönetici güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "manager.name": "Yönetici İsmi",
+      "manager.last.name": "Yönetici Soyadı",
+      "manager.email": "Yönetici E-postası",
+      "manager.phone.number": "Yönetici Telefon Numarası",
+      "manager.address.information": "Yönetici Adres Bilgileri",
+      "city": "İl",
+      "select.city": "İl Seçin",
+      "district": "İlçe",
+      "select.district": "İlçe seçin"
+    },
+    "submit": {
+      "create": "Yönetici Oluştur",
+      "creating": "Oluşturuluyor..."
+    }
+  },
+  "petType": {
+    "create": "Yeni Hayvan Türü Ekle",
+    "info": "Hayvan Türü Bilgileri",
+    "update": "Hayvan Türü Güncellenmesi",
+    "errorLoadingPetType": "Hata: Hayvan Türü yüklenirken hata oluştu",
+    "petTypes": " Evcil Hayvan Türü",
+    "search.placeholder": "Hayvan Türü Ara...",
+
+    "messages": {
+      "deleteSuccess": "Hayvan Türü başarıyla silindi.",
+      "deleteFailure": "Hayvan Türü silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Hayvan Türü başarıyla eklendi.",
+      "createFailure": "Hayvan Türü eklenemedi",
+      "updateSuccess": "Hayvan Türü başarıyla güncellendi.",
+      "updateFailure": "Hayvan Türü güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "newPetType": "Yeni Evcil Hayvan Türü",
+      "enterPetTypeEn": "İngilizce Evcil Hayvan Türü Giriniz",
+      "enterPetTypeTr": "Türkçe Evcil Hayvan Türü Giriniz",
+      "petTypeTr": "Evcil Hayvan Tür İsmi ",
+      "petTypeEn": "Evcil Hayvan Tür İsmi (İngilizce)",
+      "typeId": "Evcil Hayvan ID",
+      "language": "Dil"
+    },
+    "submit": {
+      "create": "Hayvan Türü Oluştur",
+      "creating": "Oluşturuluyor..."
+    }
+  },
+
+  "petBreed": {
+    "create": "Yeni Hayvan Cinsi Ekle",
+    "info": "Hayvan Cinsi Bilgileri",
+    "update": "Hayvan Cinsi Güncellenmesi",
+    "errorLoadingPetBreed": "Hata: Hayvan Cinsi yüklenirken hata oluştu",
+    "petBreeds": "Evcil Hayvan Cinsi",
+    "search.placeholder": "Hayvan Cinsi Ara...",
+    "select.petType": "Evcil Hayvan Türü Seçiniz",
+
+    "messages": {
+      "deleteSuccess": "Hayvan Cinsi başarıyla silindi.",
+      "deleteFailure": "Hayvan Cinsi silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Hayvan Cinsi başarıyla eklendi.",
+      "createFailure": "Hayvan Cinsi eklenemedi",
+      "updateSuccess": "Hayvan Cinsi başarıyla güncellendi.",
+      "updateFailure": "Hayvan Cinsi güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "newPetType": "Yeni Evcil Hayvan Cinsi",
+      "enterPetTypeEn": "İngilizce Evcil Hayvan Cinsi Giriniz",
+      "enterPetTypeTr": "Türkçe Evcil Hayvan Cinsi Giriniz",
+      "petTypeTr": "Evcil Hayvan Cins İsmi ",
+      "petTypeEn": "Evcil Hayvan Cins İsmi (İngilizce)",
+      "typeId": "Evcil Hayvan ID",
+      "language": "Dil"
+    },
+    "submit": {
+      "create": "Hayvan Cinsi Oluştur",
+      "creating": "Oluşturuluyor..."
+    }
   }
 }
