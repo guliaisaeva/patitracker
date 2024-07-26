@@ -295,5 +295,46 @@
       "create": "Create Pet Breed",
       "creating": "Creating..."
     }
+  },
+
+  "simCard": {
+    "create": "Create Sim Card",
+    "info": "Sim Card Info",
+    "update": "Edit Sim Card",
+    "errorLoadingSimCard": "Error loading Sim Card",
+    "simCards": "Sim Cards",
+    "search.placeholder": "Search Sim Card...",
+
+    "messages": {
+      "deleteSuccess": "Sim Card deleted successfully.",
+      "deleteFailure": "Failed to delete Sim Card. Please try again.",
+      "createSuccess": "Sim Card(s) added successfully",
+      "createFailure": "Failed to add Sim Card",
+      "updateSuccess": "Sim Card(s) updated successfully.",
+      "updateFailure": "Failed to update Sim Card. Please try again."
+    },
+    "form": {
+      "companyName": "Company Name",
+      "apn": "Apn",
+      "countryPhoneCodeId": "Country Phone Code",
+      "phoneNumber": "Phone Number",
+      "dataSize": "Memory Capacity",
+      "registerDate": "Register Date",
+      "expirationDate": "Expiration Date",
+      "isSimToDevice": "Save to Device",
+      "deviceId": "Device Number",
+      "placeholders": {
+        "companyName": "Enter Company Name",
+        "apn": "Enter Apn",
+        "phoneNumber": "Phone number should be 10 digits",
+        "countryPhoneCodeId": "Select Country Phone Code",
+        "dataSize": "Select Memory Capacity",
+        "deviceId": "Select Device Number"
+      }
+    },
+    "submit": {
+      "create": "Create Sim Card",
+      "creating": "Creating..."
+    }
   }
 }

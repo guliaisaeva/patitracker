@@ -1,18 +1,18 @@
-import Form from '@/app/components/simcards/create-form';
-import Breadcrumbs from '@/app/components/managers/breadcrumbs';
-// import { fetchCustomers } from '@/app/lib/data';
+"use client";
+import Form from "@/app/components/simcards/create-form";
+import Breadcrumbs from "@/app/components/managers/breadcrumbs";
+import { useTranslation } from "react-i18next";
 
-export default async function Page() {
-  // const customers = await fetchCustomers();
-
+export default function Page() {
+  const { t } = useTranslation();
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Sim Kartlar', href: '/dashboard/simcards' },
+          { label: t("simCard.simCards"), href: "/dashboard/simcards" },
           {
-            label: 'Create Sim Cards',
-            href: '/dashboard/simcards/create',
+            label: t("simCard.create"),
+            href: "/dashboard/simcards/create",
             active: true,
           },
         ]}

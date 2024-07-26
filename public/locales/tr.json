@@ -292,5 +292,45 @@
       "create": "Hayvan Cinsi Oluştur",
       "creating": "Oluşturuluyor..."
     }
+  },
+  "simCard": {
+    "create": "Yeni Sim Kart Ekle",
+    "info": "Sim Kart Bilgileri",
+    "update": "Sim Kart Güncellenmesi",
+    "errorLoadingSimCard": "Hata: Sim Kart yüklenirken hata oluştu",
+    "simCards": "Sim Kartlar",
+    "search.placeholder": "Sim Kart Ara...",
+
+    "messages": {
+      "deleteSuccess": "Sim Kart başarıyla silindi.",
+      "deleteFailure": "Sim Kart silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Sim Kart başarıyla eklendi.",
+      "createFailure": "Sim Kart eklenemedi",
+      "updateSuccess": "Sim Kart başarıyla güncellendi.",
+      "updateFailure": "Sim Kart güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "form": {
+      "companyName": "Şirket Adı",
+      "apn": "Apn",
+      "countryPhoneCodeId": "Ülke telefon Kodu",
+      "phoneNumber": "Telefon Numarası",
+      "dataSize": "Hafıza Kapasitesi",
+      "registerDate": "Üyelik Başlangıç Tarihi",
+      "expirationDate": "Üyelik Bitiş Tarihi",
+      "isSimToDevice": "Cihaza Kaydet",
+      "deviceId": "Cihaz Numarası",
+      "placeholders": {
+        "companyName": "Şirket Adını Girin",
+        "apn": "Apn Girin",
+        "phoneNumber": "Telefon numarası 10 haneli olmalıdır",
+        "countryPhoneCodeId": "Ülke telefon Kodu Seçin",
+        "dataSize": "Hafıza Kapasitesi Seçin",
+        "deviceId": "Cihaz Numarası Seçin"
+      }
+    },
+    "submit": {
+      "create": "Sim Kart Oluştur",
+      "creating": "Oluşturuluyor..."
+    }
   }
 }

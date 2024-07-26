@@ -275,6 +275,7 @@ export const petTypeSlice = createSlice({
         state.loading = true;
         state.petTypes = state.petTypes.filter(petType => petType.typeId !== action.payload);
         state.loading = false;       })
+        
       .addCase(deletePetType.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Unknown error';
