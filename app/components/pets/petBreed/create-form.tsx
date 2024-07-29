@@ -116,7 +116,7 @@ export default function Form() {
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           >
             <option value="">{t("petBreed.select.petType")}</option>
             {petTypes.map((petType) => (
@@ -146,7 +146,7 @@ export default function Form() {
             name="breedName_tr"
             value={petBreedData.breedName}
             onChange={handleChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("petBreed.form.enterPetTypeTr")}
           />
         </div>
@@ -171,7 +171,7 @@ export default function Form() {
             name="breedName_en"
             value={petBreedDataEn.breedName}
             onChange={handleChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("petBreed.form.enterPetTypeEn")}
           />
         </div>
@@ -184,7 +184,7 @@ export default function Form() {
           </Link>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             {t("petBreed.submit.create")}{" "}
           </button>

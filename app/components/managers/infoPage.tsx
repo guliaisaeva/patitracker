@@ -93,7 +93,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
               name="firstName"
               type="text"
               value={selectedManagerById?.firstName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -113,7 +113,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
               name="lastName"
               type="text"
               value={selectedManagerById?.lastName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -134,7 +134,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
                 name="email"
                 type="text"
                 value={selectedManagerById?.email || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -160,7 +160,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
                 name="phoneNumber"
                 type="text"
                 defaultValue={selectedManagerById?.phoneNumber || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -189,7 +189,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
               name="userCity"
               value={selectedCityId || ""}
               onChange={handleCityChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value=""> {t("manager.form.select.city")}</option>
               {cities?.map((city) => (
@@ -214,7 +214,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
               name="userDistrict"
               value={selectedDistrictId || ""}
               onChange={handleDistrictChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value=""> {t("manager.form.select.district")}</option>
               {districts?.map((district) => (
@@ -234,7 +234,7 @@ export default function ManagersInfoForm({ managerId }: { managerId: string }) {
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/managers"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+          className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           {t("close")}{" "}
         </Link>

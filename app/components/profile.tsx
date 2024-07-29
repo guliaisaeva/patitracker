@@ -113,7 +113,7 @@ export default function Profile() {
       )}
       <span>{superAdmin?.email || t("guest")}</span>
       <button
-        className="ml-2 p-2 bg-gray-200 rounded-full"
+        className="ml-2 p-2 bg-green-600 rounded-full"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {/* Icon or button to open dropdown */}
@@ -136,11 +136,11 @@ export default function Profile() {
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 mt-24  w-38 bg-white rounded-md shadow-lg z-10"
+          className="absolute right-0 mt-24  w-38  text-black bg-white rounded-md shadow-lg z-10"
         >
           <button
             onClick={handleLogout}
-            className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm text-black font-medium hover:bg-green-100  hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3 "
           >
             <PowerIcon className="w-6" />
             <div className="hidden md:block">{t("sign.out")}</div>

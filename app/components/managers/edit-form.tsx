@@ -94,7 +94,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
               name="firstName"
               type="text"
               value={selectedManagerById?.firstName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -114,7 +114,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
               name="lastName"
               type="text"
               value={selectedManagerById?.lastName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -135,7 +135,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
                 name="email"
                 type="text"
                 value={selectedManagerById?.email || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -161,7 +161,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
                 name="phoneNumber"
                 type="text"
                 defaultValue={selectedManagerById?.phoneNumber || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -190,7 +190,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
               name="userCity"
               value={selectedCityId || ""}
               onChange={handleCityChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value=""> {t("manager.form.select.city")}</option>
               {cities?.map((city) => (
@@ -215,7 +215,7 @@ export default function EditManagerForm({ managerId }: { managerId: number }) {
               name="userDistrict"
               value={selectedDistrictId || ""}
               onChange={handleDistrictChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value=""> {t("manager.form.select.district")}</option>
               {districts?.map((district) => (

@@ -172,8 +172,8 @@ export default function Form() {
             disabled={status === "loading"}
           >
             {status === "loading"
-              ? t("announcement.submit.creating")
-              : t("announcement.submit.create")}
+              ? t("user.submit.creating")
+              : t("user.submit.create")}
           </button>
         </div>
       </div>

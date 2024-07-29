@@ -99,7 +99,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
             name="trTitle"
             value={trTitle}
             onChange={(e) => setTrTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
             placeholder={t("faq.form.enterTitleTr")}
           />
@@ -113,7 +113,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
             name="trDetail"
             value={trDetail}
             onChange={(e) => setTrDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("faq.form.enterDetailTr")}
             style={{ height: "150px", width: "100%" }}
           />
@@ -135,7 +135,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
             value={enTitle}
             placeholder={t("faq.form.enterTitleEn")}
             onChange={(e) => setEnTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           />
         </div>
         <div className="mb-4">
@@ -147,7 +147,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
             name="enDetail"
             value={enDetail}
             onChange={(e) => setEnDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("faq.form.enterDetailEn")}
             style={{ height: "150px", width: "100%" }}
           />

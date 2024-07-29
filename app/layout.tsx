@@ -37,7 +37,7 @@ export default function RootLayout({ children }: Props) {
     // </SafeHydrate>
 
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased background`}>
         <SafeHydrate>
           <StoreProvider>
             <I18nextProvider i18n={i18n}>{children}</I18nextProvider>

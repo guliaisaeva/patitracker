@@ -39,7 +39,6 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Display Profile Image */}
         <div className="mb-4 flex items-center justify-center">
           {selectedDevice?.userImageUrl ? (
             <div className="relative w-20 h-20 rounded-full  overflow-hidden">
@@ -70,7 +69,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
               name="userName"
               type="text"
               value={selectedDevice?.userName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -92,7 +91,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="email"
                 type="text"
                 value={selectedDevice?.email || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -118,7 +117,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="memberShipStartDate"
                 type="text"
                 defaultValue={selectedDevice?.memberShipStartDate || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -144,7 +143,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="memberShipEndDate"
                 type="text"
                 defaultValue={selectedDevice?.memberShipEndDate || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="phoneNumber-error"
                 readOnly
               />
@@ -186,7 +185,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="petName"
                 type="text"
                 defaultValue={selectedDevice?.petName || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -209,7 +208,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="simNumber"
                 type="text"
                 defaultValue={selectedDevice?.simNumber || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -231,7 +230,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="deviceId"
                 type="text"
                 defaultValue={selectedDevice?.deviceId || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -257,7 +256,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
                 name="deviceId"
                 type="text"
                 defaultValue={activityText}
-                className={`${activityClass} peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
+                className={`${activityClass} text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
                 aria-describedby="address-error"
                 readOnly
               />

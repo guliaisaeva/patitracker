@@ -70,7 +70,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
               name="userName"
               type="text"
               value={selectedDevice?.userName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -92,7 +92,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="email"
                 type="text"
                 value={selectedDevice?.email || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -118,7 +118,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="memberShipStartDate"
                 type="text"
                 defaultValue={selectedDevice?.memberShipStartDate || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -144,7 +144,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="memberShipEndDate"
                 type="text"
                 defaultValue={selectedDevice?.memberShipEndDate || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="phoneNumber-error"
                 readOnly
               />
@@ -186,7 +186,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="petName"
                 type="text"
                 defaultValue={selectedDevice?.petName || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -209,7 +209,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="simNumber"
                 type="text"
                 defaultValue={selectedDevice?.simNumber || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -231,7 +231,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="deviceId"
                 type="text"
                 defaultValue={selectedDevice?.deviceId || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="address-error"
                 readOnly
               />
@@ -257,7 +257,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
                 name="deviceId"
                 type="text"
                 defaultValue={activityText}
-                className={`${activityClass} peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
+                className={`${activityClass}text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
                 aria-describedby="address-error"
                 readOnly
               />
@@ -274,7 +274,7 @@ export default function DeviceInfoForm({ deviceId }: { deviceId: string }) {
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/devices"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+          className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           {t("close")}{" "}
         </Link>

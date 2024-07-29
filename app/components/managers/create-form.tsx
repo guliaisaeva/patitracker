@@ -104,7 +104,7 @@ export default function Form() {
             name="firstName"
             value={userData.firstName}
             onChange={handleUserChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
           />
         </div>
@@ -119,7 +119,7 @@ export default function Form() {
             name="lastName"
             value={userData.lastName}
             onChange={handleUserChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
           />
         </div>
@@ -136,7 +136,7 @@ export default function Form() {
               name="cityId"
               value={userData.userAddress.cityId}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -154,7 +154,7 @@ export default function Form() {
               name="cityName"
               value={userData.userAddress.cityName}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -172,7 +172,7 @@ export default function Form() {
               name="districtId"
               value={userData.userAddress.districtId}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -190,7 +190,7 @@ export default function Form() {
               name="districtName"
               value={userData.userAddress.districtName}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -208,7 +208,7 @@ export default function Form() {
               name="description"
               value={userData.userAddress.description}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -226,7 +226,7 @@ export default function Form() {
               name="direction"
               value={userData.userAddress.direction}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -241,7 +241,7 @@ export default function Form() {
               name="zipCode"
               value={userData.userAddress.zipCode}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -259,7 +259,7 @@ export default function Form() {
               name="countryPhoneCodeId"
               value={userData.userAddress.countryPhoneCodeId}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -277,7 +277,7 @@ export default function Form() {
               name="phoneCode"
               value={userData.userAddress.phoneCode}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -295,7 +295,7 @@ export default function Form() {
               name="phoneNumber"
               value={userData.userAddress.phoneNumber}
               onChange={handleAddressChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -312,7 +312,7 @@ export default function Form() {
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Create Device
+              {t("manager.submit.create")}
             </button>
           </div>
         </div>

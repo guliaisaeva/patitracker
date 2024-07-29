@@ -41,7 +41,7 @@ export default function QuestionInfoForm({
     }
   }, [dispatch, questionId]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
@@ -64,7 +64,7 @@ export default function QuestionInfoForm({
             name="trTitle"
             value={selectedQuestionDetail?.title}
             onChange={(e) => setTrTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             readOnly
           />
         </div>
@@ -77,7 +77,7 @@ export default function QuestionInfoForm({
             name="trDetail"
             value={selectedQuestionDetail?.detail}
             onChange={(e) => setTrDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             style={{ height: "150px", width: "100%" }}
             readOnly
           />
@@ -98,7 +98,7 @@ export default function QuestionInfoForm({
             name="enTitle"
             value={enTitle}
             onChange={(e) => setEnTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             readOnly
           />
         </div>
@@ -111,7 +111,7 @@ export default function QuestionInfoForm({
             name="enDetail"
             value={enDetail}
             onChange={(e) => setEnDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             style={{ height: "150px", width: "100%" }}
             readOnly
           />
@@ -121,7 +121,7 @@ export default function QuestionInfoForm({
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/announcements"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+          className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           {t("close")}
         </Link>

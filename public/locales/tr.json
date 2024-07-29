@@ -10,6 +10,7 @@
   "load": "Yükleniyor...",
   "detail": "Detay",
   "guest": "Misafir",
+  "welcome": "PatiTracker'e Hoş Geldiniz!",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -113,6 +114,10 @@
       "createFailure": "Kullanıcı eklenemedi",
       "updateSuccess": "Kullanıcı(lar) başarıyla güncellendi.",
       "updateFailure": "Kullanıcı güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "submit": {
+      "create": "Kullanıcı Oluştur",
+      "creating": "Oluşturuluyor..."
     }
   },
 

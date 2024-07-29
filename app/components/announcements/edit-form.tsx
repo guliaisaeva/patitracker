@@ -102,7 +102,7 @@ export default function UpdateAnnouncementForm({
             name="trTitle"
             value={trTitle}
             onChange={(e) => setTrTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("announcement.form.enterTitleTr")}
           />
         </div>
@@ -115,7 +115,7 @@ export default function UpdateAnnouncementForm({
             name="trDetail"
             value={trDetail}
             onChange={(e) => setTrDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("announcement.form.enterTitleTr")}
             style={{ height: "150px", width: "100%" }}
           />
@@ -137,7 +137,7 @@ export default function UpdateAnnouncementForm({
             value={enTitle}
             placeholder={t("announcement.form.enterTitleEn")}
             onChange={(e) => setEnTitle(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className=" text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           />
         </div>
         <div className="mb-4">
@@ -149,7 +149,7 @@ export default function UpdateAnnouncementForm({
             name="enDetail"
             value={enDetail}
             onChange={(e) => setEnDetail(e.target.value)}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("announcement.form.enterDetailEn")}
             style={{ height: "150px", width: "100%" }}
           />

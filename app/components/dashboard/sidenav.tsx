@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/lib/features/login/loginSlice";
 import { useTranslation } from "react-i18next";
 import logo from "@/public/logo/patitracker_logo.png";
-import Footer from "../footer";
 
 // import { signOut } from '@/auth';
 
@@ -26,7 +25,7 @@ export default function SideNav() {
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2">
       <Link
-        className="mb-2 flex h-20 items-end justify-center rounded-md bg-blue-600 p-4 md:h-40"
+        className="mb-2 flex h-20 items-end justify-center rounded-md bg-customGray p-4 md:h-40"
         href="/"
       >
         <div className="w-32 h-full text-white flex items-center justify-center md:w-40">
@@ -51,13 +50,11 @@ export default function SideNav() {
         > */}
         <button
           onClick={handleLogout}
-          className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+          className="flex h-[48px] w-full grow text-black items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3"
         >
           <PowerIcon className="w-6" />
           <div className="hidden md:block">{t("sign.out")}</div>
         </button>
-        {/* </form> */}
-        {/* <Footer /> */}
       </div>
     </div>
   );

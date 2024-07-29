@@ -21,7 +21,7 @@ const LanguageSwitcher = () => {
         onClick={() => handleLanguageChange("en")}
         className={`px-2 py-1 text-sm font-medium rounded ${
           currentLanguage === "en"
-            ? "bg-blue-500 text-white"
+            ? "bg-green-600 text-white"
             : "bg-gray-200 text-gray-700"
         }`}
       >
@@ -31,7 +31,7 @@ const LanguageSwitcher = () => {
         onClick={() => handleLanguageChange("tr")}
         className={`px-2 py-1 text-sm font-medium rounded ${
           currentLanguage === "tr"
-            ? "bg-blue-500 text-white"
+            ? "bg-green-600 text-white"
             : "bg-gray-200 text-gray-700"
         }`}
       >

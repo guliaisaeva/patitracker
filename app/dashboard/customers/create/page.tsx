@@ -1,5 +1,5 @@
 "use client";
-import Form from "@/app/components/announcements/create-form";
+import Form from "@/app/components/customers/create-form";
 import Breadcrumbs from "@/app/components/managers/breadcrumbs";
 import { useTranslation } from "react-i18next";
 
@@ -10,12 +10,12 @@ export default function Page() {
       <Breadcrumbs
         breadcrumbs={[
           {
-            label: t("announcement.announcements"),
-            href: "/dashboard/announcements",
+            label: t("user.users"),
+            href: "/dashboard/customers",
           },
           {
-            label: t("announcement.create"),
-            href: "/dashboard/announcements/create",
+            label: t("user.create"),
+            href: "/dashboard/customers/create",
             active: true,
           },
         ]}

@@ -218,9 +218,9 @@ export default function NavLinks() {
                 ref={(el: any) => (buttonRefs.current[link.name] = el)}
                 onClick={() => toggleDropdown(link.name)}
                 className={clsx(
-                  "flex items-center justify-between gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full",
+                  "flex items-center justify-between gap-2 rounded-md text-orange-500 bg-gray-50 p-3 text-sm font-medium hover:bg-green-200 hover:text-green-600 w-full",
                   {
-                    "bg-sky-100 text-blue-600": link.submenu.some(
+                    "bg-green-100 text-green-600": link.submenu.some(
                       (submenuItem) => pathname.startsWith(submenuItem.href)
                     ), // Check if any submenu item is active
                   }
@@ -228,7 +228,7 @@ export default function NavLinks() {
               >
                 <div className="flex items-center gap-2">
                   <LinkIcon className="w-6" />
-                  <p className="hidden md:block">
+                  <p className="hidden md:block ">
                     {t(`navLinks.${link.name}`)}
                   </p>
                 </div>
@@ -247,9 +247,9 @@ export default function NavLinks() {
                         href={submenuItem.href}
                         passHref
                         className={clsx(
-                          "flex items-center justify-start gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full",
+                          "flex items-center justify-start gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 w-full",
                           {
-                            "bg-sky-100 text-blue-600":
+                            "bg-green-100 text-green-600":
                               pathname === submenuItem.href,
                           }
                         )}
@@ -272,9 +272,9 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              "flex h-[48px] items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full md:flex-none md:justify-start md:p-2 md:px-3",
+              "flex h-[48px] items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 w-full md:flex-none md:justify-start md:p-2 md:px-3",
               {
-                "bg-sky-100 text-blue-600": pathname === link.href,
+                "bg-green-100 text-green-600": pathname === link.href,
               }
             )}
           >

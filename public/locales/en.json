@@ -10,7 +10,8 @@
   "load": "Loading...",
   "search": "Search",
   "detail": "Detail",
-  "guest":"Guest",
+  "guest": "Guest",
+  "welcome": "Welcome to PatiTracker!",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -116,6 +117,10 @@
       "createFailure": "Failed to add user",
       "updateSuccess": "User updated successfully.",
       "updateFailure": "Failed to update user. Please try again."
+    },
+    "submit": {
+      "create": "Create User",
+      "creating": "Creating..."
     }
   },
 
