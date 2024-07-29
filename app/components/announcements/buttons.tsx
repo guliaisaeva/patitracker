@@ -49,10 +49,10 @@ export function DeleteAnnouncement({ id }: { id: number }) {
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await dispatch(deleteAnnouncement(id)).unwrap();
+      dispatch(deleteAnnouncement(id)).unwrap();
       alert(t("announcement.messages.deleteSuccess"));
     } catch (error) {
       alert(t("announcement.messages.deleteFailure"));

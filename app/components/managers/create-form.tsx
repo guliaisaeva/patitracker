@@ -45,12 +45,10 @@ export default function Form() {
     },
   });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      // await dispatch(addDeviceAsync(deviceData));
-      // Optionally, handle success behavior (e.g., show a success message)
       console.log("Device added successfully!");
       // Reset form or clear input fields
       setUserData({

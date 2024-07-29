@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer
       style={{ backgroundColor: "#f9fafb", color: "black" }}
-      className=" text-white fixed   w-full bottom-0 "
+      className=" text-white fixed z-10  w-full bottom-0 "
       //   className="relative w-full py-2 text-black mt-auto bottom-0"
       //   className="w-full py-2 text-black"
     >

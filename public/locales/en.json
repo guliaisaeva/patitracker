@@ -10,6 +10,7 @@
   "load": "Loading...",
   "search": "Search",
   "detail": "Detail",
+  "guest":"Guest",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -336,5 +337,14 @@
       "create": "Create Sim Card",
       "creating": "Creating..."
     }
+  },
+  "login": {
+    "title": "Please log in to continue.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email address",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter password",
+    "loginButton": "Log in",
+    "formError": "Invalid email or password."
   }
 }

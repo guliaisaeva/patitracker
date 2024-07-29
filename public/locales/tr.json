@@ -9,6 +9,7 @@
   "noResults": "Maalesef, gösterilecek sonuç bulunmuyor.",
   "load": "Yükleniyor...",
   "detail": "Detay",
+  "guest": "Misafir",
 
   "DASHBOARD": "DASHBOARD",
 
@@ -332,5 +333,15 @@
       "create": "Sim Kart Oluştur",
       "creating": "Oluşturuluyor..."
     }
+  },
+
+  "login": {
+    "title": "Lütfen giriş yapın.",
+    "emailLabel": "E-posta",
+    "emailPlaceholder": "E-posta adresinizi giriniz",
+    "passwordLabel": "Şifre",
+    "passwordPlaceholder": "Şifreyi giriniz",
+    "loginButton": "Giriş yap",
+    "formError": "Geçersiz e-posta veya şifre."
   }
 }

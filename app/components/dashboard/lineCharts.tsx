@@ -8,7 +8,7 @@ import {
 } from "@mui/x-charts/LineChart";
 import { useTranslation } from "react-i18next";
 
-export default async function LineCharts() {
+export default function LineCharts() {
   const { t } = useTranslation();
   const uData = [
     4000, 3000, 2000, 2780, 1890, 2390, 3490, 2345, 3456, 1234, 3456, 2345,

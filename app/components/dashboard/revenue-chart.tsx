@@ -6,7 +6,7 @@ import { useDrawingArea } from "@mui/x-charts/hooks";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
-export default async function RevenueChart() {
+export default function RevenueChart() {
   const { t } = useTranslation();
 
   const data = [

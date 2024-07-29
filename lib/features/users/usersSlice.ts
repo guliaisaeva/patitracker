@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
 
+const token =
+  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIxNzM5NjI5LCJleHAiOjE3NTMyNzU2MjksImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.gs7d4Kd7HM0uY5NEQAEVBPWe5_WicAt51zJp8DQTrwA";
 export const getUsers = async () => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzE4MTAwNDg4LCJleHAiOjE3NDk2MzY0ODgsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.BP7BpHkxIG1jLLy3BRdDxOMuYbDYor3imM9AQmXyDD4";
-
   const response = await fetch(
     "http://185.46.55.50:50235/api/v1/User/GetAllUser",
     {
@@ -31,9 +30,6 @@ export const getUsersAsync = createAsyncThunk("users/getUsers", async () => {
 });
 
 export const getUserById = async (userId: number) => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-
   const response = await fetch(
     `http://185.46.55.50:50235/api/v1/User/GetUser?userId=${userId}`,
     {
@@ -62,9 +58,6 @@ export const getUserByIdAsync = createAsyncThunk(
 );
 
 export const searchUsers = async (searchWord: string) => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-
   const response = await fetch(
     "http://185.46.55.50:50235/api/v1/User/SearchUser",
     {
@@ -96,6 +89,34 @@ export const searchUsersAsync = createAsyncThunk(
   }
 );
 
+export const getSuperAdminDetail = async () => {
+  const response = await fetch(
+    "http://185.46.55.50:50235/api/v1/SuperAdmin/GetAdminDetail",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorDetail = await response.text();
+    throw new Error(
+      `Failed to fetch superadmin details: ${response.statusText} - ${errorDetail}`
+    );
+  }
+
+  const data = await response.json();
+  return data.data;
+};
+export const getSuperAdminDetailAsync = createAsyncThunk(
+  "superadmin/getSuperAdminDetail",
+  async () => {
+    const superadminData = await getSuperAdminDetail();
+    return superadminData;
+  }
+);
+
 interface User {
   userProfileId: number;
   profileImageUrl: string | null;
@@ -115,6 +136,9 @@ interface UserSliceState {
   searchStatus: "idle" | "loading" | "succeeded" | "failed";
   searchError: string | null;
   userProfileId: number | null;
+  superAdmin: User | null;
+  superAdminStatus: "idle" | "loading" | "succeeded" | "failed";
+  superAdminError: string | null;
 }
 
 const initialState: UserSliceState = {
@@ -126,6 +150,9 @@ const initialState: UserSliceState = {
   searchStatus: "idle",
   searchError: null,
   userProfileId: null,
+  superAdmin: null,
+  superAdminStatus: "idle",
+  superAdminError: null,
 };
 
 export const userSlice = createSlice({
@@ -176,6 +203,17 @@ export const userSlice = createSlice({
       .addCase(searchUsersAsync.rejected, (state, action) => {
         state.searchStatus = "failed";
         state.searchError = action.error.message ?? "Unknown error";
+      })
+      .addCase(getSuperAdminDetailAsync.pending, (state) => {
+        state.superAdminStatus = "loading";
+      })
+      .addCase(getSuperAdminDetailAsync.fulfilled, (state, action) => {
+        state.superAdminStatus = "succeeded";
+        state.superAdmin = action.payload;
+      })
+      .addCase(getSuperAdminDetailAsync.rejected, (state, action) => {
+        state.superAdminStatus = "failed";
+        state.superAdminError = action.error.message ?? "Unknown error";
       });
   },
 });
@@ -192,6 +230,7 @@ export const selectSearchStatus = (state: RootState) =>
 export const selectSearchError = (state: RootState) => state.users.searchError; // Selector for searchError
 export const selectUserProfileId = (state: RootState) =>
   state.users.userProfileId;
+export const selectSuperAdmin = (state: RootState) => state.users.superAdmin;
 
 export const { clearSelectedUser, setUserProfileId } = userSlice.actions;
 

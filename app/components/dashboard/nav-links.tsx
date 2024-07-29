@@ -151,7 +151,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const links = [
@@ -176,13 +176,35 @@ const links = [
 export default function NavLinks() {
   const { t, i18n } = useTranslation();
   const pathname = usePathname();
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
-  const toggleDropdown = (name: any) => {
+  const toggleDropdown = (name: string) => {
     setOpenDropdown(openDropdown === name ? null : name);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node) &&
+      !Object.values(buttonRefs.current).some((button) =>
+        button?.contains(event.target as Node)
+      )
+    ) {
+      setOpenDropdown(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   if (i18n.isInitializing) {
-    return <div>Loading...</div>;
+    return <div>{t("load")}</div>;
   }
   return (
     <>
@@ -193,6 +215,7 @@ export default function NavLinks() {
           return (
             <div key={link.name} className="relative">
               <button
+                ref={(el: any) => (buttonRefs.current[link.name] = el)}
                 onClick={() => toggleDropdown(link.name)}
                 className={clsx(
                   "flex items-center justify-between gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 w-full",
@@ -213,7 +236,10 @@ export default function NavLinks() {
               </button>
 
               {openDropdown === link.name && (
-                <div className="relative mt-1 w-full bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                <div
+                  ref={dropdownRef}
+                  className="relative mt-1 w-full bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+                >
                   <div className="py-1">
                     {link.submenu.map((submenuItem) => (
                       <Link
