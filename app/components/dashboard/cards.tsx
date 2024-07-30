@@ -29,7 +29,7 @@ const iconMap = {
   invoices: InboxIcon,
 };
 
-export default  function CardWrapper() {
+export default function CardWrapper() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector(selectUsers);

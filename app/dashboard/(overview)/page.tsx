@@ -11,7 +11,7 @@ import {
 import CardWrapper from "@/app/components/dashboard/cards";
 import { useTranslation } from "react-i18next";
 
-export default async function Page() {
+export default function Page() {
   const { t } = useTranslation();
   return (
     <main>

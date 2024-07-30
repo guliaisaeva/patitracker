@@ -10,8 +10,6 @@ import { logout } from "@/lib/features/login/loginSlice";
 import { useTranslation } from "react-i18next";
 import logo from "@/public/logo/patitracker_logo.png";
 
-// import { signOut } from '@/auth';
-
 export default function SideNav() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -50,9 +48,9 @@ export default function SideNav() {
         > */}
         <button
           onClick={handleLogout}
-          className="flex h-[48px] w-full grow text-black items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3"
+          className="hidden md:flex h-[48px] w-full grow text-black items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3"
         >
-          <PowerIcon className="w-6" />
+          <PowerIcon className="w-6 " />
           <div className="hidden md:block">{t("sign.out")}</div>
         </button>
       </div>
