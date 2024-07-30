@@ -13,11 +13,15 @@ import {
 } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 
-export function CreatePetBreed() {
+export function CreatePetBreed({
+  selectedPetType,
+}: {
+  selectedPetType: string;
+}) {
   const { t } = useTranslation();
   return (
     <Link
-      href="/dashboard/pets/petBreed/create"
+      href={`/dashboard/pets/petBreed/create?selectedPetType=${selectedPetType}`}
       className="flex h-10 items-center rounded-lg bg-orange-600 px-4 text-sm font-medium text-white transition-colors hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
     >
       <span className="hidden md:block">{t("petBreed.create")}</span>{" "}
@@ -60,9 +64,7 @@ export function DeleteBreed({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      dispatch(deletePetBreed(id));
-      dispatch(getAllPetBreeds(petTypeId));
-
+      dispatch(deletePetBreed(id)).unwrap();
       alert(t("petBreed.messages.deleteSuccess"));
     } catch (error) {
       console.error("Failed to delete pet breed:", error);

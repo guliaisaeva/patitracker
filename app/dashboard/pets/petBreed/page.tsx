@@ -15,34 +15,46 @@ import {
 import { AppDispatch } from "@/lib/store";
 import { selectPetBreeds } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
+import { useSearchParams, useRouter } from "next/navigation";
+
 const ITEMS_PER_PAGE = 10;
+
 export default function Page({
   searchParams,
 }: {
   searchParams?: {
     query?: string;
     page?: string;
+    selectedPetType?: string;
   };
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
+  const initialSelectedPetType = searchParams?.selectedPetType || "";
+
   const petTypes = useSelector(selectPetTypes);
   const petBreeds = useSelector(selectPetBreeds);
 
   const totalPetBreeds = petBreeds ? petBreeds.length : 0;
   const totalPages = Math.ceil(totalPetBreeds / ITEMS_PER_PAGE);
 
-  const [selectedPetType, setSelectedPetType] = useState<string>("");
+  const [selectedPetType, setSelectedPetType] = useState<string>(
+    initialSelectedPetType
+  );
 
   useEffect(() => {
     dispatch(getAllPetTypes());
   }, [dispatch]);
 
   const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPetType(event.target.value);
+    const value = event.target.value;
+
+    setSelectedPetType(value);
+    router.replace(`/dashboard/pets/petBreed?selectedPetType=${value}`);
   };
 
   // const hasBreeds = useSelector(state => {
@@ -78,7 +90,7 @@ export default function Page({
           <>
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
               <Search placeholder={t("petBreed.search.placeholder")} />
-              <CreatePetBreed />
+              <CreatePetBreed selectedPetType={selectedPetType} />
             </div>
             <Suspense
               key={query + currentPage}

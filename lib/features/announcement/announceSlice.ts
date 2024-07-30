@@ -247,17 +247,36 @@ export const announcementSlice = createSlice({
       })
       .addCase(
         updateAnnouncement.fulfilled,
-        (state, action: PayloadAction<UpdateAnnouncement>) => {
+        (state, action: PayloadAction<UpdateAnnouncement | null>) => {
           state.status = "succeeded";
+
+          if (!action.payload) {
+            state.status = "failed";
+            state.error = "Update payload is null";
+            return;
+          }
+
+          // Check if action.payload.id is a valid number
+          if (action.payload.id <= 0) {
+            state.status = "failed";
+            state.error = "Invalid announcement ID";
+            return;
+          }
+
           const index = state.announcement.findIndex(
-            (announce) => announce.id === action.payload.id
+            (announce) => announce?.id === action.payload?.id
           );
+
           if (index !== -1) {
             state.announcement[index] = {
               ...state.announcement[index],
               ...action.payload,
             };
+          } else {
+            state.status = "failed";
+            state.error = "Announcement not found";
           }
+
           state.loading = false;
           state.success = true;
         }

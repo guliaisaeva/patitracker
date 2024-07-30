@@ -63,7 +63,9 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
       try {
         dispatch(updatePetBreed(formState));
         alert(t("petBreed.messages.updateSuccess"));
-        router.replace("/dashboard/pets/petBreed");
+        router.replace(
+          `/dashboard/pets/petBreed?selectedPetType=${formState.petTypeId}`
+        );
       } catch (error) {
         alert(t("petBreed.messages.updateFailure"));
         console.error("Update Pet Breed Error:", error);

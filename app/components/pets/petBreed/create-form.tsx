@@ -17,14 +17,16 @@ import { useTranslation } from "react-i18next";
 import trFlag from "@/public/images/turkey.png";
 import ukFlag from "@/public/images/uk.png";
 import Link from "next/link";
-
-export default function Form() {
+interface FormProps {
+  selectedPetType: string; // Receive selected pet type from parent component or context
+}
+export default function Form({ selectedPetType }: FormProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const petTypes = useSelector(selectPetTypes);
   const petBreeds = useSelector(selectPetBreeds);
-  const [selectedPetType, setSelectedPetType] = useState<string>(""); // State to hold selected pet type ID
+  // const [selectedPetType, setSelectedPetType] = useState<string>(""); // State to hold selected pet type ID
 
   const [petBreedData, setPetBreedData] = useState({
     breedName: "",
@@ -46,10 +48,10 @@ export default function Form() {
     }
   }, [dispatch, selectedPetType]);
 
-  const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const typeId = event.target.value;
-    setSelectedPetType(typeId);
-  };
+  // const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const typeId = event.target.value;
+  //   setSelectedPetType(typeId);
+  // };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -65,12 +67,12 @@ export default function Form() {
       }));
     }
   };
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       if (petBreedData.breedName && selectedPetType) {
-        await dispatch(
+        dispatch(
           addPetBreed({
             petTypeId: Number(selectedPetType),
             languageId: petBreedData.languageId,
@@ -80,7 +82,7 @@ export default function Form() {
       }
 
       if (petBreedDataEn.breedName && selectedPetType) {
-        await dispatch(
+        dispatch(
           addPetBreed({
             petTypeId: Number(selectedPetType),
             languageId: petBreedDataEn.languageId,
@@ -99,7 +101,9 @@ export default function Form() {
       });
 
       alert(t("petBreed.messages.createSuccess"));
-      router.replace("/dashboard/pets/petBreed");
+      router.replace(
+        `/dashboard/pets/petBreed?selectedPetType=${selectedPetType}`
+      );
     } catch (err) {
       console.error("Failed to add pet breeds:", err);
       alert(t("petBreed.messages.createFailure"));
@@ -109,7 +113,7 @@ export default function Form() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <div className="mb-6 block w-full ">
+        {/* <div className="mb-6 block w-full ">
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
@@ -122,7 +126,7 @@ export default function Form() {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
         <div className="mb-4">
           <label
             htmlFor="breedName_tr"
