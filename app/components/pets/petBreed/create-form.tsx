@@ -24,7 +24,6 @@ export default function Form() {
   const router = useRouter();
   const petTypes = useSelector(selectPetTypes);
   const petBreeds = useSelector(selectPetBreeds);
-
   const [selectedPetType, setSelectedPetType] = useState<string>(""); // State to hold selected pet type ID
 
   const [petBreedData, setPetBreedData] = useState({
@@ -80,7 +79,6 @@ export default function Form() {
         );
       }
 
-      // Add English pet breed if fields are filled
       if (petBreedDataEn.breedName && selectedPetType) {
         await dispatch(
           addPetBreed({
@@ -91,7 +89,6 @@ export default function Form() {
         );
       }
 
-      // Reset the form inputs after successful submission
       setPetBreedData({
         breedName: "",
         languageId: 1,
@@ -116,7 +113,7 @@ export default function Form() {
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-600 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           >
             <option value="">{t("petBreed.select.petType")}</option>
             {petTypes.map((petType) => (

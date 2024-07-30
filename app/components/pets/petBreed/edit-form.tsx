@@ -107,7 +107,7 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               name="breedName"
               type="text"
               value={formState.breedName}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="breedName-error"
               onChange={handleInputChange}
               placeholder={t("petBreed.form.enterPetTypeTr")}
@@ -128,7 +128,7 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               name="petTypeId"
               value={formState.petTypeId}
               onChange={handleInputChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value="">{t("petBreed.select.petType")}</option>
               {petTypes.map((petType) => (
@@ -161,7 +161,7 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               name="breedName"
               type="text"
               value={formState.breedName}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="breedName-error"
               onChange={handleInputChange}
               placeholder={t("petBreed.form.enterPetTypeEn")}
@@ -182,7 +182,7 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               name="petTypeId"
               value={formState.petTypeId}
               onChange={handleInputChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value="">{t("petBreed.select.petType")}</option>
               {petTypes.map((petType) => (

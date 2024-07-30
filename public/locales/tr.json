@@ -341,6 +341,7 @@
   },
 
   "login": {
+    "login": "Giriş Yap",
     "title": "Lütfen giriş yapın.",
     "emailLabel": "E-posta",
     "emailPlaceholder": "E-posta adresinizi giriniz",

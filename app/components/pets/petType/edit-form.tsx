@@ -1,4 +1,3 @@
-
 "use client";
 
 import { PetsOutlined } from "@mui/icons-material";
@@ -121,7 +120,7 @@ export default function EditPetsForm({ PetTypeId }: { PetTypeId: number }) {
               name="petType_tr"
               type="text"
               value={petTypeDataTr}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="petType_tr-error"
               onChange={handleInputChange}
               placeholder={t("petType.form.enterPetTypeTr")}
@@ -153,7 +152,7 @@ export default function EditPetsForm({ PetTypeId }: { PetTypeId: number }) {
               name="petType_en"
               type="text"
               value={petTypeDataEn}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="petType_en-error"
               onChange={handleInputChange}
               placeholder={t("petType.form.enterPetTypeEn")}

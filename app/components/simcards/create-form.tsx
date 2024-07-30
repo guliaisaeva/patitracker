@@ -128,7 +128,7 @@ export default function Form() {
               type="text"
               value={simData.companyName}
               onChange={handleChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("simCard.form.placeholders.companyName")}
               required
             />
@@ -144,7 +144,7 @@ export default function Form() {
               type="text"
               value={simData.apn}
               onChange={handleChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("simCard.form.placeholders.apn")}
               required
             />
@@ -164,7 +164,7 @@ export default function Form() {
               name="countryPhoneCodeId"
               value={simData.countryPhoneCodeId}
               onChange={handleSelectChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             >
               <option value="">
                 {" "}
@@ -194,7 +194,7 @@ export default function Form() {
               type="number"
               value={simData.phoneNumber}
               onChange={handleChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("simCard.form.placeholders.phoneNumber")}
               required
             />
@@ -210,7 +210,7 @@ export default function Form() {
             name="dataSize"
             value={simData.dataSize}
             onChange={handleSelectChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           >
             <option value="">{t("simCard.form.placeholders.dataSize")}</option>
             {dataSizeList?.map((dataSize) => (
@@ -234,7 +234,7 @@ export default function Form() {
               id="registerDate"
               value={simData.registerDate}
               onChange={handleDateChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -252,7 +252,7 @@ export default function Form() {
               id="expirationDate"
               value={simData.expirationDate}
               onChange={handleDateChange}
-              className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
           </div>
@@ -288,7 +288,7 @@ export default function Form() {
                 name="deviceId"
                 value={simData.deviceId}
                 onChange={handleSelectChange}
-                className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+                className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               >
                 <option value="">
                   {t("simCard.form.placeholders.deviceId")}
@@ -317,7 +317,7 @@ export default function Form() {
           </Link>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             disabled={status === "loading"}
           >
             {status === t("load")

@@ -41,18 +41,19 @@ export default function Page() {
     <main className="flex min-h-screen flex-col p-6">
       <div
         className="flex h-20 items-center justify-center rounded-lg  p-4 md:h-52"
-        // style={{
-        //   backgroundImage:
-        //     "linear-gradient(to right top, #35c791, #70ba5c, #9ca92c, #c3910d, #e47126)",
-        // }}
         style={{
-          backgroundColor: "#25201C",
+          backgroundColor: "rgba(249, 250, 251,0.2)",
         }}
       >
         <TrackerLogo width={logoSize?.width} height={logoSize?.height} />
       </div>
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
+        <div
+          style={{
+            backgroundColor: "rgba(249, 250, 251,0.2)",
+          }}
+          className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20"
+        >
           <PetsIcon
             style={{
               width: `${iconSize.width}px`,
@@ -66,9 +67,10 @@ export default function Page() {
           </p>
           <Link
             href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+            className="flex items-center gap-5 self-start rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-400 md:text-base"
           >
-            <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
+            <span>{t("login.login")}</span>{" "}
+            <ArrowRightIcon className="w-5 md:w-6" />
           </Link>
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
@@ -80,7 +82,12 @@ export default function Page() {
             className="hidden md:block"
             alt="Screenshots of the dashboard project showing desktop version"
             priority
-            style={{ width: "auto", height: "auto" }}
+            style={{
+              width: "auto",
+              height: "auto",
+              border: "5px dotted #008e2a",
+              borderRadius: "50%",
+            }}
           />
           {/* <Image
             src="/dog.png"

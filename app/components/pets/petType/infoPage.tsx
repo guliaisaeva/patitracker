@@ -48,7 +48,7 @@ export default function PetTypeInfoForm({ PetTypeId }: { PetTypeId: number }) {
               name="typeName"
               type="text"
               value={selectedPetTypeById?.typeName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -68,7 +68,7 @@ export default function PetTypeInfoForm({ PetTypeId }: { PetTypeId: number }) {
               name="typeId"
               type="text"
               value={selectedPetTypeById?.typeId || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -92,7 +92,7 @@ export default function PetTypeInfoForm({ PetTypeId }: { PetTypeId: number }) {
                 name="languageId"
                 type="text"
                 value={languageText}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />

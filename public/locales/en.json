@@ -344,6 +344,7 @@
     }
   },
   "login": {
+    "login": "Log in",
     "title": "Please log in to continue.",
     "emailLabel": "Email",
     "emailPlaceholder": "Enter your email address",

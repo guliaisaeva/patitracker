@@ -53,7 +53,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
               name="companyName"
               type="text"
               value={selectedSimcard?.companyName || ""}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="userName-error"
               readOnly
             />
@@ -78,7 +78,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="phoneNumber"
                 type="text"
                 value={selectedSimcard?.phoneNumber || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -100,7 +100,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="apn"
                 type="text"
                 value={selectedSimcard?.apn || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -123,7 +123,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="dataSize"
                 type="text"
                 value={selectedSimcard?.dataSize || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="fullName-error"
                 readOnly
               />
@@ -148,7 +148,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="registerDate"
                 type="text"
                 defaultValue={selectedSimcard?.registerDate || ""}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -174,7 +174,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="expirationDate"
                 type="text"
                 defaultValue={selectedSimcard.expirationDate}
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="text-gray-500 *:peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 aria-describedby="email-error"
                 readOnly
               />
@@ -197,7 +197,7 @@ export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {
                 name="isActive"
                 type="text"
                 defaultValue={activityText}
-                className={`${activityClass} peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
+                className={`${activityClass} text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500`}
                 aria-describedby="address-error"
                 readOnly
               />

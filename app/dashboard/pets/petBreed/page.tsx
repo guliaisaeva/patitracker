@@ -63,7 +63,7 @@ export default function Page({
           <select
             value={selectedPetType}
             onChange={handlePetTypeChange}
-            className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            className="text-gray-600 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           >
             <option value="">{t("petBreed.select.petType")}</option>
             {petTypes.map((petType) => (
