@@ -83,12 +83,12 @@ export default function DevicesTable({
                       {announcement.detail}
                     </p>
                   </div>
+                </div>
+                <div className="flex w-full items-center justify-between pt-4">
                   <AnnouncementStatus
                     statusType="read"
                     status={announcement.isRead}
                   />
-                </div>
-                <div className="flex w-full items-center justify-between pt-4">
                   <div className="flex justify-end gap-2">
                     <AnnouncementInfo id={String(announcement.id)} />
                     <UpdateAnnouncement id={String(announcement.id)} />

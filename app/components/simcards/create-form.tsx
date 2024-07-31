@@ -112,7 +112,7 @@ export default function Form() {
     }));
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4 md:flex md:space-x-4">
           <div className="mb-4 md:mb-0 md:flex-1">

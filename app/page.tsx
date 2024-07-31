@@ -45,7 +45,11 @@ export default function Page() {
           backgroundColor: "rgba(249, 250, 251,0.2)",
         }}
       >
-        <TrackerLogo width={logoSize?.width} height={logoSize?.height} />
+        <TrackerLogo
+          style={{ width: "auto", height: "auto" }}
+          width={logoSize?.width}
+          height={logoSize?.height}
+        />
       </div>
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
         <div

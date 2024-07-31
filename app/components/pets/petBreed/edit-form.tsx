@@ -90,7 +90,7 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4">
           <label htmlFor="breedName" className="mb-2 block text-sm font-medium">

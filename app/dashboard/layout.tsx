@@ -3,6 +3,7 @@ import SideNav from "@/app/components/dashboard/sidenav";
 import Profile from "../components/profile";
 import LanguageSwitcher from "../components/languageSwitcher";
 import Footer from "../components/footer";
+import { Menu } from "@mui/icons-material";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

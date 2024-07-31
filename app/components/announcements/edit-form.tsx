@@ -84,7 +84,7 @@ export default function UpdateAnnouncementForm({
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6 ">
         <Image
           src={trFlag}

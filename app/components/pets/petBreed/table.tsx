@@ -73,7 +73,6 @@ export default function PetBreedTable({
                     </p>
                   </div>
                 </div>
-
                 <div className="flex justify-end gap-2">
                   <PetBreedInfo id={String(petBreed.breedId)} />
                   <UpdatePetBreed id={String(petBreed.breedId)} />
@@ -85,7 +84,7 @@ export default function PetBreedTable({
               </div>
             ))}
           </div>
-          <table className="min-w-full text-gray-900 md:table">
+          <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-3 py-5 font-medium">

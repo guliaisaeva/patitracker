@@ -29,7 +29,7 @@ export default function CustomerInfoForm({ userId }: { userId: number }) {
     e.preventDefault();
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4 flex items-center justify-center">
           {selectedUser?.profileImageUrl ? (

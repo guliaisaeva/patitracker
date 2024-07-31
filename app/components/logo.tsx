@@ -6,12 +6,17 @@ interface TrackerLogoProps {
   className?: string;
   width?: number;
   height?: number;
+  style?: React.CSSProperties;
 }
 export default function TrackerLogo({
-  width,
+  width = 100,
   height,
   className,
+  style,
 }: TrackerLogoProps) {
+  const aspectRatio = Logo.height / Logo.width;
+  const calculatedHeight = height || width * aspectRatio;
+
   return (
     <div
       className={`${lusitana.className} flex flex-row items-center leading-none text-white`}
@@ -21,9 +26,8 @@ export default function TrackerLogo({
         alt="logo"
         className={className}
         width={width}
-        height={height}
-        style={{ width: "auto", height: "auto" }}
-        priority
+        height={calculatedHeight}
+        style={style}
       />
     </div>
   );

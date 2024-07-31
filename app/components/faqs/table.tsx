@@ -64,10 +64,11 @@ export default function QuestionTable({
                     <p className="text-sm text-gray-500">{question.detail}</p>
                   </div>
                 </div>
-                <div className="flex w-full items-center justify-between pt-4">
+                <div className="flex w-full items-center justify-end pt-4">
                   <div className="flex justify-end gap-2">
-                    <DeviceInfo id={String(question.id)} />
-                    <DeleteDevice id={String(question.id)} />
+                    <QuestionInfo id={String(question.id)} />
+                    <UpdateQuestion id={String(question.id)} />
+                    <DeleteQuestion id={question.id} />
                   </div>
                 </div>
               </div>

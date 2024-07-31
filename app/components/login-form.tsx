@@ -8,16 +8,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { Button } from "./button";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/store";
+import { AppDispatch } from "@/lib/store";
 import {
   loginUser,
   selectAuthError,
   selectAuthStatus,
   selectAuthToken,
 } from "@/lib/features/login/loginSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
