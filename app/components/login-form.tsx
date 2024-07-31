@@ -122,7 +122,6 @@ export default function LoginForm() {
               <p className="text-sm text-red-500">{t("login.formError")}</p>
             </>
           )}
-          {/* Add form errors here */}
         </div>
       </div>
     </form>

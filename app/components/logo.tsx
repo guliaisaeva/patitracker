@@ -9,7 +9,7 @@ interface TrackerLogoProps {
   style?: React.CSSProperties;
 }
 export default function TrackerLogo({
-  width = 100,
+  width = 80,
   height,
   className,
   style,
@@ -28,6 +28,7 @@ export default function TrackerLogo({
         width={width}
         height={calculatedHeight}
         style={style}
+        priority
       />
     </div>
   );
