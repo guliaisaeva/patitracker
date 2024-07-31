@@ -87,18 +87,9 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
                               }}
                             />
                           ) : (
-                            <img
-                              src="https://via.placeholder.com/28"
-                              className="mr-2 rounded-full"
-                              width={28}
-                              height={28}
-                              alt={`${user.fullName}'s profile picture`}
-                              style={{
-                                width: "28px",
-                                height: "28px",
-                                borderRadius: "50%",
-                              }}
-                            />
+                            <div className="mr-2 rounded-full w-7 h-7 flex items-center justify-center bg-gray-300 text-gray-600">
+                              {user.fullName.charAt(0)}
+                            </div>
                           )}
                           <p>{user.userName}</p>
                         </div>
@@ -165,18 +156,9 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
                             }}
                           />
                         ) : (
-                          <img
-                            src="https://via.placeholder.com/28"
-                            className="mr-2 rounded-full"
-                            width={28}
-                            height={28}
-                            alt={`${user.fullName}'s profile picture`}
-                            style={{
-                              width: "28px",
-                              height: "28px",
-                              borderRadius: "50%",
-                            }}
-                          />
+                          <div className="mr-2 rounded-full w-7 h-7 flex items-center justify-center bg-gray-300 text-gray-600">
+                            {user.fullName.charAt(0)}
+                          </div>
                         )}
                         <p>{user.userName}</p>
                       </div>

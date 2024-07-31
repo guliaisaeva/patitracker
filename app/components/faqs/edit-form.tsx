@@ -43,7 +43,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
     }
   }, [selectedQuestionDetail]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const questionToSend: UpdateQuestion[] = [];
@@ -71,7 +71,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
         throw new Error("No valid data to update.");
       }
       for (const question of questionToSend) {
-        const result = await dispatch(updateQuestion(question)).unwrap();
+        const result = dispatch(updateQuestion(question)).unwrap();
       }
       alert(t("faq.messages.updateSuccess"));
       router.replace("/dashboard/faqs");
@@ -81,7 +81,7 @@ export default function UpdateFaqForm({ questionId }: { questionId: number }) {
     }
   };
   return (
-    <form  className="my-6" onSubmit={handleSubmit}>
+    <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <Image
           src={trFlag}

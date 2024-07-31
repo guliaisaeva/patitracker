@@ -84,7 +84,7 @@ export default function SideNav() {
   };
 
   return (
-    <div className="flex h-full flex-col px-3 py-4 md:px-2">
+    <div className="flex h-full flex-col px-3 py-4 md:px-2 ">
       <Link
         className="mb-2 flex h-20 items-end justify-center rounded-md bg-customGray p-4 md:h-40"
         href="/"
@@ -100,7 +100,7 @@ export default function SideNav() {
           />
         </div>
       </Link>
-      <div className="  grow flex-row justify-between space-y-2 md:flex-col md:space-x-0 md:space-y-2">
+      <div className="grow flex-row justify-between space-y-2 md:flex-col md:space-x-0 md:space-y-2">
         <button
           className="md:hidden   flex items-left bg-transparent"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -111,7 +111,6 @@ export default function SideNav() {
             <Menu className="w-6 h-6 text-orange-600" />
           )}
         </button>
-
         <div
           className={`${
             menuOpen ? "block" : "hidden"
@@ -120,7 +119,6 @@ export default function SideNav() {
           <NavLinks />
         </div>
 
-        <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
         <button
           onClick={handleLogout}
           className="hidden md:flex h-[48px] w-full grow text-black items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-green-100 hover:text-green-600 md:flex-none md:justify-start md:p-2 md:px-3"
