@@ -1,10 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDevicesStatus,
-  selectDevicesError,
-} from "@/lib/features/devices/addDeviceSlice";
+
 import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
@@ -12,6 +9,8 @@ import { addAnnouncement } from "@/lib/features/announcement/announceSlice";
 import {
   getUsersAsync,
   selectUserProfileId,
+  selectUsersError,
+  selectUsersStatus,
 } from "@/lib/features/users/usersSlice";
 import { useTranslation } from "react-i18next";
 import trFlag from "@/public/images/turkey.png";
@@ -22,8 +21,8 @@ export default function Form() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const status = useSelector(selectDevicesStatus);
-  const error = useSelector(selectDevicesError);
+  const status = useSelector(selectUsersStatus);
+  const error = useSelector(selectUsersError);
   const userProfileId = useSelector(selectUserProfileId);
 
   const [trTitle, setTrTitle] = useState("");
@@ -161,7 +160,7 @@ export default function Form() {
         )}
         <div className="mt-6 flex justify-end gap-4">
           <Link
-            href="/dashboard/announcements"
+            href="/dashboard/customers"
             className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
           >
             {t("cancel")}

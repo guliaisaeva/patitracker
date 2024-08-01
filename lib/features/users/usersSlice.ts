@@ -1,17 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
+import { CONST } from "@/lib/const";
 
-const token =
-  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIxNzM5NjI5LCJleHAiOjE3NTMyNzU2MjksImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.gs7d4Kd7HM0uY5NEQAEVBPWe5_WicAt51zJp8DQTrwA";
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
+
 export const getUsers = async () => {
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/User/GetAllUser",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(CONST.getAllUserURL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();
@@ -30,14 +28,11 @@ export const getUsersAsync = createAsyncThunk("users/getUsers", async () => {
 });
 
 export const getUserById = async (userId: number) => {
-  const response = await fetch(
-    `http://185.46.55.50:50235/api/v1/User/GetUser?userId=${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(`${CONST.getUserDetailURL}?userId=${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();
@@ -58,17 +53,14 @@ export const getUserByIdAsync = createAsyncThunk(
 );
 
 export const searchUsers = async (searchWord: string) => {
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/User/SearchUser",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ searchWord }),
-    }
-  );
+  const response = await fetch(CONST.searchUserURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ searchWord }),
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();
@@ -90,14 +82,11 @@ export const searchUsersAsync = createAsyncThunk(
 );
 
 export const getSuperAdminDetail = async () => {
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/SuperAdmin/GetAdminDetail",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(CONST.getSuperAdminDetailURL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();

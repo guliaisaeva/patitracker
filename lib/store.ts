@@ -1,11 +1,9 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { counterSlice } from "./features/counter/counterSlice";
 import { quotesApiSlice } from "./features/quotes/quotesApiSlice";
 import { userSlice } from "./features/users/usersSlice";
 import { managerSlice } from "./features/managers/managersSlice";
 import { devicesSlice } from "./features/devices/devicesSlice";
-import { addDeviceSlice } from "./features/devices/addDeviceSlice";
 import { simsSlice } from "./features/sims/simsSlice";
 import { petTypeSlice } from "./features/pet/petTypesSlice";
 import { petBreedSlice } from "./features/pet/petBreedSlice";
@@ -17,12 +15,10 @@ import { languageSlice } from "./features/languages/languagesSlice";
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices(
-  counterSlice,
   quotesApiSlice,
   userSlice,
   managerSlice,
   devicesSlice,
-  addDeviceSlice,
   simsSlice,
   petTypeSlice,
   petBreedSlice,

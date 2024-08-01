@@ -1,18 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
+import { CONST } from "@/lib/const";
+
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export const getAllSims = async () => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzE4MTAwNDg4LCJleHAiOjE3NDk2MzY0ODgsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.BP7BpHkxIG1jLLy3BRdDxOMuYbDYor3imM9AQmXyDD4";
-
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/SimCard/GetAllSimCards",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(CONST.getAllSimURL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();
@@ -34,11 +31,8 @@ export const getAllSimsAsync = createAsyncThunk(
 );
 
 export const getSimsDetail = async (simCardId: number) => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-
   const response = await fetch(
-    `http://185.46.55.50:50235/api/v1/SimCard/GetSimCardsDetail?simCardId=${simCardId}`,
+    `${CONST.getSimDetailURL}?simCardId=${simCardId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,11 +61,8 @@ export const getSimDetailsAsync = createAsyncThunk(
 export const deleteSimCardAsync = createAsyncThunk(
   "simcards/deleteSimcard",
   async (simCardId: number) => {
-    const token =
-      "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9"; // Replace with your JWT token
-
     const response = await fetch(
-      `http://185.46.55.50:50235/api/v1/SimCard/DeleteSimCard?simCardId=${simCardId}`,
+      `${CONST.deleteSimURL}?simCardId=${simCardId}`,
       {
         method: "DELETE",
         headers: {
@@ -94,20 +85,14 @@ export const deleteSimCardAsync = createAsyncThunk(
 export const addSimCardAsync = createAsyncThunk(
   "simcards/addSimcard",
   async (simCardData: AddSimCard) => {
-    const token =
-      "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9"; // Replace with your JWT token
-
-    const response = await fetch(
-      "http://185.46.55.50:50235/api/v1/SimCard/AddSimCard",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify([simCardData]), // Assuming simCardData is an array of objects as in your example
-      }
-    );
+    const response = await fetch(CONST.addSimURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify([simCardData]),
+    });
 
     if (!response.ok) {
       const errorDetail = await response.text();
@@ -124,17 +109,11 @@ export const addSimCardAsync = createAsyncThunk(
 export const getAllSimsForConnectDevice = async (): Promise<
   SimWithDevice[]
 > => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/SimCard/GetAllSimForConnectDevice",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(CONST.getAllSimsForConnectDeviceURL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();
@@ -156,17 +135,11 @@ export const getAllSimsForConnectDeviceAsync = createAsyncThunk(
 );
 
 export const GetAllPhoneCode = async (): Promise<CountryPhoneCode[]> => {
-  const token =
-    "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-
-  const response = await fetch(
-    "http://185.46.55.50:50235/api/v1/Information/GetAllPhoneCode",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(CONST.getAllPhoneCodesURL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     const errorDetail = await response.text();

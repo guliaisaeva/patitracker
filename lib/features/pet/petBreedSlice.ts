@@ -5,16 +5,16 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
+import { CONST } from "@/lib/const";
 
-const token =
-  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export const getAllPetBreeds = createAsyncThunk(
   "pets/getAllPetBreeds",
   async (petTypeId: string, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Pet/GetAllPetBreed?petTypeId=${petTypeId}`,
+        `${CONST.getAllPetBreedURL}?petTypeId=${petTypeId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export const getAllPetBreeds = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data.data; // Adjust this based on your API response structure
+      return data.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -43,7 +43,7 @@ export const getPetBreedDetail = createAsyncThunk(
   async (petBreedId: number, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Pet/GetPetBreed?petBreedId=${petBreedId}`,
+        `${CONST.getPetBreedDetailURL}?petBreedId=${petBreedId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,18 +71,15 @@ export const addPetBreed = createAsyncThunk(
   "petBreeds/addPetBreed",
   async (newPetBreed: PetBreed, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Pet/AddPetBreed",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify([newPetBreed]),
-        }
-      );
+      const response = await fetch(CONST.addPetBreedURL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([newPetBreed]),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -90,7 +87,6 @@ export const addPetBreed = createAsyncThunk(
           `Failed to add pet breed: ${response.statusText} - ${errorDetail}`
         );
       }
-
       const data = await response.json();
       return data.data;
     } catch (error: any) {
@@ -103,18 +99,15 @@ export const updatePetBreed = createAsyncThunk(
   "petBreeds/updatePetBreed",
   async (updatedPetBreed: PetBreed, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Pet/UpdatePetBreed",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedPetBreed),
-        }
-      );
+      const response = await fetch(CONST.updatePetBreedURL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedPetBreed),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -135,7 +128,7 @@ export const deletePetBreed = createAsyncThunk(
   "petBreed/deletePetBreed",
   async (petBreedId: number, { rejectWithValue }) => {
     const response = await fetch(
-      `http://185.46.55.50:50235/api/v1/Pet/DeletePetBreed?petId=${petBreedId}`,
+      `${CONST.deletePetBreedURL}?petId=${petBreedId}`,
       {
         method: "POST",
         headers: {

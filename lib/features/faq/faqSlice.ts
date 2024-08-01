@@ -1,22 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
+import { CONST } from "@/lib/const";
 
-const token =
-  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export const getAllQuestions = createAsyncThunk(
   "questions/getAllQuestions",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/GetAllFrequentlyAskedQuestion",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(CONST.getAllQuestionURL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -37,7 +34,7 @@ export const getQuestionDetail = createAsyncThunk(
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Information/GetFrequentlyAskedQuestionDetail?questionId=${id}`,
+        `${CONST.getQuestionDetailURL}?questionId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +63,7 @@ export const deleteQuestion = createAsyncThunk(
   async (questionId: number, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Information/DeleteFrequentlyAskedQuestion?questionsId=${questionId}`,
+        `${CONST.deleteQuestionURL}?questionsId=${questionId}`,
         {
           method: "POST",
           headers: {
@@ -94,17 +91,14 @@ export const addQuestion = createAsyncThunk(
   "questions/addQuestion",
   async (newQuestion: NewQuestion, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/AddFrequentlyAskedQuestion",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify([newQuestion]),
-        }
-      );
+      const response = await fetch(CONST.addQuestionURL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([newQuestion]),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -126,18 +120,15 @@ export const updateQuestion = createAsyncThunk(
 
   async (updatedQuestion: UpdateQuestion, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/UpdateFrequentlyAskedQuestion",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedQuestion),
-        }
-      );
+      const response = await fetch(CONST.updateQuestionURL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedQuestion),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();

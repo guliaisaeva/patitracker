@@ -1,22 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
-
-const token =
-  "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
+import { CONST } from "@/lib/const";
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export const getAllAnnouncement = createAsyncThunk(
   "announcement/getAllAnnouncement",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/GetAllAnnouncementWeb",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(CONST.getAllAnnouncementURL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -37,7 +33,7 @@ export const getAnnouncementDetail = createAsyncThunk(
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Information/GetAnnouncementDetailWebAsync?announcementId=${id}`,
+        `${CONST.getAnnouncementDetailURL}?announcementId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +62,7 @@ export const deleteAnnouncement = createAsyncThunk(
   async (announcementId: number, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://185.46.55.50:50235/api/v1/Information/DeleteAnnouncement?announcementId=${announcementId}`,
+        `${CONST.deleteAnnouncementURL}?announcementId=${announcementId}`,
         {
           method: "POST",
           headers: {
@@ -94,17 +90,14 @@ export const addAnnouncement = createAsyncThunk(
   "announcement/addAnnouncement",
   async (newAnnouncement: NewAnnouncement, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/AddAnnouncement",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newAnnouncement),
-        }
-      );
+      const response = await fetch("CONST.addAnnouncementURL", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newAnnouncement),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
@@ -126,18 +119,15 @@ export const updateAnnouncement = createAsyncThunk(
 
   async (updateAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/Information/UpdateAnnouncement",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateAnnouncement),
-        }
-      );
+      const response = await fetch("CONST.updateAnnouncementURL", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateAnnouncement),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();

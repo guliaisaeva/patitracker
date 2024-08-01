@@ -61,9 +61,9 @@ export function DeleteAnnouncement({ id }: { id: number }) {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <button className="rounded-md border p-2  hover:bg-gray-100">
+      <button className="rounded-md border p-2 hover:bg-green-100  hover:text-black">
         <span className="sr-only">{t("delete")}</span>
-        <TrashIcon className="w-5" />
+        <TrashIcon className="w-4" />
       </button>
     </form>
   );

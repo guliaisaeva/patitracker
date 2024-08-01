@@ -1,3 +1,4 @@
+import { CONST } from "@/lib/const";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface AuthState {
   user: any | null;
@@ -22,17 +23,14 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetch(
-        "http://185.46.55.50:50235/api/v1/ManagerAuth/Login",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-        }
-      );
+      const response = await fetch(CONST.loginURL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();

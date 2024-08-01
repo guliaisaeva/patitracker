@@ -17,7 +17,7 @@ export default function RevenueChart() {
   ];
 
   const size = {
-    width: 500,
+    width: 400,
     height: 300,
   };
   const smallSize = {
@@ -62,7 +62,7 @@ export default function RevenueChart() {
       <div className="rounded-xl bg-gray-50 p-4">
         <div className="mt-0 grid grid-cols-12 items-end  rounded-md bg-white p-4 gap-2 sm:grid-cols-13 md:gap-4">
           <div className="hidden sm:block">
-            <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
+            <PieChart series={[{ data, innerRadius: 90 }]} {...size}>
               <PieCenterLabel size={size}>
                 {t("revenueChart.total")}
               </PieCenterLabel>

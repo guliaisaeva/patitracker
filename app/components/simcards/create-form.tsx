@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDevicesStatus,
-  selectDevicesError,
-} from "@/lib/features/devices/addDeviceSlice";
+
 import {
   selectCountryPhoneCode,
   addSimCardAsync,
   AddSimCard,
-  selectSimWithDevice,
   GetAllPhoneCodeAsync,
 } from "@/lib/features/sims/simsSlice";
 import { AppDispatch } from "@/lib/store";
 import {
   getDevicesForConnectSimAsync,
+  selectDevicesError,
+  selectDevicesStatus,
   selectDevicesWithSim,
 } from "@/lib/features/devices/devicesSlice";
 import { useTranslation } from "react-i18next";

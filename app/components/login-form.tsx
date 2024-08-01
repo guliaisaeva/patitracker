@@ -34,25 +34,30 @@ export default function LoginForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const mobileDeviceToken =
-  //     "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InNAYS5jb20iLCJGaXJzdE5hbWUiOiJTdXBlckFkbWluIiwiTGFzdE5hbWUiOiJTdXBlckFkbWluIiwiQXNwVXNlcklkIjoiYzI3MzZkNzktODkxNi00NmY1LTgxODEtMzFmZWJlNTU4OTA5IiwiUm9sZXMiOiJTdXBlckFkbWluIiwibmJmIjoxNzIwMDk0MjA3LCJleHAiOjE3NTE2MzAyMDcsImlzcyI6Imh0dHBzOi8vd3d3LnBhdGl0cmFja2VyLmNvbS8iLCJhdWQiOiJodHRwczovL3d3dy5wYXRpdHJhY2tlci5jb20vIn0.t399sVvHN2IGtPsLG7YH9oRkVhSbGAcr00ecFpMiF3M";
-  //   dispatch(loginUser({ email, password, mobileDeviceToken }));
-  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const mobileDeviceToken =
       "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9";
 
-    const resultAction = await dispatch(
-      loginUser({ email, password, mobileDeviceToken })
-    );
+    try {
+      const resultAction = await dispatch(
+        loginUser({ email, password, mobileDeviceToken })
+      );
 
-    if (loginUser.fulfilled.match(resultAction)) {
-      router.replace("/dashboard");
-    } else if (loginUser.rejected.match(resultAction)) {
-      setFormError(resultAction.payload as string);
+      if (loginUser.fulfilled.match(resultAction)) {
+        // Save token to localStorage
+        if (resultAction.payload.token) {
+          localStorage.setItem("authToken", resultAction.payload.token);
+        }
+        router.replace("/dashboard");
+      } else if (loginUser.rejected.match(resultAction)) {
+        setFormError(resultAction.payload as string);
+        setEmail("");
+        setPassword("");
+        router.replace("/");
+      }
+    } catch (error) {
+      setFormError("An unexpected error occurred.");
       setEmail("");
       setPassword("");
       router.replace("/");

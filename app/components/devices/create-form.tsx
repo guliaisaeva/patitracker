@@ -1,12 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addDeviceAsync,
-  selectDevicesStatus,
-  selectDevicesError,
-  DeviceToAdd,
-} from "@/lib/features/devices/addDeviceSlice";
+
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
 import {
@@ -15,6 +10,12 @@ import {
 } from "@/lib/features/sims/simsSlice";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import {
+  addDeviceAsync,
+  DeviceToAdd,
+  selectDevicesError,
+  selectDevicesStatus,
+} from "@/lib/features/devices/devicesSlice";
 
 export default function Form() {
   const { t } = useTranslation();
@@ -149,7 +150,7 @@ export default function Form() {
                 className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               >
                 <option value="">{t("device.form.selectSimNumber")}</option>
-                {SimWithDevice?.map((sim) => (
+                {SimWithDevice?.map((sim: any) => (
                   <option key={sim?.simCardId} value={sim.simCardId}>
                     {sim.simCardNumber}
                   </option>

@@ -137,7 +137,7 @@ export default function LineCharts() {
 
   // Define sizes for different breakpoints
   const size = {
-    width: 500,
+    width: 400,
     height: 300,
   };
 

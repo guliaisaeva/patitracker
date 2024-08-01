@@ -1,14 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDevicesStatus,
-  selectDevicesError,
-} from "@/lib/features/devices/addDeviceSlice";
+
 import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
-import { addAnnouncement } from "@/lib/features/announcement/announceSlice";
+import { addAnnouncement, selectAnnouncementError, selectAnnouncementStatus } from "@/lib/features/announcement/announceSlice";
 import {
   getUsersAsync,
   selectUserProfileId,
@@ -22,8 +19,8 @@ export default function Form() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const status = useSelector(selectDevicesStatus);
-  const error = useSelector(selectDevicesError);
+  const status = useSelector(selectAnnouncementStatus);
+  const error = useSelector(selectAnnouncementError);
   const userProfileId = useSelector(selectUserProfileId);
 
   const [trTitle, setTrTitle] = useState("");

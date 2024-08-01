@@ -1,10 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectDevicesStatus,
-  selectDevicesError,
-} from "@/lib/features/devices/addDeviceSlice";
 import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
@@ -12,6 +8,8 @@ import Link from "next/link";
 import {
   getQuestionDetail,
   selectQuestionDetail,
+  selectQuestionsError,
+  selectQuestionsStatus,
 } from "@/lib/features/faq/faqSlice";
 import trFlag from "@/public/images/turkey.png";
 import ukFlag from "@/public/images/uk.png";
@@ -25,8 +23,8 @@ export default function QuestionInfoForm({
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const status = useSelector(selectDevicesStatus);
-  const error = useSelector(selectDevicesError);
+  const status = useSelector(selectQuestionsStatus);
+  const error = useSelector(selectQuestionsError);
 
   const selectedQuestionDetail = useSelector(selectQuestionDetail);
 
