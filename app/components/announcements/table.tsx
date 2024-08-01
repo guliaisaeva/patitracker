@@ -20,12 +20,14 @@ import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = 10;
 
-export default function DevicesTable({
+export default function AnnouncementTable({
   query,
   currentPage,
+  filteredResultsCount,
 }: {
   query: string;
   currentPage: number;
+  filteredResultsCount: number;
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +45,6 @@ export default function DevicesTable({
       announcements?.detail?.toLowerCase().includes(query.toLowerCase())
   );
 
-  // Calculate pagination offsets
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const announcementToShow = filteredAnnouncement?.slice(startIndex, endIndex);

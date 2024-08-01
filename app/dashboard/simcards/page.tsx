@@ -6,7 +6,7 @@ import Table from "@/app/components/simcards/table";
 import { CreateSimCard } from "@/app/components/simcards/buttons";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 
@@ -29,11 +29,26 @@ export default function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const sims = useSelector(selectSims);
   const totalSims = sims ? sims.length : 0;
-  const totalPages = Math.ceil(totalSims / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
 
   useEffect(() => {
     dispatch(getAllSimsAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (sims) {
+      const filteredSims = sims?.filter(
+        (sim) =>
+          sim.companyName.toLowerCase().includes(query.toLowerCase()) ||
+          sim.apn.toLowerCase().includes(query.toLowerCase()) ||
+          sim.dataSize.toLowerCase().includes(query.toLowerCase()) ||
+          sim.phoneNumber.includes(query)
+      ).length;
+      setFilteredResultsCount(filteredSims);
+    }
+  }, [sims, query]);
+
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <div className="w-full">
@@ -49,9 +64,11 @@ export default function Page({
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

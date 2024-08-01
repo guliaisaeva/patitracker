@@ -4,7 +4,7 @@ import Search from "@/app/components/search";
 import Table from "@/app/components/customers/table";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { getUsersAsync, selectUsers } from "@/lib/features/users/usersSlice";
@@ -26,12 +26,25 @@ export default function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const users = useSelector(selectUsers);
-  const totalUsers = users ? users.length : 0;
-  const totalPages = Math.ceil(totalUsers / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
 
   useEffect(() => {
     dispatch(getUsersAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (users) {
+      const filteredUsers = users.filter(
+        (user) =>
+          user.userName.toLowerCase().includes(query.toLowerCase()) ||
+          user.fullName.toLowerCase().includes(query.toLowerCase()) ||
+          user.email.toLowerCase().includes(query.toLowerCase()) ||
+          user.address.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredUsers);
+    }
+  }, [users, query]);
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <div className="w-full">
@@ -45,9 +58,11 @@ export default function Page({
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

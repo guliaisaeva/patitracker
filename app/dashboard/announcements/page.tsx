@@ -5,7 +5,7 @@ import Search from "@/app/components/search";
 import Table from "@/app/components/announcements/table";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { CreateAnnouncement } from "@/app/components/announcements/buttons";
@@ -30,12 +30,24 @@ export default function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const announcements = useSelector(selectAnnouncements);
-  const totalAnnouncements = announcements ? announcements.length : 0;
-  const totalPages = Math.ceil(totalAnnouncements / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
 
   useEffect(() => {
     dispatch(getAllAnnouncement());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (announcements) {
+      const filteredCount = announcements.filter(
+        (announcement) =>
+          announcement?.title?.toLowerCase().includes(query.toLowerCase()) ||
+          announcement?.detail?.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredCount);
+    }
+  }, [announcements, query]);
+
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <div className="w-full">
@@ -49,11 +61,17 @@ export default function Page({
         <CreateAnnouncement />
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} />
+        <Table
+          query={query}
+          currentPage={currentPage}
+          filteredResultsCount={filteredResultsCount}
+        />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

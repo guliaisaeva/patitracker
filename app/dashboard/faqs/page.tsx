@@ -5,7 +5,7 @@ import Search from "@/app/components/search";
 import Table from "@/app/components/faqs/table";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { getAllQuestions, selectQuestions } from "@/lib/features/faq/faqSlice";
@@ -27,12 +27,24 @@ export default function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const questions = useSelector(selectQuestions);
-  const totalQuestions = questions ? questions.length : 0;
-  const totalPages = Math.ceil(totalQuestions / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
 
   useEffect(() => {
     dispatch(getAllQuestions());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (questions) {
+      const filteredAnnouncement = questions?.filter(
+        (question) =>
+          question?.title?.toLowerCase().includes(query.toLowerCase()) ||
+          question?.detail?.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredAnnouncement);
+    }
+  }, [questions, query]);
+
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <div className="w-full">
@@ -46,9 +58,11 @@ export default function Page({
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

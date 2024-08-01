@@ -5,7 +5,7 @@ import Table from "@/app/components/devices/table";
 import { CreateDevice } from "@/app/components/devices/buttons";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import {
@@ -31,11 +31,24 @@ export default function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const devices = useSelector(selectDevices);
   const totalDevices = devices ? devices.length : 0;
-  const totalPages = Math.ceil(totalDevices / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
 
   useEffect(() => {
     dispatch(getDevicesAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (devices) {
+      const filteredDevices = devices?.filter(
+        (device) =>
+          device.deviceNumber.toLowerCase().includes(query.toLowerCase()) ||
+          device.deviceModel.toLowerCase().includes(query.toLowerCase()) ||
+          device.simNumber.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredDevices);
+    }
+  }, [devices, query]);
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <div className="w-full">
@@ -51,9 +64,12 @@ export default function Page({
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

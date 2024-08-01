@@ -6,7 +6,7 @@ import Table from "@/app/components/managers/table";
 import { CreateManager } from "@/app/components/managers/buttons";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectManagers } from "@/lib/features/managers/managersSlice";
 import { useTranslation } from "react-i18next";
@@ -25,11 +25,22 @@ export default function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const managers = useSelector(selectManagers);
-  const totalManagers = managers ? managers.length : 0;
-  const totalPages = Math.ceil(totalManagers / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
+  useEffect(() => {
+    if (managers) {
+      const filteredManagers = managers?.filter(
+        (manager) =>
+          manager.fullName.toLowerCase().includes(query.toLowerCase()) ||
+          manager.userName.toLowerCase().includes(query.toLowerCase()) ||
+          manager.email.toLowerCase().includes(query.toLowerCase()) ||
+          manager.address.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredManagers);
+    }
+  }, [managers, query]);
 
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
   return (
-    
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`${lusitana.className} text-2xl`}>
@@ -43,9 +54,11 @@ export default function Page({
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
+      {filteredResultsCount > 0 && (
+        <div className="mt-5 flex w-full justify-center">
+          <Pagination totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

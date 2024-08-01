@@ -25,14 +25,13 @@ export default function QuestionTable({
     dispatch(getAllQuestions());
   }, [dispatch]);
 
-  // Filter devices based on search query
   const filteredAnnouncement = questions?.filter(
     (question) =>
       question?.title?.toLowerCase().includes(query.toLowerCase()) ||
       question?.detail?.toLowerCase().includes(query.toLowerCase())
   );
+  
 
-  // Calculate pagination offsets
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const questionsToShow = filteredAnnouncement?.slice(startIndex, endIndex);

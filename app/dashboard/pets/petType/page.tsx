@@ -6,7 +6,7 @@ import Table from "@/app/components/pets/petType/table";
 import { CreatePetType } from "@/app/components/pets/petType/buttons";
 import { lusitana } from "@/app/components/fonts";
 import { InvoicesTableSkeleton } from "@/app/components/skeletons";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectPetTypes } from "@/lib/features/pet/petTypesSlice";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,18 @@ export default function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const petTypes = useSelector(selectPetTypes);
   const totalPetTypes = petTypes ? petTypes.length : 0;
-  const totalPages = Math.ceil(totalPetTypes / ITEMS_PER_PAGE);
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
+
+  useEffect(() => {
+    if (petTypes) {
+      const filteredPetTypes = petTypes?.filter((petType) =>
+        petType.typeName.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredPetTypes);
+    }
+  }, [petTypes, query]);
+
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -45,9 +56,11 @@ export default function Page({
           <Table query={query} currentPage={currentPage} />
         </Suspense>
 
-        <div className="mt-5 flex w-full justify-center">
-          <Pagination totalPages={totalPages} />
-        </div>
+        {filteredResultsCount > 0 && (
+          <div className="mt-5 flex w-full justify-center">
+            <Pagination totalPages={totalPages} />
+          </div>
+        )}
       </div>
     </>
   );

@@ -38,10 +38,7 @@ export default function Page({
 
   const petTypes = useSelector(selectPetTypes);
   const petBreeds = useSelector(selectPetBreeds);
-
-  const totalPetBreeds = petBreeds ? petBreeds.length : 0;
-  const totalPages = Math.ceil(totalPetBreeds / ITEMS_PER_PAGE);
-
+  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
   const [selectedPetType, setSelectedPetType] = useState<string>(
     initialSelectedPetType
   );
@@ -52,16 +49,20 @@ export default function Page({
 
   const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-
     setSelectedPetType(value);
     router.replace(`/dashboard/pets/petBreed?selectedPetType=${value}`);
   };
 
-  // const hasBreeds = useSelector(state => {
-  //   // Replace with actual selector logic to check if there are breeds for selectedPetType
-  //   const breeds = state.petBreeds.breedsByType[selectedPetType];
-  //   return breeds && breeds.length > 0;
-  // });
+  useEffect(() => {
+    if (petBreeds) {
+      const filteredPetBreeds = petBreeds?.filter((petBreed) =>
+        petBreed.breedName.toLowerCase().includes(query.toLowerCase())
+      ).length;
+      setFilteredResultsCount(filteredPetBreeds);
+    }
+  }, [petBreeds, query]);
+
+  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -103,9 +104,11 @@ export default function Page({
               />
             </Suspense>
 
-            <div className="mt-5 flex w-full justify-center">
-              <Pagination totalPages={totalPages} />
-            </div>
+            {filteredResultsCount > 0 && (
+              <div className="mt-5 flex w-full justify-center">
+                <Pagination totalPages={totalPages} />
+              </div>
+            )}
           </>
         )}
       </div>
