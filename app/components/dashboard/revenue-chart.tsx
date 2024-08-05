@@ -60,16 +60,26 @@ export default function RevenueChart() {
       </h2>
 
       <div className="rounded-xl bg-gray-50 p-4">
-        <div className="mt-0 grid grid-cols-12 items-end  rounded-md bg-white p-4 gap-2 sm:grid-cols-13 md:gap-4">
+        <div className="mt-0 flex justify-center items-center rounded-md bg-white p-4 gap-2 sm:gap-4">
           <div className="hidden sm:block">
-            <PieChart series={[{ data, innerRadius: 90 }]} {...size}>
+            <PieChart
+              series={[
+                { data, innerRadius: 90, outerRadius: 120, paddingAngle: 5 },
+              ]}
+              {...size}
+            >
               <PieCenterLabel size={size}>
                 {t("revenueChart.total")}
               </PieCenterLabel>
             </PieChart>
           </div>
           <div className="block  sm:hidden">
-            <PieChart series={[{ data, innerRadius: 60 }]} {...smallSize}>
+            <PieChart
+              series={[
+                { data, innerRadius: 60, outerRadius: 70, paddingAngle: 5 },
+              ]}
+              {...smallSize}
+            >
               <PieCenterLabel size={smallSize}>
                 {t("revenueChart.total")}
               </PieCenterLabel>
