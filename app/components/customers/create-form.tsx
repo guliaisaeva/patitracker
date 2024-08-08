@@ -69,7 +69,6 @@ export default function Form() {
     }
 
     try {
-      // Send announcements to API
       for (const announcement of announcementsToSend) {
         dispatch(addAnnouncement(announcement));
       }
@@ -77,11 +76,11 @@ export default function Form() {
       setTrDetail("");
       setEnTitle("");
       setEnDetail("");
-      alert(t("announcement.messages.createSuccess"));
+      alert(t("user.messages.createSuccess"));
       router.replace("/dashboard/announcements");
     } catch (err) {
-      console.error("Failed to add announcement:", err);
-      alert(t("announcement.messages.createFailure"));
+      console.error("Failed to add user:", err);
+      alert(t("user.messages.createFailure"));
     }
   };
 

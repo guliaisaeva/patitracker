@@ -32,7 +32,7 @@ export const getDevicesAsync = createAsyncThunk(
 
 export const addDeviceAsync = createAsyncThunk(
   "devices/addDevice",
-  async (deviceToAdd: DeviceToAdd, { rejectWithValue }) => {
+  async (deviceToAdd: DeviceToAdd[], { rejectWithValue }) => {
     try {
       const response = await fetch(CONST.addDeviceURL, {
         method: "POST",
@@ -40,13 +40,13 @@ export const addDeviceAsync = createAsyncThunk(
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([deviceToAdd]),
+        body: JSON.stringify(deviceToAdd),
       });
 
       if (!response.ok) {
         const errorDetail = await response.json();
         console.error("Failed to add device:", errorDetail);
-        throw new Error(`Failed to add device: ${response.statusText}`);
+        return rejectWithValue(`Failed to add device: ${errorDetail.message}`);
       }
 
       const data = await response.json();
@@ -58,7 +58,9 @@ export const addDeviceAsync = createAsyncThunk(
       return data.data[0];
     } catch (error: any) {
       console.error("Error adding device:", error);
-      throw error;
+      return rejectWithValue(
+        error.message || "An error occurred while adding the device."
+      );
     }
   }
 );
@@ -89,7 +91,6 @@ export const deleteDeviceAsync = createAsyncThunk(
       // return data.data;
       return deviceId;
     } catch (error: any) {
-      // Use rejectWithValue to propagate the error back to the action creator
       return rejectWithValue(error.message);
     }
   }
@@ -278,7 +279,7 @@ export const devicesSlice = createSlice({
       )
       .addCase(addDeviceAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload as string;
+        state.error = (action.payload as string) || "Failed to add device";
       });
   },
 });

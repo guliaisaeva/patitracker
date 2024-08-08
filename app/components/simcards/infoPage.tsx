@@ -9,7 +9,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useEffect } from "react";
-import { formatDateToLocal } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 export default function SimCardInfoForm({ simCardId }: { simCardId: number }) {

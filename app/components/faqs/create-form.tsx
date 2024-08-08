@@ -57,11 +57,11 @@ export default function Form() {
       setTrDetail("");
       setEnTitle("");
       setEnDetail("");
-      alert(t("device.messages.createSuccess"));
+      alert(t("faq.messages.createSuccess"));
       router.replace("/dashboard/faqs");
     } catch (err) {
       console.error("Failed to add question:", err);
-      alert(t("device.messages.createFailure"));
+      alert(t("faq.messages.createFailure"));
     }
   };
 

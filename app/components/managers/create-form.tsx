@@ -66,10 +66,13 @@ export default function Form() {
           phoneCode: "",
           phoneNumber: "",
         },
+        
       });
+      alert(t("manager.messages.createSuccess"));
+
     } catch (error) {
-      console.error("Failed to add device:", error);
-      // Handle error state or display error message
+      console.error("Failed to add manager:", error);
+      alert(t("manager.messages.createFailure"));
     }
   };
 

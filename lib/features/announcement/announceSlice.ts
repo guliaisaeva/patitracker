@@ -90,7 +90,7 @@ export const addAnnouncement = createAsyncThunk(
   "announcement/addAnnouncement",
   async (newAnnouncement: NewAnnouncement, { rejectWithValue }) => {
     try {
-      const response = await fetch("CONST.addAnnouncementURL", {
+      const response = await fetch(CONST.addAnnouncementURL, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ export const updateAnnouncement = createAsyncThunk(
 
   async (updateAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
     try {
-      const response = await fetch("CONST.updateAnnouncementURL", {
+      const response = await fetch(CONST.updateAnnouncementURL, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

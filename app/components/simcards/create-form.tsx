@@ -78,11 +78,11 @@ export default function Form() {
         isSimToDevice: false,
         deviceId: 0,
       });
-      alert(t("petBreed.messages.createSuccess"));
+      alert(t("simCard.messages.createSuccess"));
       router.replace("/dashboard/simcards");
     } catch (err) {
-      console.error("Failed to add device:", err);
-      alert(t("petBreed.messages.createFailure"));
+      console.error("Failed to add simCard:", err);
+      alert(t("simCard.messages.createFailure"));
     }
   };
 

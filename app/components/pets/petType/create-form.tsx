@@ -16,11 +16,11 @@ export default function Form() {
   const router = useRouter();
   const [petTypeData, setPetTypeData] = useState({
     petType: "",
-    languageId: 1, // Turkish language ID
+    languageId: 1, 
   });
   const [petTypeDataEn, setPetTypeDataEn] = useState({
     petType: "",
-    languageId: 2, // English language ID
+    languageId: 2,
   });
 
   useEffect(() => {

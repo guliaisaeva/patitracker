@@ -152,8 +152,8 @@ export default function LineCharts() {
         {t("charts.title")}
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
-      <div className="mt-0 flex justify-center items-center rounded-md bg-white p-4 gap-2 sm:gap-4">
-      <div className="hidden sm:block">
+        <div className="mt-0 flex justify-center items-center rounded-md bg-white p-4 gap-2 sm:gap-4">
+          <div className="hidden sm:block">
             <LineChart
               width={size.width}
               height={size.height}

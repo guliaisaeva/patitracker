@@ -56,7 +56,6 @@ export const deleteManagerAsync = createAsyncThunk(
       // return data.data;
       return adminId;
     } catch (error: any) {
-      // Use rejectWithValue to propagate the error back to the action creator
       return rejectWithValue(error.message);
     }
   }

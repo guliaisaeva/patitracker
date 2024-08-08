@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
 import {
@@ -36,27 +35,57 @@ export default function Form() {
     dispatch(getAllSimsForConnectDeviceAsync());
   }, [dispatch]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     const dataToSend: DeviceToAdd[] = [
+  //       {
+  //         ...deviceData,
+  //         simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
+  //       },
+  //     ];
+
+  //     await dispatch(addDeviceAsync(dataToSend)).unwrap();
+  //     setDeviceData({
+  //       deviceNumber: "",
+  //       deviceModel: "",
+  //       isDeviceToSim: false,
+  //       simCardId: 0,
+  //     });
+  //     alert(t("device.messages.createSuccess"));
+  //     router.replace("/dashboard/devices");
+  //   } catch (err) {
+  //     console.error("Failed to add device:", err);
+  //     alert("Failed to add device");
+  //   }
+  // };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     try {
-      const dataToSend = {
-        ...deviceData,
-        simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
-      };
+      const dataToSend: DeviceToAdd[] = [
+        {
+          ...deviceData,
+          simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
+        },
+      ];
+      const resultAction = await dispatch(addDeviceAsync(dataToSend));
 
-      dispatch(addDeviceAsync(dataToSend));
-      setDeviceData({
-        deviceNumber: "",
-        deviceModel: "",
-        isDeviceToSim: false,
-        simCardId: 0,
-      });
-      alert(t("device.messages.createSuccess"));
-      router.replace("/dashboard/devices");
+      if (addDeviceAsync.rejected.match(resultAction)) {
+        alert(t("device.messages.createFailure"));
+      } else {
+        setDeviceData({
+          deviceNumber: "",
+          deviceModel: "",
+          isDeviceToSim: false,
+          simCardId: 0,
+        });
+        alert(t("device.messages.createSuccess"));
+        router.replace("/dashboard/devices");
+      }
     } catch (err) {
-      console.error("Failed to add device:", err);
-      alert("Failed to add device");
+      alert(t("device.messages.createFailure"));
     }
   };
 
@@ -70,7 +99,6 @@ export default function Form() {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-
     setDeviceData((prevData) => ({
       ...prevData,
       [name]: parseInt(value, 10),
