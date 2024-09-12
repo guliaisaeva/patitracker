@@ -56,7 +56,7 @@ export default function Page({
   useEffect(() => {
     if (petBreeds) {
       const filteredPetBreeds = petBreeds?.filter((petBreed) =>
-        petBreed.breedName.toLowerCase().includes(query.toLowerCase())
+        petBreed?.breedName.toLowerCase().includes(query.toLowerCase())
       ).length;
       setFilteredResultsCount(filteredPetBreeds);
     }

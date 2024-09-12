@@ -34,7 +34,7 @@ export default function PetBreedTable({
   }, [dispatch, selectedPetType]);
 
   const filteredPetBreeds = petBreeds?.filter((petBreed) =>
-    petBreed.breedName.toLowerCase().includes(query.toLowerCase())
+    petBreed?.breedName.toLowerCase().includes(query.toLowerCase())
   );
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;

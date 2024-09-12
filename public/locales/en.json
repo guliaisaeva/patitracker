@@ -292,6 +292,7 @@
       "newPetType": "New Pet Breed",
       "enterPetTypeEn": "Enter Pet Breed in English",
       "enterPetTypeTr": "Enter Pet Breed in Turkish",
+      "enterPetType": "Enter Pet Breed",
       "petTypeTr": "Pet Breed Name",
       "petTypeEn": "Pet Breed Name (English)",
       "typeId": "Pet Breed ID",

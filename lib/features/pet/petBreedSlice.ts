@@ -69,7 +69,7 @@ export const getPetBreedDetail = createAsyncThunk(
 
 export const addPetBreed = createAsyncThunk(
   "petBreeds/addPetBreed",
-  async (newPetBreed: PetBreed, { rejectWithValue }) => {
+  async (newPetBreed: PetBreedRequest, { rejectWithValue }) => {
     try {
       const response = await fetch(CONST.addPetBreedURL, {
         method: "POST",
@@ -78,7 +78,7 @@ export const addPetBreed = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([newPetBreed]),
+        body: JSON.stringify(newPetBreed),
       });
 
       if (!response.ok) {
@@ -148,11 +148,23 @@ export const deletePetBreed = createAsyncThunk(
   }
 );
 
-interface PetBreed {
+export interface PetBreed {
   breedId?: number;
   petTypeId: number;
-  languageId: number;
   breedName: string;
+
+  petBreedsLocalized: {
+    languageId: number;
+    breedName: string;
+  }[];
+}
+export interface PetBreedRequest {
+  petTypeId: number;
+  breedName: string;
+  petBreedsLocalized: {
+    languageId: number;
+    breedName: string;
+  }[];
 }
 
 export interface AddPetType {
@@ -169,6 +181,7 @@ interface Language {
 interface PetBreedSliceState {
   petBreeds: PetBreed[];
   addPetType: AddPetType[];
+  PetBreedRequest: PetBreedRequest[];
   breedDetail: PetBreed | null;
   languages: Language[];
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -182,6 +195,7 @@ const initialState: PetBreedSliceState = {
   petBreeds: [],
   simCardAdd: [],
   addPetType: [],
+  PetBreedRequest: [],
   breedDetail: null,
   languages: [],
   loading: false,
@@ -218,6 +232,7 @@ export const petBreedSlice = createSlice({
       .addCase(addPetBreed.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.success = true;
+        state.petBreeds.push(action.payload);
       })
       .addCase(addPetBreed.rejected, (state, action) => {
         state.loading = false;
@@ -230,9 +245,14 @@ export const petBreedSlice = createSlice({
       })
       .addCase(
         updatePetBreed.fulfilled,
-        (state, action: PayloadAction<any>) => {
+        (state, action: PayloadAction<PetBreed>) => {
           state.loading = false;
           state.success = true;
+          state.petBreeds = state.petBreeds.map((breed) =>
+            breed.breedId === action.payload.breedId
+              ? { ...breed, ...action.payload }
+              : breed
+          );
         }
       )
       .addCase(updatePetBreed.rejected, (state, action) => {

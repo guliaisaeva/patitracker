@@ -7,13 +7,12 @@ import { AppDispatch } from "@/lib/store";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  fetchLanguages,
   getAllPetTypes,
-  selectLanguages,
   selectPetTypes,
 } from "@/lib/features/pet/petTypesSlice";
 import {
   getPetBreedDetail,
+  PetBreed,
   selectBreedDetail,
   updatePetBreed,
 } from "@/lib/features/pet/petBreedSlice";
@@ -21,6 +20,10 @@ import { Button } from "../../button";
 import { useTranslation } from "react-i18next";
 import trFlag from "@/public/images/turkey.png";
 import ukFlag from "@/public/images/uk.png";
+import {
+  fetchLanguages,
+  selectLanguages,
+} from "@/lib/features/languages/languagesSlice";
 
 export default function UpdateBreedForm({ breedId }: { breedId: number }) {
   const { t } = useTranslation();
@@ -30,11 +33,11 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
   const languages = useSelector(selectLanguages);
 
   const selectedBreedDetail = useSelector(selectBreedDetail);
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<PetBreed>({
     breedId: 0,
-    breedName: "",
     petTypeId: 0,
-    languageId: 1,
+    breedName: "",
+    petBreedsLocalized: [],
   });
 
   useEffect(() => {
@@ -50,12 +53,47 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
     if (selectedBreedDetail) {
       setFormState({
         breedId: selectedBreedDetail.breedId || 0,
-        breedName: selectedBreedDetail.breedName,
-        petTypeId: selectedBreedDetail.petTypeId,
-        languageId: selectedBreedDetail.languageId,
+        breedName: selectedBreedDetail.breedName || "",
+        petTypeId: selectedBreedDetail.petTypeId || 0,
+        petBreedsLocalized: selectedBreedDetail.languages.map((lang: any) => ({
+          languageId: lang.id,
+          breedName: lang.text,
+        })),
       });
     }
   }, [selectedBreedDetail]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormState((prevState: PetBreed) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleLocalizedChange =
+    (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormState((prevState) => {
+        const newPetBreedsLocalized = [...prevState.petBreedsLocalized];
+        newPetBreedsLocalized[index] = {
+          ...newPetBreedsLocalized[index],
+          [name]: value,
+        };
+        return {
+          ...prevState,
+          petBreedsLocalized: newPetBreedsLocalized,
+        };
+      });
+    };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,17 +112,6 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
       alert("Please fill out all required fields.");
     }
   };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   if (!formState.breedId) {
     return <div>{t("load")}</div>;
   }
@@ -92,6 +119,51 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
   return (
     <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        <div className="mb-4">
+          <label htmlFor="petTypeId" className="mb-2 block text-sm font-medium">
+            {t("petType.petTypes")}{" "}
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <select
+              id="petTypeId"
+              name="petTypeId"
+              value={formState.petTypeId}
+              onChange={handleSelectChange}
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            >
+              <option value="">{t("petBreed.select.petType")}</option>
+              {petTypes.map((petType) => (
+                <option key={petType.typeId} value={petType.typeId}>
+                  {petType.typeName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div id="petTypeId-error" aria-live="polite" aria-atomic="true">
+            {/* Error handling if needed */}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="breedName"
+            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
+          >
+            {t("petBreed.form.newPetType")}
+          </label>
+          <input
+            type="text"
+            id="breedName"
+            name="breedName"
+            value={formState.breedName}
+            onChange={handleInputChange}
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            placeholder={t("petBreed.form.enterPetType")}
+            required
+          />
+          {/* {errors.breedName && (
+            <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
+          )} */}
+        </div>
         <div className="mb-4">
           <label htmlFor="breedName" className="mb-2 block text-sm font-medium">
             <Image
@@ -108,11 +180,15 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               id="breedName"
               name="breedName"
               type="text"
-              value={formState.breedName}
+              value={
+                formState.petBreedsLocalized.find(
+                  (locale) => locale.languageId === 1
+                )?.breedName || ""
+              }
               className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="breedName-error"
-              onChange={handleInputChange}
-              placeholder={t("petBreed.form.enterPetTypeTr")}
+              onChange={handleLocalizedChange(1)}
+              // placeholder={t("petBreed.form.enterPetTypeTr")}
             />
             <PetsOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
@@ -120,32 +196,6 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
             {/* Error handling if needed */}
           </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="petTypeId" className="mb-2 block text-sm font-medium">
-            {t("petType.petTypes")}{" "}
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <select
-              id="petTypeId"
-              name="petTypeId"
-              value={formState.petTypeId}
-              onChange={handleInputChange}
-              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            >
-              <option value="">{t("petBreed.select.petType")}</option>
-              {petTypes.map((petType) => (
-                <option key={petType.typeId} value={petType.typeId}>
-                  {petType.typeName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div id="petTypeId-error" aria-live="polite" aria-atomic="true">
-            {/* Error handling if needed */}
-          </div>
-        </div>
-      </div>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4">
           <label htmlFor="breedName" className="mb-2 block text-sm font-medium">
             <Image
@@ -162,39 +212,19 @@ export default function UpdateBreedForm({ breedId }: { breedId: number }) {
               id="breedName"
               name="breedName"
               type="text"
-              value={formState.breedName}
+              value={
+                formState.petBreedsLocalized.find(
+                  (locale) => locale.languageId === 2
+                )?.breedName || ""
+              }
               className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="breedName-error"
-              onChange={handleInputChange}
-              placeholder={t("petBreed.form.enterPetTypeEn")}
+              onChange={handleLocalizedChange(2)}
+              // placeholder={t("petBreed.form.enterPetTypeEn")}
             />
             <PetsOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="breedName-error" aria-live="polite" aria-atomic="true">
-            {/* Error handling if needed */}
-          </div>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="petTypeId" className="mb-2 block text-sm font-medium">
-            {t("petType.petTypes")}{" "}
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <select
-              id="petTypeId"
-              name="petTypeId"
-              value={formState.petTypeId}
-              onChange={handleInputChange}
-              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            >
-              <option value="">{t("petBreed.select.petType")}</option>
-              {petTypes.map((petType) => (
-                <option key={petType.typeId} value={petType.typeId}>
-                  {petType.typeName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div id="petTypeId-error" aria-live="polite" aria-atomic="true">
             {/* Error handling if needed */}
           </div>
         </div>

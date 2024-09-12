@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
-  selectLanguage,
+  selectLanguages,
   setLanguage,
+  selectCurrentLanguage,
 } from "@/lib/features/languages/languagesSlice";
 
 const LanguageSwitcher = () => {
   const dispatch = useDispatch();
-  const currentLanguage = useSelector(selectLanguage);
+  const currentLanguage = useSelector(selectCurrentLanguage);
   const { i18n } = useTranslation();
 
   const handleLanguageChange = (lang: "en" | "tr") => {

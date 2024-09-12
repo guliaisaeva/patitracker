@@ -88,31 +88,31 @@ export const addPetType = createAsyncThunk(
   }
 );
 
-export const fetchLanguages = createAsyncThunk(
-  "languages/fetchLanguages",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await fetch(CONST.getLanguagesURL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+// export const fetchLanguages = createAsyncThunk(
+//   "languages/fetchLanguages",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(CONST.getLanguagesURL, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           Accept: "application/json",
+//         },
+//       });
 
-      if (!response.ok) {
-        const errorDetail = await response.text();
-        throw new Error(
-          `Failed to fetch languages: ${response.statusText} - ${errorDetail}`
-        );
-      }
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to fetch languages: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
 
-      const data = await response.json();
-      return data.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+//       const data = await response.json();
+//       return data.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 export const deletePetType = createAsyncThunk(
   "petTypes/deletePetType",
@@ -182,15 +182,15 @@ export interface AddPetType {
   languageId: number;
 }
 
-interface Language {
-  languageId: number;
-  languageName: string;
-  languageAbbreviation: string;
-}
+// interface Language {
+//   languageId: number;
+//   languageName: string;
+//   languageAbbreviation: string;
+// }
 
 export interface UpdatePetType {
   petTypeId: number;
-  languageId: number;
+  // languageId: number;
   petType: string;
 }
 
@@ -198,7 +198,7 @@ interface PetTypeSliceState {
   petTypes: PetType[];
   petDetail: PetDetail | null;
   addPetType: AddPetType[];
-  languages: Language[];
+  // languages: Language[];
   status: "idle" | "loading" | "succeeded" | "failed";
   loading: boolean;
   error: string | null;
@@ -211,7 +211,7 @@ const initialState: PetTypeSliceState = {
   petDetail: null,
   simCardAdd: [],
   addPetType: [],
-  languages: [],
+  // languages: [],
   loading: false,
   success: false,
   status: "idle",
@@ -272,21 +272,21 @@ export const petTypeSlice = createSlice({
         state.error = action.payload as string;
         state.success = false;
       })
-      .addCase(fetchLanguages.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        fetchLanguages.fulfilled,
-        (state, action: PayloadAction<Language[]>) => {
-          state.loading = false;
-          state.languages = action.payload;
-        }
-      )
-      .addCase(fetchLanguages.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+      // .addCase(fetchLanguages.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(
+      //   fetchLanguages.fulfilled,
+      //   (state, action: PayloadAction<Language[]>) => {
+      //     state.loading = false;
+      //     state.languages = action.payload;
+      //   }
+      // )
+      // .addCase(fetchLanguages.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload as string;
+      // })
       .addCase(deletePetType.pending, (state) => {
         state.status = "loading";
       })
@@ -335,7 +335,7 @@ export const selectPetTypesError = (state: RootState) => state.petTypes.error;
 export const selectLoading = (state: RootState) => state.petTypes.loading;
 export const selectPetDetail = (state: RootState) => state.petTypes.petDetail;
 export const selectAddPetType = (state: RootState) => state.petTypes.addPetType;
-export const selectLanguages = (state: RootState) => state.petTypes.languages;
+// export const selectLanguages = (state: RootState) => state.petTypes.languages;
 
 export const {} = petTypeSlice.actions;
 

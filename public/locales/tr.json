@@ -289,6 +289,7 @@
       "newPetType": "Yeni Evcil Hayvan Cinsi",
       "enterPetTypeEn": "İngilizce Evcil Hayvan Cinsi Giriniz",
       "enterPetTypeTr": "Türkçe Evcil Hayvan Cinsi Giriniz",
+      "enterPetType": "Evcil Hayvan Cinsi Giriniz",
       "petTypeTr": "Evcil Hayvan Cins İsmi ",
       "petTypeEn": "Evcil Hayvan Cins İsmi (İngilizce)",
       "typeId": "Evcil Hayvan ID",
