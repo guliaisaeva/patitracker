@@ -60,6 +60,7 @@ export const getPetBreedDetail = createAsyncThunk(
       }
 
       const data = await response.json();
+      console.log(data);
       return data.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -97,7 +98,9 @@ export const addPetBreed = createAsyncThunk(
 
 export const updatePetBreed = createAsyncThunk(
   "petBreeds/updatePetBreed",
-  async (updatedPetBreed: PetBreed, { rejectWithValue }) => {
+  async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
+    console.log("Updating breed with payload:", updatedPetBreed);
+
     try {
       const response = await fetch(CONST.updatePetBreedURL, {
         method: "POST",
@@ -117,13 +120,122 @@ export const updatePetBreed = createAsyncThunk(
       }
 
       const data = await response.json();
+      console.log("Server Response:", data);
       return data.data;
     } catch (error: any) {
+      console.error("Error:", error.message);
       return rejectWithValue(error.message);
     }
   }
 );
+// export const updatePetBreed = createAsyncThunk(
+//   "petBreeds/updatePetBreed",
+//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
+//     try {
+//       // Filter out duplicate localized entries
+//       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
+//         (acc, curr) => {
+//           if (!acc.some((item) => item.languageId === curr.languageId)) {
+//             acc.push(curr);
+//           }
+//           return acc;
+//         },
+//         [] as PetBreedUpdate["petBreedsLocalized"]
+//       );
 
+//       // Prepare cleaned payload
+//       const cleanedPayload = {
+//         ...updatedPetBreed,
+//         petBreedsLocalized: uniqueBreedsLocalized,
+//       };
+
+//       console.log("Cleaned Payload:", cleanedPayload);
+
+//       // Perform the API request
+//       const response = await fetch(CONST.updatePetBreedURL, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(cleanedPayload),
+//       });
+
+//       // Check if the response is okay
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       // Parse the response data
+//       const data = await response.json();
+//       console.log("Response Data:", data);
+
+//       // Check if `data` contains `data` field
+//       if (data && data.data) {
+//         return data.data;
+//       } else {
+//         // Handle cases where the data field is null or undefined
+//         console.warn("Update successful but no data returned.");
+//         return null; // Or handle it in a way that fits your use case
+//       }
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+// export const updatePetBreed = createAsyncThunk(
+//   "petBreeds/updatePetBreed",
+//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
+//     try {
+//       // Prepare the cleaned payload
+//       const cleanedPayload = {
+//         ...updatedPetBreed,
+//         petBreedsLocalized: updatedPetBreed.petBreedsLocalized.reduce(
+//           (acc, curr) => {
+//             if (!acc.some((item) => item.languageId === curr.languageId)) {
+//               acc.push(curr);
+//             }
+//             return acc;
+//           },
+//           [] as PetBreedUpdate["petBreedsLocalized"]
+//         ),
+//       };
+
+//       // Perform the API request
+//       const response = await fetch(CONST.updatePetBreedURL, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(cleanedPayload),
+//       });
+
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       const data = await response.json();
+
+//       if (data && data.data) {
+//         return data.data;
+//       } else {
+//         console.error("Update successful but no data returned.");
+//         return null;
+//       }
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 export const deletePetBreed = createAsyncThunk(
   "petBreed/deletePetBreed",
   async (petBreedId: number, { rejectWithValue }) => {
@@ -148,25 +260,39 @@ export const deletePetBreed = createAsyncThunk(
   }
 );
 
-export interface PetBreed {
-  breedId?: number;
-  petTypeId: number;
+interface PetBreed {
+  breedId?: number | null;
+  petTypeId: number | null;
+  languageId: number;
   breedName: string;
+}
 
-  petBreedsLocalized: {
-    languageId: number;
-    breedName: string;
+interface PetBreedDetail {
+  breedId: number | null;
+  petTypeId: number | null;
+  breedName: string;
+  languages: {
+    id: number;
+    text: string;
   }[];
 }
 export interface PetBreedRequest {
-  petTypeId: number;
+  petTypeId: number | null;
   breedName: string;
   petBreedsLocalized: {
     languageId: number;
     breedName: string;
   }[];
 }
-
+interface PetBreedUpdate {
+  breedId: number | null;
+  petTypeId: number | null;
+  breedName: string;
+  petBreedsLocalized: {
+    languageId: number;
+    breedName: string;
+  }[];
+}
 export interface AddPetType {
   petType: string;
   languageId: number;
@@ -182,13 +308,14 @@ interface PetBreedSliceState {
   petBreeds: PetBreed[];
   addPetType: AddPetType[];
   PetBreedRequest: PetBreedRequest[];
-  breedDetail: PetBreed | null;
+  breedDetail: PetBreedDetail | null;
   languages: Language[];
   status: "idle" | "loading" | "succeeded" | "failed";
   loading: boolean;
   error: string | null;
   success: boolean;
   simCardAdd: AddPetType[];
+  PetBreedUpdate: PetBreedUpdate[];
 }
 
 const initialState: PetBreedSliceState = {
@@ -202,6 +329,7 @@ const initialState: PetBreedSliceState = {
   success: false,
   status: "idle",
   error: null,
+  PetBreedUpdate: [],
 };
 
 export const petBreedSlice = createSlice({
@@ -245,14 +373,18 @@ export const petBreedSlice = createSlice({
       })
       .addCase(
         updatePetBreed.fulfilled,
-        (state, action: PayloadAction<PetBreed>) => {
+        (state, action: PayloadAction<PetBreedUpdate | null>) => {
           state.loading = false;
-          state.success = true;
-          state.petBreeds = state.petBreeds.map((breed) =>
-            breed.breedId === action.payload.breedId
-              ? { ...breed, ...action.payload }
-              : breed
-          );
+          if (action.payload) {
+            state.petBreeds = state.petBreeds.map((breed) =>
+              breed?.breedId === action.payload?.breedId
+                ? { ...breed, ...action.payload }
+                : breed
+            );
+          } else {
+            console.log("Action payload:", action.payload);
+            console.error("Update successful but no data returned.");
+          }
         }
       )
       .addCase(updatePetBreed.rejected, (state, action) => {
@@ -262,7 +394,7 @@ export const petBreedSlice = createSlice({
       })
       .addCase(
         getPetBreedDetail.fulfilled,
-        (state, action: PayloadAction<PetBreed>) => {
+        (state, action: PayloadAction<PetBreedDetail>) => {
           state.loading = false;
           state.breedDetail = action.payload;
         }

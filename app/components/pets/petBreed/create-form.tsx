@@ -23,16 +23,13 @@ import {
   selectLanguages,
 } from "@/lib/features/languages/languagesSlice";
 interface FormProps {
-  selectedPetType: string; // Receive selected pet type from parent component or context
+  selectedPetType: string; 
 }
 export default function Form({ selectedPetType }: FormProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const petTypes = useSelector(selectPetTypes);
-  const petBreeds = useSelector(selectPetBreeds);
   const languages = useSelector(selectLanguages);
-  console.log(languages.length);
 
   // const [petBreedData, setPetBreedData] = useState({
   //   breedName: "",
@@ -143,6 +140,7 @@ export default function Form({ selectedPetType }: FormProps) {
       }));
     }
   }, [languages]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
