@@ -13,7 +13,11 @@ import {
   selectPetTypes,
 } from "@/lib/features/pet/petTypesSlice";
 import { AppDispatch } from "@/lib/store";
-import { selectPetBreeds } from "@/lib/features/pet/petBreedSlice";
+import {
+  selectPetBreeds,
+  searchPetBreeds,
+  resetSearchResults,
+} from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -53,14 +57,34 @@ export default function Page({
     router.replace(`/dashboard/pets/petBreed?selectedPetType=${value}`);
   };
 
+
   useEffect(() => {
-    if (petBreeds) {
-      const filteredPetBreeds = petBreeds?.filter((petBreed) =>
-        petBreed?.breedName.toLowerCase().includes(query.toLowerCase())
-      ).length;
-      setFilteredResultsCount(filteredPetBreeds);
+    if (query.trim() && selectedPetType) {
+      dispatch(
+        searchPetBreeds({
+          petTypeId: Number(selectedPetType),
+          searchWord: query,
+          languageId: 2,
+          page: currentPage,
+          itemsPerPage: ITEMS_PER_PAGE,
+        })
+      );
+    } else {
+      dispatch(resetSearchResults());
     }
-  }, [petBreeds, query]);
+  }, [query, selectedPetType, currentPage, dispatch]);
+
+  useEffect(() => {
+    // if (petBreeds) {
+    //   const filteredPetBreeds = petBreeds?.filter((petBreed) =>
+    //     petBreed?.breedName?.toLowerCase().includes(query.toLowerCase())
+    //   ).length;
+    //   setFilteredResultsCount(filteredPetBreeds);
+    // }
+    if (petBreeds && petBreeds.length > 0) {
+      setFilteredResultsCount(petBreeds.length);
+    }
+  }, [petBreeds]);
 
   const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 

@@ -51,32 +51,19 @@ export default function UpdateBreedForm({
     petBreedsLocalized: PetBreedLocalized[];
   }
 
-  // const [formState, setFormState] = useState<FormState>({
-  //   breedId: null,
-  //   petTypeId: number;
-  //   breedName: string;
-  //   petBreedsLocalized: { languageId: number; breedName: string }[];
-  // });
-
-  const [formState, setFormState] = useState<{
-    breedId: number | null;
-    petTypeId: number | null;
-    breedName: string;
-    petBreedsLocalized: { languageId: number; breedName: string }[];
-  }>({
+  const [formState, setFormState] = useState<FormState>({
     breedId: breedId,
     petTypeId: Number(selectedPetType),
     breedName: "",
     petBreedsLocalized: [],
   });
-
   useEffect(() => {
     dispatch(getAllPetTypes());
     dispatch(fetchLanguages());
   }, []);
 
   useEffect(() => {
-    if (breedId) {
+    if (breedId !== null) {
       dispatch(getPetBreedDetail(breedId));
     }
   }, [breedId]);
@@ -88,22 +75,24 @@ export default function UpdateBreedForm({
         breedName: selectedBreedDetail.breedName || "",
         petTypeId: selectedBreedDetail.petTypeId || null,
         petBreedsLocalized:
-          selectedBreedDetail.languages.map((lang: any) => ({
-            languageId: lang.id || 0,
-            breedName: lang.text || "",
-          })) || [],
+          selectedBreedDetail.languages &&
+          selectedBreedDetail.languages.length > 0
+            ? selectedBreedDetail.languages.map((lang: any) => ({
+                languageId: lang.id || 0,
+                breedName: lang.text || "",
+              }))
+            : [],
       });
     }
   }, [selectedBreedDetail]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormState((prevState: any) => ({
+    const { name, value } = e.target;
+    setFormState((prevState) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState((prevState) => ({
@@ -131,12 +120,10 @@ export default function UpdateBreedForm({
     (languageId: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
       setFormState((prevState) => {
-        // Find if a localized breed entry exists for the given languageId
         const existingLocaleIndex = prevState.petBreedsLocalized.findIndex(
           (locale) => locale.languageId === languageId
         );
 
-        // Create a new array with updated breed names
         const newPetBreedsLocalized =
           existingLocaleIndex >= 0
             ? prevState.petBreedsLocalized.map((locale) =>
@@ -155,6 +142,7 @@ export default function UpdateBreedForm({
         };
       });
     };
+
   // const handleLocalizedChange = (languageId: number, breedName: string) => {
   //   setFormState((prevState) => {
   //     const existingLocaleIndex = prevState.petBreedsLocalized.findIndex(
@@ -179,7 +167,11 @@ export default function UpdateBreedForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formState.breedName || !formState.petTypeId) {
+    if (
+      !formState.breedName ||
+      formState.petTypeId === null ||
+      formState.breedId === null
+    ) {
       alert(t("Please fill out all required fields."));
       return;
     }

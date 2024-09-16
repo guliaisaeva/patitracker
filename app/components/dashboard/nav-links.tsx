@@ -30,7 +30,7 @@ const links = [
     href: "#",
     icon: Pets,
     submenu: [
-      { name: "pet.type", href: "/dashboard/pets/petType", icon: Grain },
+      // { name: "pet.type", href: "/dashboard/pets/petType", icon: Grain },
       { name: "pet.breed", href: "/dashboard/pets/petBreed", icon: Apps },
     ],
   },

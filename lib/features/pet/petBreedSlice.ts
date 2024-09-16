@@ -98,10 +98,30 @@ export const addPetBreed = createAsyncThunk(
 
 export const updatePetBreed = createAsyncThunk(
   "petBreeds/updatePetBreed",
-  async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
-    console.log("Updating breed with payload:", updatedPetBreed);
-
+  async (updatedPetBreed: PetBreedUpdate, { rejectWithValue, dispatch }) => {
     try {
+      const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
+        (acc, curr) => {
+          const existingIndex = acc.findIndex(
+            (item) => item.languageId === curr.languageId
+          );
+          if (existingIndex === -1) {
+            acc.push(curr);
+          } else {
+            acc[existingIndex] = curr;
+          }
+          return acc;
+        },
+        [] as PetBreedUpdate["petBreedsLocalized"]
+      );
+
+      const cleanedPayload = {
+        ...updatedPetBreed,
+        petBreedsLocalized: uniqueBreedsLocalized,
+      };
+
+      console.log("Cleaned Payload:", cleanedPayload);
+
       const response = await fetch(CONST.updatePetBreedURL, {
         method: "POST",
         headers: {
@@ -109,7 +129,7 @@ export const updatePetBreed = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedPetBreed),
+        body: JSON.stringify(cleanedPayload),
       });
 
       if (!response.ok) {
@@ -120,14 +140,88 @@ export const updatePetBreed = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log("Server Response:", data);
-      return data.data;
+      console.log("Response Data:", data.data);
+
+      if (data && data.data) {
+        return data.data;
+      } else {
+        console.warn("No data returned. Fetching breed details...");
+
+        const breedDetailResponse = await dispatch(
+          getPetBreedDetail(updatedPetBreed.breedId ?? 0)
+        ).unwrap();
+
+        if (breedDetailResponse) {
+          return breedDetailResponse;
+        } else {
+          throw new Error("Failed to fetch breed details after update.");
+        }
+      }
     } catch (error: any) {
-      console.error("Error:", error.message);
       return rejectWithValue(error.message);
     }
   }
 );
+// export const updatePetBreed = createAsyncThunk(
+//   "petBreeds/updatePetBreed",
+//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
+//     try {
+//       // Filter out duplicate localized entries
+//       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
+//         (acc, curr) => {
+//           if (!acc.some((item) => item.languageId === curr.languageId)) {
+//             acc.push(curr);
+//           }
+//           return acc;
+//         },
+//         [] as PetBreedUpdate["petBreedsLocalized"]
+//       );
+
+//       // Prepare cleaned payload
+//       const cleanedPayload = {
+//         ...updatedPetBreed,
+//         petBreedsLocalized: uniqueBreedsLocalized,
+//       };
+
+//       console.log("Cleaned Payload:", cleanedPayload);
+
+//       // Perform the API request
+//       const response = await fetch(CONST.updatePetBreedURL, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(cleanedPayload),
+//       });
+
+//       // Check if the response is okay
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       // Parse the response data
+//       const data = await response.json();
+//       console.log("Response Data:", data);
+
+//       // Check if `data` contains `data` field
+//       if (data && data.data) {
+//         return data.data;
+//       } else {
+//         // Handle cases where the data field is null or undefined
+//         console.warn("Update successful but no data returned.");
+//         return null; // Or handle it in a way that fits your use case
+//       }
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 // export const updatePetBreed = createAsyncThunk(
 //   "petBreeds/updatePetBreed",
 //   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
@@ -260,13 +354,52 @@ export const deletePetBreed = createAsyncThunk(
   }
 );
 
+export const searchPetBreeds = createAsyncThunk<
+  PetBreedResponse, // Return type of the thunk
+  {
+    petTypeId: number;
+    searchWord: string;
+    languageId: number;
+    page: number;
+    itemsPerPage: number;
+  },
+  { rejectValue: string } // Error type
+>("petBreeds/searchPetBreeds", async (searchParams, { rejectWithValue }) => {
+  try {
+    const response = await fetch(`${CONST.searchPetBreedURL}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`, // Ensure you have `token` available
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(searchParams),
+    });
+
+    if (!response.ok) {
+      const errorDetail = await response.text();
+      throw new Error(
+        `Failed to search pet breeds: ${response.statusText} - ${errorDetail}`
+      );
+    }
+
+    const data = await response.json();
+    return data; // Adjust based on actual response structure
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 interface PetBreed {
   breedId?: number | null;
   petTypeId: number | null;
   languageId: number;
   breedName: string;
 }
-
+export interface PetBreedResponse {
+  petBreeds: PetBreed[];
+  totalCount: number;
+}
 interface PetBreedDetail {
   breedId: number | null;
   petTypeId: number | null;
@@ -316,6 +449,7 @@ interface PetBreedSliceState {
   success: boolean;
   simCardAdd: AddPetType[];
   PetBreedUpdate: PetBreedUpdate[];
+  totalCount: number;
 }
 
 const initialState: PetBreedSliceState = {
@@ -330,12 +464,18 @@ const initialState: PetBreedSliceState = {
   status: "idle",
   error: null,
   PetBreedUpdate: [],
+  totalCount: 0,
 };
 
 export const petBreedSlice = createSlice({
   name: "petBreeds",
   initialState,
-  reducers: {},
+  reducers: {
+    resetSearchResults(state) {
+      state.petBreeds = [];
+      state.totalCount = 0;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllPetBreeds.pending, (state) => {
@@ -418,14 +558,31 @@ export const petBreedSlice = createSlice({
       .addCase(deletePetBreed.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
+      })
+      .addCase(searchPetBreeds.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        searchPetBreeds.fulfilled,
+        (state, action: PayloadAction<PetBreedResponse>) => {
+          state.loading = false;
+          state.petBreeds = action.payload.petBreeds;
+          state.totalCount = action.payload.totalCount;
+        }
+      )
+      .addCase(searchPetBreeds.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
 
 export const selectPetBreeds = (state: RootState) => state.petBreeds.petBreeds;
 export const selectLoading = (state: RootState) => state.petBreeds.loading;
-export const selectError = (state: RootState) => state.petBreeds.error;
 export const selectSuccess = (state: RootState) => state.petBreeds.success;
+export const selectTotalCount = (state: RootState) =>
+  state.petBreeds.totalCount;
 export const selectBreedDetail = (state: RootState) =>
   state.petBreeds.breedDetail;
 
@@ -435,6 +592,6 @@ export const selectPetBreedsByPetType = createSelector(
     petBreeds.filter((breed) => breed.petTypeId === petTypeId)
 );
 
-export const {} = petBreedSlice.actions;
+export const { resetSearchResults } = petBreedSlice.actions;
 
 export default petBreedSlice.reducer;
