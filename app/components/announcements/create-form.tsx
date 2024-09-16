@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
-import { addAnnouncement, selectAnnouncementError, selectAnnouncementStatus } from "@/lib/features/announcement/announceSlice";
+import {
+  addAnnouncement,
+  selectAnnouncementError,
+  selectAnnouncementStatus,
+} from "@/lib/features/announcement/announceSlice";
 import {
   getUsersAsync,
   selectUserProfileId,
@@ -14,6 +18,10 @@ import { useTranslation } from "react-i18next";
 import trFlag from "@/public/images/turkey.png";
 import ukFlag from "@/public/images/uk.png";
 import Link from "next/link";
+import {
+  fetchLanguages,
+  selectLanguages,
+} from "@/lib/features/languages/languagesSlice";
 
 export default function Form() {
   const { t } = useTranslation();
@@ -21,6 +29,7 @@ export default function Form() {
   const router = useRouter();
   const status = useSelector(selectAnnouncementStatus);
   const error = useSelector(selectAnnouncementError);
+  const languages = useSelector(selectLanguages);
   const userProfileId = useSelector(selectUserProfileId);
 
   const [trTitle, setTrTitle] = useState("");
@@ -32,6 +41,7 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(getUsersAsync());
+    dispatch(fetchLanguages());
   }, [dispatch]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -86,16 +96,29 @@ export default function Form() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <Image
+        {/* <Image
           src={trFlag}
           alt="Turkish Flag"
           width={36}
           height={36}
           className="rounded-full"
-        />
+        /> */}
+
         <div className="mb-4">
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="title"
+            className="mb-2  text-sm font-medium flex justify-between"
+          >
             {t("announcement.form.title")}
+
+            {languages.map(
+              (lang) =>
+                lang.languageId === 1 && (
+                  <p>
+                    {lang.languageAbbreviation}/{lang.languageName}
+                  </p>
+                )
+            )}
           </label>
           <input
             id="trTitle"
@@ -116,19 +139,24 @@ export default function Form() {
             value={trDetail}
             onChange={(e) => setTrDetail(e.target.value)}
             className=" text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("announcement.form.enterTitleTr")}
+            placeholder={t("announcement.form.enterDetailTr")}
           />
         </div>
-        <Image
-          src={ukFlag}
-          alt="English Flag"
-          width={36}
-          height={36}
-          className="rounded-full"
-        />
+
         <div className="mb-4">
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="title"
+            className="mb-2 flex justify-between text-sm font-medium"
+          >
             {t("announcement.form.title")}
+            {languages.map(
+              (lang) =>
+                lang.languageId === 2 && (
+                  <p>
+                    {lang.languageAbbreviation}/{lang.languageName}
+                  </p>
+                )
+            )}
           </label>
           <input
             id="enTitle"

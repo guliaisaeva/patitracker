@@ -12,6 +12,11 @@ import Link from "next/link";
 import trFlag from "@/public/images/turkey.png";
 import ukFlag from "@/public/images/uk.png";
 import { useTranslation } from "react-i18next";
+import {
+  fetchLanguages,
+  selectLanguages,
+} from "@/lib/features/languages/languagesSlice";
+
 export default function AnnouncementInfoForm({
   announcementId,
 }: {
@@ -21,6 +26,8 @@ export default function AnnouncementInfoForm({
 
   const dispatch = useDispatch<AppDispatch>();
   const announcementDetail = useSelector(selectAnnouncementDetail);
+  const languages = useSelector(selectLanguages);
+
   const [trTitle, setTrTitle] = useState("");
   const [trDetail, setTrDetail] = useState("");
   const [enTitle, setEnTitle] = useState("");
@@ -28,6 +35,7 @@ export default function AnnouncementInfoForm({
 
   useEffect(() => {
     dispatch(getUsersAsync());
+    dispatch(fetchLanguages());
   }, [dispatch]);
 
   useEffect(() => {
@@ -42,17 +50,28 @@ export default function AnnouncementInfoForm({
   return (
     <form className="my-6" onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <Image
+        {/* <Image
           src={trFlag}
           alt="Turkish Flag"
           width={36}
           height={36}
           className="rounded-full"
-        />
+        /> */}
 
         <div className="mb-4">
-          <label htmlFor="trTitle" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="trTitle"
+            className="mb-2 text-sm font-medium flex justify-between"
+          >
             {t("announcement.form.title")}
+            {languages.map(
+              (lang) =>
+                lang.languageId === 1 && (
+                  <p>
+                    {lang.languageAbbreviation}/{lang.languageName}
+                  </p>
+                )
+            )}{" "}
           </label>
           <input
             id="trTitle"
@@ -77,16 +96,27 @@ export default function AnnouncementInfoForm({
             readOnly
           />
         </div>
-        <Image
+        {/* <Image
           src={ukFlag}
           alt="English Flag"
           width={36}
           height={36}
           className="rounded-full"
-        />
+        /> */}
         <div className="mb-4">
-          <label htmlFor="enTitle" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="enTitle"
+            className="mb-2 text-sm font-medium flex justify-between"
+          >
             {t("announcement.form.title")}
+            {languages.map(
+              (lang) =>
+                lang.languageId === 2 && (
+                  <p>
+                    {lang.languageAbbreviation}/{lang.languageName}
+                  </p>
+                )
+            )}{" "}
           </label>
           <input
             id="enTitle"
