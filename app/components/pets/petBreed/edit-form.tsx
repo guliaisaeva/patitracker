@@ -57,6 +57,7 @@ export default function UpdateBreedForm({
     breedName: "",
     petBreedsLocalized: [],
   });
+
   useEffect(() => {
     dispatch(getAllPetTypes());
     dispatch(fetchLanguages());
@@ -75,13 +76,10 @@ export default function UpdateBreedForm({
         breedName: selectedBreedDetail.breedName || "",
         petTypeId: selectedBreedDetail.petTypeId || null,
         petBreedsLocalized:
-          selectedBreedDetail.languages &&
-          selectedBreedDetail.languages.length > 0
-            ? selectedBreedDetail.languages.map((lang: any) => ({
-                languageId: lang.id || 0,
-                breedName: lang.text || "",
-              }))
-            : [],
+          selectedBreedDetail.languages?.map((lang: any) => ({
+            languageId: lang.id || 0,
+            breedName: lang.text || "",
+          })) || [],
       });
     }
   }, [selectedBreedDetail]);
@@ -101,33 +99,18 @@ export default function UpdateBreedForm({
     }));
   };
 
-  // const handleLocalizedChange =
-  //   (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const { name, value } = e.target;
-  //     setFormState((prevState) => {
-  //       const newPetBreedsLocalized = [...prevState.petBreedsLocalized];
-  //       newPetBreedsLocalized[index] = {
-  //         ...newPetBreedsLocalized[index],
-  //         [name]: value,
-  //       };
-  //       return {
-  //         ...prevState,
-  //         petBreedsLocalized: newPetBreedsLocalized,
-  //       };
-  //     });
-  //   };
   const handleLocalizedChange =
     (languageId: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
+
       setFormState((prevState) => {
         const existingLocaleIndex = prevState.petBreedsLocalized.findIndex(
           (locale) => locale.languageId === languageId
         );
-
         const newPetBreedsLocalized =
           existingLocaleIndex >= 0
-            ? prevState.petBreedsLocalized.map((locale) =>
-                locale.languageId === languageId
+            ? prevState.petBreedsLocalized.map((locale, index) =>
+                index === existingLocaleIndex
                   ? { ...locale, breedName: value }
                   : locale
               )
@@ -143,28 +126,6 @@ export default function UpdateBreedForm({
       });
     };
 
-  // const handleLocalizedChange = (languageId: number, breedName: string) => {
-  //   setFormState((prevState) => {
-  //     const existingLocaleIndex = prevState.petBreedsLocalized.findIndex(
-  //       (locale) => locale.languageId === languageId
-  //     );
-
-  //     const newPetBreedsLocalized =
-  //       existingLocaleIndex >= 0
-  //         ? prevState.petBreedsLocalized.map((locale) =>
-  //             locale.languageId === languageId
-  //               ? { ...locale, breedName }
-  //               : locale
-  //           )
-  //         : [...prevState.petBreedsLocalized, { languageId, breedName }];
-
-  //     return {
-  //       ...prevState,
-  //       petBreedsLocalized: newPetBreedsLocalized,
-  //     };
-  //   });
-  // };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
@@ -175,7 +136,6 @@ export default function UpdateBreedForm({
       alert(t("Please fill out all required fields."));
       return;
     }
-
     try {
       await dispatch(updatePetBreed(formState));
       alert(t("petBreed.messages.updateSuccess"));

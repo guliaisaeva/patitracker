@@ -38,6 +38,36 @@ export const getAllPetBreeds = createAsyncThunk(
   }
 );
 
+// export const getPetBreedDetail = createAsyncThunk(
+//   "pets/getPetBreedDetail",
+//   async (petBreedId: number, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(
+//         `${CONST.getPetBreedDetailURL}?petBreedId=${petBreedId}`,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             Accept: "application/json",
+//           },
+//         }
+//       );
+
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       const data = await response.json();
+//       console.log(data);
+//       return data.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 export const getPetBreedDetail = createAsyncThunk(
   "pets/getPetBreedDetail",
   async (petBreedId: number, { rejectWithValue }) => {
@@ -60,6 +90,16 @@ export const getPetBreedDetail = createAsyncThunk(
       }
 
       const data = await response.json();
+
+      // Process the languages array to get only the last updated entry for each unique id
+      const latestLanguages: { [key: number]: { id: number; text: string } } =
+        {};
+      data.data.languages.forEach((language: { id: number; text: string }) => {
+        latestLanguages[language.id] = language; // Overwrite duplicate ids with the latest entry
+      });
+
+      // Convert the result back into an array and assign it to the data
+      data.data.languages = Object.values(latestLanguages);
       console.log(data);
       return data.data;
     } catch (error: any) {
@@ -67,7 +107,6 @@ export const getPetBreedDetail = createAsyncThunk(
     }
   }
 );
-
 export const addPetBreed = createAsyncThunk(
   "petBreeds/addPetBreed",
   async (newPetBreed: PetBreedRequest, { rejectWithValue }) => {
@@ -100,6 +139,7 @@ export const updatePetBreed = createAsyncThunk(
   "petBreeds/updatePetBreed",
   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue, dispatch }) => {
     try {
+      // Ensure only unique petBreedsLocalized entries are included
       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
         (acc, curr) => {
           const existingIndex = acc.findIndex(
@@ -115,6 +155,7 @@ export const updatePetBreed = createAsyncThunk(
         [] as PetBreedUpdate["petBreedsLocalized"]
       );
 
+      // Prepare the cleaned payload
       const cleanedPayload = {
         ...updatedPetBreed,
         petBreedsLocalized: uniqueBreedsLocalized,
@@ -162,174 +203,7 @@ export const updatePetBreed = createAsyncThunk(
     }
   }
 );
-// export const updatePetBreed = createAsyncThunk(
-//   "petBreeds/updatePetBreed",
-//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
-//     try {
-//       // Filter out duplicate localized entries
-//       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
-//         (acc, curr) => {
-//           if (!acc.some((item) => item.languageId === curr.languageId)) {
-//             acc.push(curr);
-//           }
-//           return acc;
-//         },
-//         [] as PetBreedUpdate["petBreedsLocalized"]
-//       );
 
-//       // Prepare cleaned payload
-//       const cleanedPayload = {
-//         ...updatedPetBreed,
-//         petBreedsLocalized: uniqueBreedsLocalized,
-//       };
-
-//       console.log("Cleaned Payload:", cleanedPayload);
-
-//       // Perform the API request
-//       const response = await fetch(CONST.updatePetBreedURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-
-//       // Check if the response is okay
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       // Parse the response data
-//       const data = await response.json();
-//       console.log("Response Data:", data);
-
-//       // Check if `data` contains `data` field
-//       if (data && data.data) {
-//         return data.data;
-//       } else {
-//         // Handle cases where the data field is null or undefined
-//         console.warn("Update successful but no data returned.");
-//         return null; // Or handle it in a way that fits your use case
-//       }
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-// export const updatePetBreed = createAsyncThunk(
-//   "petBreeds/updatePetBreed",
-//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
-//     try {
-//       // Filter out duplicate localized entries
-//       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
-//         (acc, curr) => {
-//           if (!acc.some((item) => item.languageId === curr.languageId)) {
-//             acc.push(curr);
-//           }
-//           return acc;
-//         },
-//         [] as PetBreedUpdate["petBreedsLocalized"]
-//       );
-
-//       // Prepare cleaned payload
-//       const cleanedPayload = {
-//         ...updatedPetBreed,
-//         petBreedsLocalized: uniqueBreedsLocalized,
-//       };
-
-//       console.log("Cleaned Payload:", cleanedPayload);
-
-//       // Perform the API request
-//       const response = await fetch(CONST.updatePetBreedURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-
-//       // Check if the response is okay
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       // Parse the response data
-//       const data = await response.json();
-//       console.log("Response Data:", data);
-
-//       // Check if `data` contains `data` field
-//       if (data && data.data) {
-//         return data.data;
-//       } else {
-//         // Handle cases where the data field is null or undefined
-//         console.warn("Update successful but no data returned.");
-//         return null; // Or handle it in a way that fits your use case
-//       }
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-// export const updatePetBreed = createAsyncThunk(
-//   "petBreeds/updatePetBreed",
-//   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue }) => {
-//     try {
-//       // Prepare the cleaned payload
-//       const cleanedPayload = {
-//         ...updatedPetBreed,
-//         petBreedsLocalized: updatedPetBreed.petBreedsLocalized.reduce(
-//           (acc, curr) => {
-//             if (!acc.some((item) => item.languageId === curr.languageId)) {
-//               acc.push(curr);
-//             }
-//             return acc;
-//           },
-//           [] as PetBreedUpdate["petBreedsLocalized"]
-//         ),
-//       };
-
-//       // Perform the API request
-//       const response = await fetch(CONST.updatePetBreedURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to update pet breed: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-
-//       if (data && data.data) {
-//         return data.data;
-//       } else {
-//         console.error("Update successful but no data returned.");
-//         return null;
-//       }
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
 export const deletePetBreed = createAsyncThunk(
   "petBreed/deletePetBreed",
   async (petBreedId: number, { rejectWithValue }) => {
