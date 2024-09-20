@@ -8,10 +8,11 @@ import {
   Pets,
   SimCard,
   ArrowDropDown,
-  Grain,
   Apps,
   Campaign,
   QuestionMark,
+  Grading,
+  PrivacyTip,
 } from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,6 +37,8 @@ const links = [
   },
   { name: "announcements", href: "/dashboard/announcements", icon: Campaign },
   { name: "faqs", href: "/dashboard/faqs", icon: QuestionMark },
+  { name: "terms", href: "/dashboard/termsOfUse", icon: Grading },
+  { name: "privacy", href: "/dashboard/privacy", icon: PrivacyTip },
 ];
 
 export default function NavLinks() {

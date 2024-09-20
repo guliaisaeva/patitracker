@@ -234,8 +234,6 @@ export const searchPetBreeds = createAsyncThunk<
     petTypeId: number;
     searchWord: string;
     languageId: number;
-    page: number;
-    itemsPerPage: number;
   },
   { rejectValue: string } // Error type
 >("petBreeds/searchPetBreeds", async (searchParams, { rejectWithValue }) => {
@@ -258,7 +256,7 @@ export const searchPetBreeds = createAsyncThunk<
     }
 
     const data = await response.json();
-    return data; // Adjust based on actual response structure
+    return data;
   } catch (error: any) {
     return rejectWithValue(error.message);
   }

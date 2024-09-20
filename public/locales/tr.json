@@ -55,7 +55,9 @@
     "pet.type": "Evcil Hayvan Türü",
     "pet.breed": "Evcil Hayvan Cinsi",
     "announcements": "Duyurular",
-    "faqs": "Sık Sorulan Sorular"
+    "faqs": "Sık Sorulan Sorular",
+    "terms": "Kullanım Şartları",
+    "privacy": "Gizlilik Politikası"
   },
 
   "announcement": {
@@ -350,5 +352,26 @@
     "passwordPlaceholder": "Şifreyi giriniz",
     "loginButton": "Giriş yap",
     "formError": "Geçersiz e-posta veya şifre."
+  },
+
+  "terms": {
+    "update": "Kullanım Şartları Güncellenmesi",
+    "errorLoadingTerms": "Hata: Kullanım Şartları yüklenirken hata oluştu",
+    "termsOfUse": "Kullanım Şartları",
+    "search.placeholder": "Kullanım Şartları Ara...",
+
+    "messages": {
+      "deleteSuccess": "Kullanım Şartları başarıyla silindi.",
+      "deleteFailure": "Kullanım Şartları silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Kullanım Şartları başarıyla eklendi.",
+      "createFailure": "Kullanım Şartları eklenemedi",
+      "updateSuccess": "Kullanım Şartları başarıyla güncellendi.",
+      "updateFailure": "Kullanım Şartları güncellenemedi. Lütfen tekrar deneyin."
+    },
+
+    "submit": {
+      "create": "Kullanım Şartları Oluştur",
+      "creating": "Oluşturuluyor..."
+    }
   }
 }

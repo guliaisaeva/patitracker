@@ -36,7 +36,7 @@ export const CONST = {
   addPetBreedURL: `${BASE_URL}/api/v1/Pet/AddPetBreed`,
   deletePetBreedURL: `${BASE_URL}/api/v1/Pet/DeletePetBreed`,
   updatePetBreedURL: `${BASE_URL}/api/v1/Pet/UpdatePetBreed`,
-  searchPetBreedURL:`${BASE_URL}/api/v1/Pet/PetBreedSearch`,
+  searchPetBreedURL: `${BASE_URL}/api/v1/Pet/PetBreedSearch`,
 
   getAllPetTypeURL: `${BASE_URL}/api/v1/Pet/GetAllPetType`,
   getPetTypeDetailURL: `${BASE_URL}/api/v1/Pet/GetPetType`,
@@ -55,4 +55,6 @@ export const CONST = {
   getUserDetailURL: `${BASE_URL}/api/v1/User/GetUser`,
   getSuperAdminDetailURL: `${BASE_URL}/api/v1/SuperAdmin/GetAdminDetail`,
   searchUserURL: `${BASE_URL}/api/v1/User/SearchUser`,
+
+  getAllTermsOfUse: `${BASE_URL}/api/v1/Information/GetAllTermsOfUse`,
 };

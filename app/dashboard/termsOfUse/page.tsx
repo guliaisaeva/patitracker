@@ -1,5 +1,4 @@
 "use client";
-
 import Pagination from "@/app/components/managers/pagination";
 import Search from "@/app/components/search";
 import Table from "@/app/components/pets/petBreed/table";
@@ -13,13 +12,10 @@ import {
   selectPetTypes,
 } from "@/lib/features/pet/petTypesSlice";
 import { AppDispatch } from "@/lib/store";
-import {
-  selectPetBreeds,
-  searchPetBreeds,
-  resetSearchResults,
-} from "@/lib/features/pet/petBreedSlice";
+import { selectPetBreeds } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter } from "next/navigation";
+import LanguageTabs from "@/app/components/languageTabs";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -73,12 +69,12 @@ export default function Page({
   // }, [query, selectedPetType, currentPage, dispatch]);
 
   useEffect(() => {
-    if (petBreeds) {
-      const filteredPetBreeds = petBreeds?.filter((petBreed) =>
-        petBreed?.breedName?.toLowerCase().includes(query.toLowerCase())
-      ).length;
-      setFilteredResultsCount(filteredPetBreeds);
-    }
+    // if (petBreeds) {
+    //   const filteredPetBreeds = petBreeds?.filter((petBreed) =>
+    //     petBreed?.breedName?.toLowerCase().includes(query.toLowerCase())
+    //   ).length;
+    //   setFilteredResultsCount(filteredPetBreeds);
+    // }
     // if (petBreeds && petBreeds.length > 0) {
     //   setFilteredResultsCount(petBreeds.length);
     // }
@@ -91,48 +87,12 @@ export default function Page({
       <div className="w-full">
         <div className="flex w-full items-center justify-between">
           <h1 className={`${lusitana.className} text-2xl`}>
-            {t("petBreed.petBreeds")}
+            {t("terms.termsOfUse")}
           </h1>
         </div>
         <div className="flex mt-6 gap-4">
-          <select
-            value={selectedPetType}
-            onChange={handlePetTypeChange}
-            className="text-gray-600 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-          >
-            <option value="">{t("petBreed.select.petType")}</option>
-            {petTypes.map((petType) => (
-              <option key={petType.typeId} value={petType.typeId.toString()}>
-                {petType.typeName}
-              </option>
-            ))}
-          </select>
+          <LanguageTabs />
         </div>
-
-        {selectedPetType && (
-          <>
-            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-              <Search placeholder={t("petBreed.search.placeholder")} />
-              <CreatePetBreed selectedPetType={selectedPetType} />
-            </div>
-            <Suspense
-              key={query + currentPage}
-              fallback={<InvoicesTableSkeleton />}
-            >
-              <Table
-                query={query}
-                currentPage={currentPage}
-                selectedPetType={selectedPetType}
-              />
-            </Suspense>
-
-            {filteredResultsCount > 0 && (
-              <div className="mt-5 flex w-full justify-center">
-                <Pagination totalPages={totalPages} />
-              </div>
-            )}
-          </>
-        )}
       </div>
     </>
   );

@@ -11,6 +11,7 @@ import { announcementSlice } from "./features/announcement/announceSlice";
 import { questionSlice } from "./features/faq/faqSlice";
 import { authSlice } from "./features/login/loginSlice";
 import { languageSlice } from "./features/languages/languagesSlice";
+import { termsPrivacySlice } from "./features/termsPrivacy/termsPrivacySlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -25,7 +26,8 @@ const rootReducer = combineSlices(
   announcementSlice,
   questionSlice,
   authSlice,
-  languageSlice
+  languageSlice,
+  termsPrivacySlice
 );
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;

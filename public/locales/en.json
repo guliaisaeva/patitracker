@@ -57,7 +57,9 @@
     "pet.type": "Pet Type",
     "pet.breed": "Pet Breed",
     "announcements": "Announcements",
-    "faqs": "FAQs"
+    "faqs": "FAQs",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy"
   },
 
   "ANNOUNCEMENT": "ANNOUNCEMENT SECTION",
@@ -353,5 +355,26 @@
     "passwordPlaceholder": "Enter password",
     "loginButton": "Log in",
     "formError": "Invalid email or password."
+  },
+
+  "terms": {
+    "update": "Edit Terms of Use",
+    "errorLoadingTerms": "Error: An error occurred while loading the Terms of Use",
+    "termsOfUse": "Terms of Use",
+    "search.placeholder": "Search Terms of Use...",
+
+    "messages": {
+      "deleteSuccess": "Terms of Use successfully deleted.",
+      "deleteFailure": "An error occurred while deleting the Terms of Use. Please try again.",
+      "createSuccess": "Terms of Use successfully added.",
+      "createFailure": "Failed to add the Terms of Use.",
+      "updateSuccess": "Terms of Use successfully updated.",
+      "updateFailure": "Failed to update the Terms of Use. Please try again."
+    },
+
+    "submit": {
+      "create": "Create Terms of Use",
+      "creating": "Creating..."
+    }
   }
 }

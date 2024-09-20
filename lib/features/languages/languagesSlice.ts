@@ -27,7 +27,7 @@ export const fetchLanguages = createAsyncThunk(
     }
   }
 );
-interface Language {
+export interface Language {
   languageId: number;
   languageName: string;
   languageAbbreviation: string;
