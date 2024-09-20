@@ -33,7 +33,7 @@ export interface Language {
   languageAbbreviation: string;
 }
 interface LanguageState {
-  language: "en" | "tr";
+  language: string;
   languages: Language[];
   loading: boolean;
   error: string | null;
@@ -50,7 +50,7 @@ export const languageSlice = createSlice({
   name: "language",
   initialState,
   reducers: {
-    setLanguage(state, action: PayloadAction<"en" | "tr">) {
+    setLanguage(state, action: PayloadAction<string>) {
       state.language = action.payload;
     },
   },

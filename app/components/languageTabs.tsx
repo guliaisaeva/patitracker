@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLanguages,
@@ -9,22 +9,26 @@ import {
 } from "@/lib/features/languages/languagesSlice";
 import { useTranslation } from "react-i18next";
 import TermsOfUseTable from "./termsOfUse/table";
+import { AppDispatch } from "@/lib/store";
 
 function LanguageTabs() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const languages = useSelector(selectLanguages);
   const currentLanguage = useSelector(selectCurrentLanguage);
 
-  const [openTab, setOpenTab] = React.useState<string>("tr");
+  const [openTab, setOpenTab] = useState<"en" | "tr" | string>(
+    currentLanguage || "tr"
+  );
 
   useEffect(() => {
-    dispatch(fetchLanguages() as any);
+    dispatch(fetchLanguages());
   }, [dispatch]);
 
   const handleTabClick = (languageAbbreviation: string) => {
     setOpenTab(languageAbbreviation);
-  };
 
+    dispatch(setLanguage(languageAbbreviation));
+  };
   return (
     <div className="w-full">
       {/* Language Tabs */}
@@ -41,7 +45,7 @@ function LanguageTabs() {
               className={
                 "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                 (openTab === language.languageAbbreviation
-                  ? "text-white bg-blueGray-600"
+                  ? "text-white  bg-green-500"
                   : "text-blueGray-600 bg-white")
               }
               onClick={(e) => {
@@ -85,7 +89,18 @@ function LanguageTabs() {
               </div>
             ))} */}
 
-            <TermsOfUseTable />
+            {/* <TermsOfUseTable /> */}
+            {languages.map((language) => (
+              <div
+                key={language.languageId}
+                className={
+                  openTab === language.languageAbbreviation ? "block" : "hidden"
+                }
+                id={language.languageAbbreviation}
+              >
+                <TermsOfUseTable languageId={language.languageId} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

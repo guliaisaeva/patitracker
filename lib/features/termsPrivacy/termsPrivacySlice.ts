@@ -24,7 +24,7 @@ const initialState: PrivacyPolicyState = {
 
 export const fetchPrivacyPolicies = createAsyncThunk(
   "privacyPolicies/fetchPrivacyPolicies",
-  async (_, { rejectWithValue }) => {
+  async (languageId: number, { rejectWithValue }) => {
     try {
       const response = await fetch(CONST.getAllTermsOfUse, {
         headers: {

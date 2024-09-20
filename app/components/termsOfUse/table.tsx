@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import {
@@ -13,32 +13,34 @@ import {
   fetchPrivacyPolicies,
   selectPrivacyPolicies,
 } from "@/lib/features/termsPrivacy/termsPrivacySlice";
+import { selectLanguages } from "@/lib/features/languages/languagesSlice";
 
-const ITEMS_PER_PAGE = 10;
-
-export default function TermsOfUseTable() {
+interface TermsOfUseTableProps {
+  languageId?: number;
+}
+export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const privacyPolicy = useSelector(selectPrivacyPolicies);
+  const currentLanguage = useSelector(selectLanguages);
+
   const status = useSelector((state: RootState) => state.petBreeds.status);
   const error = useSelector((state: RootState) => state.petBreeds.error);
 
   useEffect(() => {
-    dispatch(fetchPrivacyPolicies());
-  }, [dispatch]);
+    if (languageId) {
+      dispatch(fetchPrivacyPolicies(languageId));
+    }
+  }, [dispatch, languageId]);
 
-  // if (status === 'loading') {
-  //   return <div>Loading pet breeds...</div>;
-  // }
 
-  if (status === "failed") {
-    return (
-      <div>
-        {t("petBreed.errorLoadingPetBreed")} {error}
-      </div>
-    );
+  if (status === "loading") {
+    return <div>Loading Terms Of Use...</div>;
   }
 
+  if (!privacyPolicy || privacyPolicy.length === 0) {
+    return <NoResultsMessage />; // Custom message for no data
+  }
   return (
     <div className="mt-6 flow-root">
       <div className="overflow-x-auto">
