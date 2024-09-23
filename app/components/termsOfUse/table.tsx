@@ -2,18 +2,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
-import {
-  selectPetBreeds,
-  getAllPetBreeds,
-} from "@/lib/features/pet/petBreedSlice";
 import NoResultsMessage from "@/app/components/noResultMessage";
-import { DeleteBreed, PetBreedInfo, UpdatePetBreed } from "./buttons";
 import { useTranslation } from "react-i18next";
 import {
-  fetchPrivacyPolicies,
-  selectPrivacyPolicies,
+  fetchTermsOfUse,
+  selectPrivacyPoliciesByLanguage,
 } from "@/lib/features/termsPrivacy/termsPrivacySlice";
-import { selectLanguages } from "@/lib/features/languages/languagesSlice";
+import "react-quill/dist/quill.snow.css";
+import { useRouter } from "next/navigation";
 
 interface TermsOfUseTableProps {
   languageId?: number;
@@ -21,49 +17,48 @@ interface TermsOfUseTableProps {
 export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  const privacyPolicy = useSelector(selectPrivacyPolicies);
-  const currentLanguage = useSelector(selectLanguages);
+  const router = useRouter();
 
-  const status = useSelector((state: RootState) => state.petBreeds.status);
-  const error = useSelector((state: RootState) => state.petBreeds.error);
+  const [selectedLanguageId, setSelectedLanguageId] = useState(languageId || 1);
 
+  const termsOfUse = useSelector((state: RootState) =>
+    selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
+  );
+
+  const status = useSelector((state: RootState) => state.termsPrivacy.status);
   useEffect(() => {
-    if (languageId) {
-      dispatch(fetchPrivacyPolicies(languageId));
-    }
-  }, [dispatch, languageId]);
-
+    dispatch(fetchTermsOfUse());
+  }, [dispatch, selectedLanguageId]);
 
   if (status === "loading") {
-    return <div>Loading Terms Of Use...</div>;
+    return <div>{t("terms.submit.loading")}</div>;
   }
 
-  if (!privacyPolicy || privacyPolicy.length === 0) {
-    return <NoResultsMessage />; // Custom message for no data
+  if (!termsOfUse || termsOfUse.length === 0) {
+    return <NoResultsMessage />;
   }
   return (
     <div className="mt-6 flow-root">
-      <div className="overflow-x-auto">
-        <div className="inline-block min-w-full align-middle">
-          <div className="overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0">
-            {privacyPolicy?.map((item) => (
-              <div
-                key={item.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
-                <div className="flex items-center justify-between border-b pb-4">
-                  <div>
-                    <p className="text-sm text-gray-500">
-                      {item.title}
-                      {item.detail}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      {termsOfUse?.map((item) => (
+        <div key={item.id} className="mb-2 w-full  bg-white p-4">
+          <button
+            onClick={() =>
+              router.replace(`/dashboard/termsOfUse/${item.id}/edit`)
+            }
+            className="mt-2 text-blue-500 underline"
+          >
+            Edit
+          </button>
+          <h2 className="text-sm text-gray-500 text-center font-bold p-2">
+            {item.title}
+          </h2>
+          {/* <p> {item.detail}</p> */}
+          <div
+            className="mt-4"
+            dangerouslySetInnerHTML={{ __html: item.detail }}
+          />
         </div>
-      </div>
+      ))}
     </div>
   );
 }

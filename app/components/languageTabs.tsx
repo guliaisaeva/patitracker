@@ -14,43 +14,33 @@ import { AppDispatch } from "@/lib/store";
 function LanguageTabs() {
   const dispatch = useDispatch<AppDispatch>();
   const languages = useSelector(selectLanguages);
-  const currentLanguage = useSelector(selectCurrentLanguage);
 
-  const [openTab, setOpenTab] = useState<"en" | "tr" | string>(
-    currentLanguage || "tr"
-  );
-
+  const [openTab, setOpenTab] = useState<number>(1);
   useEffect(() => {
     dispatch(fetchLanguages());
   }, [dispatch]);
 
-  const handleTabClick = (languageAbbreviation: string) => {
-    setOpenTab(languageAbbreviation);
-
-    dispatch(setLanguage(languageAbbreviation));
+  const handleTabClick = (languageId: number) => {
+    setOpenTab(languageId);
   };
   return (
     <div className="w-full">
-      {/* Language Tabs */}
       <ul
-        className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+        className="flex mb-0 list-none flex-wrap pt-3 pb-4 justify-end"
         role="tablist"
       >
         {languages.map((language) => (
-          <li
-            key={language.languageId}
-            className="-mb-px mr-2 last:mr-0 flex-auto text-center"
-          >
+          <li key={language.languageId} className="flex-none mr-2 last:mr-0">
             <a
               className={
                 "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                (openTab === language.languageAbbreviation
+                (openTab === language.languageId
                   ? "text-white  bg-green-500"
                   : "text-blueGray-600 bg-white")
               }
               onClick={(e) => {
                 e.preventDefault();
-                handleTabClick(language.languageAbbreviation);
+                handleTabClick(language.languageId);
               }}
               href={`#${language.languageAbbreviation}`}
             >
@@ -60,42 +50,13 @@ function LanguageTabs() {
         ))}
       </ul>
 
-      {/* Tab Content */}
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
         <div className="px-4 py-5 flex-auto">
           <div className="tab-content tab-space">
-            {/* {languages.map((language) => (
-              <div
-                key={language.languageId}
-                className={
-                  openTab === language.languageAbbreviation ? "block" : "hidden"
-                }
-                id={language.languageAbbreviation}
-              >
-                <table className="min-w-full leading-normal">
-                  <thead>
-                    <tr>
-                      <th>{t("tableHeaders.header1")}</th>
-                      <th>{t("tableHeaders.header2")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{language.languageName} Data 1</td>
-                      <td>{language.languageAbbreviation} Data 2</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ))} */}
-
-            {/* <TermsOfUseTable /> */}
             {languages.map((language) => (
               <div
                 key={language.languageId}
-                className={
-                  openTab === language.languageAbbreviation ? "block" : "hidden"
-                }
+                className={openTab === language.languageId ? "block" : "hidden"}
                 id={language.languageAbbreviation}
               >
                 <TermsOfUseTable languageId={language.languageId} />

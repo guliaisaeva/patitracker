@@ -1,167 +1,312 @@
+// "use client";
+// import { SetStateAction, useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { AppDispatch, RootState } from "@/lib/store";
+// import NoResultsMessage from "@/app/components/noResultMessage";
+// import { useTranslation } from "react-i18next";
+// import {
+//   fetchTermsOfUse,
+//   selectPrivacyPoliciesByLanguage,
+//   updateTermsOfUse,
+// } from "@/lib/features/termsPrivacy/termsPrivacySlice";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// interface TermsOfUseTableProps {
+//   languageId?: number;
+// }
+
+// const sanitizeHtml = (html: string) => {
+//   const parser = new DOMParser();
+//   const doc = parser.parseFromString(html, "text/html");
+//   const body = doc.body;
+
+//   body.querySelectorAll("strong").forEach((el) => {
+//     el.style.fontWeight = "bold";
+//   });
+//   body.querySelectorAll("u").forEach((el) => {
+//     el.style.textDecoration = "none";
+//     el.textContent = el.textContent;
+//   });
+
+//   return body.innerHTML;
+// };
+
+// export default function TermsOfUseTableInfo({
+//   languageId,
+// }: TermsOfUseTableProps) {
+//   const { t } = useTranslation();
+//   const dispatch = useDispatch<AppDispatch>();
+//   const [selectedLanguageId, setSelectedLanguageId] = useState(languageId || 1);
+//   const [editingTerm, setEditingTerm] = useState<{
+//     id: number;
+//     title: string;
+//     detail: string;
+//     languageId: number;
+//   } | null>(null);
+
+//   const termsOfUse = useSelector((state: RootState) =>
+//     selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
+//   );
+
+//   const status = useSelector((state: RootState) => state.termsPrivacy.status);
+
+//   useEffect(() => {
+//     dispatch(fetchTermsOfUse());
+//   }, [dispatch, selectedLanguageId]);
+
+//   useEffect(() => {
+//     if (status === "succeeded") {
+//       dispatch(fetchTermsOfUse());
+//     }
+//   }, [status, dispatch]);
+
+//   const handleEditClick = (
+//     term: SetStateAction<{
+//       id: number;
+//       title: string;
+//       detail: string;
+//       languageId: number;
+//     } | null>
+//   ) => {
+//     setEditingTerm(term);
+//   };
+
+//   const handleUpdate = (e: any) => {
+//     e.preventDefault();
+//     if (editingTerm) {
+//       const sanitizedDetail = sanitizeHtml(editingTerm.detail);
+
+//       // Optimistically update the local state
+//       const updatedTerms = termsOfUse.map((term) =>
+//         term.id === editingTerm.id ? { ...term, detail: sanitizedDetail } : term
+//       );
+
+//       // Update local state immediately
+//       dispatch(updateTermsOfUse({ ...editingTerm, detail: sanitizedDetail }));
+//       dispatch(fetchTermsOfUse());
+
+//       setEditingTerm(null);
+//       // Optionally, set termsOfUse to updatedTerms if you have a local state for terms
+//     }
+//   };
+
+//   if (status === "loading") {
+//     return <div>{t("terms.submit.loading")}</div>;
+//   }
+
+//   if (!termsOfUse || termsOfUse.length === 0) {
+//     return <NoResultsMessage />;
+//   }
+
+//   const modules = {
+//     toolbar: [
+//       [{ header: "1" }, { header: "2" }],
+//       ["bold", "italic", "underline"],
+//       [{ list: "ordered" }, { list: "bullet" }],
+//       ["link"],
+//     ],
+//   };
+
+//   return (
+//     <div className="mt-6 flow-root">
+//       {termsOfUse.map((item) => (
+//         <button
+//           key={item.id}
+//           className="mt-2 text-blue-500"
+//           onClick={() => handleEditClick(item)}
+//         >
+//           Edit
+//         </button>
+//       ))}
+
+//       {editingTerm && (
+//         <div className="mt-4 bg-gray-100 p-4">
+//           <h3>Edit Term</h3>
+//           <form onSubmit={handleUpdate}>
+//             <div>
+//               <label className="block text-gray-700">Title</label>
+//               <input
+//                 type="text"
+//                 value={editingTerm.title}
+//                 onChange={(e) =>
+//                   setEditingTerm({ ...editingTerm, title: e.target.value })
+//                 }
+//                 className="border p-2 w-full"
+//               />
+//             </div>
+//             <div className="mt-4">
+//               <label className="block text-gray-700">Detail</label>
+//               <ReactQuill
+//                 value={editingTerm.detail}
+//                 onChange={(value) =>
+//                   setEditingTerm({ ...editingTerm, detail: value })
+//                 }
+//                 className="border w-full"
+//                 theme="snow"
+//                 modules={modules}
+//               />
+//             </div>
+//             <button
+//               type="submit"
+//               className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+//             >
+//               Update Terms
+//             </button>
+//             <button
+//               type="button"
+//               onClick={() => setEditingTerm(null)}
+//               className="mt-4 ml-2 text-red-500"
+//             >
+//               Cancel
+//             </button>
+//           </form>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
 "use client";
-import { PetsOutlined } from "@mui/icons-material";
-import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/store";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  getAllPetTypes,
-  selectPetTypes,
-} from "@/lib/features/pet/petTypesSlice";
-import {
-  getPetBreedDetail,
-  selectBreedDetail,
-  selectPetBreeds,
-  updatePetBreed,
-} from "@/lib/features/pet/petBreedSlice";
-import { Button } from "../../button";
+import { SetStateAction, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import NoResultsMessage from "@/app/components/noResultMessage";
 import { useTranslation } from "react-i18next";
-
 import {
-  fetchLanguages,
-  selectLanguages,
-} from "@/lib/features/languages/languagesSlice";
+  fetchTermsOfUse,
+  selectPrivacyPoliciesByLanguage,
+  updateTermsOfUse,
+} from "@/lib/features/termsPrivacy/termsPrivacySlice";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-interface FormProps {
-  selectedPetType: string;
-  breedId: number;
+interface TermsOfUseTableProps {
+  languageId?: number;
 }
 
-export default function InfoBreedForm({ breedId, selectedPetType }: FormProps) {
-  const { t } = useTranslation();
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const petTypes = useSelector(selectPetTypes);
-  const languages = useSelector(selectLanguages);
+const sanitizeHtml = (html: string) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const body = doc.body;
 
-  const selectedBreedDetail = useSelector(selectBreedDetail);
-  const [formState, setFormState] = useState<{
-    breedId: number | null;
-    petTypeId: number | null;
-    breedName: string;
-    petBreedsLocalized: { languageId: number; breedName: string }[];
-  }>({
-    breedId: breedId,
-    petTypeId: Number(selectedPetType),
-    breedName: "",
-    petBreedsLocalized: [],
+  body.querySelectorAll("strong").forEach((el) => {
+    el.style.fontWeight = "bold";
+  });
+  body.querySelectorAll("u").forEach((el) => {
+    el.style.textDecoration = "none";
+    el.textContent = el.textContent;
   });
 
-  useEffect(() => {
-    dispatch(getAllPetTypes());
-    dispatch(fetchLanguages());
-  }, []);
+  return body.innerHTML;
+};
+
+export default function TermsOfUseTableInfo({
+  languageId,
+}: TermsOfUseTableProps) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const [selectedLanguageId, setSelectedLanguageId] = useState(languageId || 1);
+  const [editingTerm, setEditingTerm] = useState<{
+    id: number;
+    title: string;
+    detail: string;
+    languageId: number;
+  } | null>(null);
+
+  const termsOfUse = useSelector((state: RootState) =>
+    selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
+  );
+
+  const status = useSelector((state: RootState) => state.termsPrivacy.status);
 
   useEffect(() => {
-    if (breedId) {
-      dispatch(getPetBreedDetail(breedId));
+    dispatch(fetchTermsOfUse());
+  }, [dispatch, selectedLanguageId]);
+
+  useEffect(() => {
+    if (termsOfUse && termsOfUse.length > 0 && !editingTerm) {
+      setEditingTerm(termsOfUse[0]);
     }
-  }, [breedId]);
+  }, [termsOfUse, editingTerm]);
 
   useEffect(() => {
-    if (selectedBreedDetail) {
-      setFormState({
-        breedId: selectedBreedDetail.breedId || null,
-        breedName: selectedBreedDetail.breedName || "",
-        petTypeId: selectedBreedDetail.petTypeId || null,
-        petBreedsLocalized:
-          selectedBreedDetail.languages.map((lang: any) => ({
-            languageId: lang.id || 0,
-            breedName: lang.text || "",
-          })) || [],
-      });
+    if (status === "succeeded") {
+      dispatch(fetchTermsOfUse());
     }
-  }, [selectedBreedDetail]);
+  }, [status, dispatch]);
 
-  if (!formState.breedId) {
-    return <div>{t("load")}</div>;
+  const handleUpdate = (e: any) => {
+    e.preventDefault();
+    if (editingTerm) {
+      const sanitizedDetail = sanitizeHtml(editingTerm.detail);
+      dispatch(updateTermsOfUse({ ...editingTerm, detail: sanitizedDetail }));
+      dispatch(fetchTermsOfUse());
+      setEditingTerm(null);
+    }
+  };
+
+  if (status === "loading") {
+    return <div>{t("terms.submit.loading")}</div>;
   }
-  return (
-    <form className="my-6">
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <div className="mb-4">
-          <label htmlFor="petTypeId" className="mb-2 block text-sm font-medium">
-            {t("petType.petTypes")}{" "}
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <select
-              id="petTypeId"
-              name="petTypeId"
-              defaultValue={formState.petTypeId?.toString()}
-              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-              aria-readonly
-            >
-              <option defaultValue="">{t("petBreed.select.petType")}</option>
-              {petTypes.map((petType) => (
-                <option key={petType.typeId} defaultValue={petType.typeId}>
-                  {petType.typeName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div id="petTypeId-error" aria-live="polite" aria-atomic="true"></div>
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="breedName"
-            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
-          >
-            {t("petBreed.form.newPetType")}
-          </label>
-          <input
-            type="text"
-            id="breedName"
-            name="breedName"
-            defaultValue={formState.breedName}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("petBreed.form.enterPetType")}
-            readOnly
-          />
-          {/* {errors.breedName && (
-            <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
-          )} */}
-        </div>
-        {languages.map((language) => {
-          const localizedBreed = formState.petBreedsLocalized.find(
-            (locale) => locale.languageId === language.languageId
-          );
 
-          return (
-            <div className="mb-4" key={language.languageId}>
-              <label
-                htmlFor={`breedName${language.languageId}`}
-                className="mb-2 block text-sm font-medium flex flex-row items-center gap-3 justify-between"
-              >
-                {t("petBreed.form.newPetType")}
-                <p>
-                  {language.languageAbbreviation}/{language.languageName}
-                </p>
-              </label>
-              <div className="relative">
-                <input
-                  id={`breedName${language.languageId}`}
-                  name={`breedName${language.languageId}`}
-                  type="text"
-                  defaultValue={localizedBreed ? localizedBreed.breedName : ""}
-                  className="text-gray-500 peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  readOnly
-                />
-                <PetsOutlined className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-              </div>
+  if (!termsOfUse || termsOfUse.length === 0) {
+    return <NoResultsMessage />;
+  }
+
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"],
+    ],
+  };
+
+  return (
+    <div className="mt-6 flow-root">
+      {editingTerm && (
+        <div className="mt-4 bg-gray-100 p-4">
+          <h3>Edit Term</h3>
+          <form onSubmit={handleUpdate}>
+            <div>
+              <label className="block text-gray-700">Title</label>
+              <input
+                type="text"
+                value={editingTerm.title}
+                onChange={(e) =>
+                  setEditingTerm({ ...editingTerm, title: e.target.value })
+                }
+                className="border p-2 w-full"
+              />
             </div>
-          );
-        })}
-      </div>
-      {/* Action Buttons */}
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/pets/petBreed"
-          className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          {t("close")}
-        </Link>
-      </div>
-    </form>
+            <div className="mt-4">
+              <label className="block text-gray-700">Detail</label>
+              <ReactQuill
+                value={editingTerm?.detail || ""}
+                onChange={(value) =>
+                  setEditingTerm({ ...editingTerm, detail: value })
+                }
+                className="border w-full"
+                theme="snow"
+                modules={modules}
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+            >
+              Update Terms
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditingTerm(null)}
+              className="mt-4 ml-2 text-red-500"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
   );
 }

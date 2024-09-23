@@ -1,7 +1,8 @@
 "use client";
-import Form from "@/app/components/pets/petBreed/edit-form";
 import Breadcrumbs from "@/app/components/managers/breadcrumbs";
 import { useTranslation } from "react-i18next";
+import TermsOfUseTableInfo from "@/app/components/termsOfUse/infoPage";
+import TermsEditor from "@/app/components/termsOfUse/edit-form";
 
 export default function Page({ params }: { params: { id: number } }) {
   const id = params.id;
@@ -13,13 +14,13 @@ export default function Page({ params }: { params: { id: number } }) {
         breadcrumbs={[
           { label: t("petBreed.petBreeds"), href: "/dashboard/pets/petBreed" },
           {
-            label: t("petBreed.update"),
-            href: `/dashboard/pets/petBreed/${id}/edit`,
+            label: t("petBreed.info"),
+            href: `/dashboard/termsOfUse/${id}/edit`,
             active: true,
           },
         ]}
       />
-      <Form breedId={id} />
+      <TermsOfUseTableInfo />
     </main>
   );
 }

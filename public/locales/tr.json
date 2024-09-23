@@ -371,7 +371,10 @@
 
     "submit": {
       "create": "Kullanım Şartları Oluştur",
-      "creating": "Oluşturuluyor..."
+      "creating": "Oluşturuluyor...",
+      "loading": "Kullanım Şartları Yükleniyor..."
     }
+
+    
   }
 }

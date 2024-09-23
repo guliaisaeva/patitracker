@@ -56,5 +56,6 @@ export const CONST = {
   getSuperAdminDetailURL: `${BASE_URL}/api/v1/SuperAdmin/GetAdminDetail`,
   searchUserURL: `${BASE_URL}/api/v1/User/SearchUser`,
 
-  getAllTermsOfUse: `${BASE_URL}/api/v1/Information/GetAllTermsOfUse`,
+  getAllTermsOfUse: `${BASE_URL}/api/v1/Information/GetTermsOfUse`,
+  updateTermsOfUse: `${BASE_URL}/api/v1/Information/UpdateTermsOfUse`,
 };

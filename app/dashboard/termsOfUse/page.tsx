@@ -16,6 +16,7 @@ import { selectPetBreeds } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter } from "next/navigation";
 import LanguageTabs from "@/app/components/languageTabs";
+import TermsOfUseTableInfo from "@/app/components/termsOfUse/infoPage";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -80,7 +81,6 @@ export default function Page({
     // }
   }, [petBreeds, query]);
 
-  const totalPages = Math.ceil(filteredResultsCount / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -93,6 +93,7 @@ export default function Page({
         <div className="flex mt-6 gap-4">
           <LanguageTabs />
         </div>
+        {/* <TermsOfUseTableInfo/> */}
       </div>
     </>
   );

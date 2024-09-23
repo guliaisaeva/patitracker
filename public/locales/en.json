@@ -374,7 +374,9 @@
 
     "submit": {
       "create": "Create Terms of Use",
-      "creating": "Creating..."
+      "creating": "Creating...",
+      "loading": "Loading Terms Of Use..."
+
     }
   }
 }
