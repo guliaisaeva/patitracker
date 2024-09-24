@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
 .container {
   display: grid;
   grid-template-areas:
@@ -106,3 +107,4 @@
     transform: translateY(0px);
   }
 }
+

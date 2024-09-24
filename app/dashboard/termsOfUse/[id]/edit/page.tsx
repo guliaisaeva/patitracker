@@ -1,8 +1,7 @@
 "use client";
 import Breadcrumbs from "@/app/components/managers/breadcrumbs";
 import { useTranslation } from "react-i18next";
-import TermsOfUseTableInfo from "@/app/components/termsOfUse/infoPage";
-import TermsEditor from "@/app/components/termsOfUse/edit-form";
+import TermsOfUseTableInfo from "@/app/components/termsOfUse/edit-form";
 
 export default function Page({ params }: { params: { id: number } }) {
   const id = params.id;

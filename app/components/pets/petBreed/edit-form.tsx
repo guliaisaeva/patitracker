@@ -228,7 +228,6 @@ export default function UpdateBreedForm({
           );
         })}
       </div>
-      {/* Action Buttons */}
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/pets/petBreed"

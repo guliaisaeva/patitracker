@@ -8,11 +8,12 @@ import {
   selectQuestionsError,
   selectQuestionsStatus,
 } from "@/lib/features/faq/faqSlice";
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import trFlag from "@/public/images/turkey.png";
-import ukFlag from "@/public/images/uk.png";
 import Link from "next/link";
+import {
+  fetchLanguages,
+  selectLanguages,
+} from "@/lib/features/languages/languagesSlice";
 
 export default function Form() {
   const { t } = useTranslation();
@@ -20,43 +21,80 @@ export default function Form() {
   const router = useRouter();
   const status = useSelector(selectQuestionsStatus);
   const error = useSelector(selectQuestionsError);
+  const languages = useSelector(selectLanguages);
 
-  const [trTitle, setTrTitle] = useState("");
-  const [trDetail, setTrDetail] = useState("");
-  const [enTitle, setEnTitle] = useState("");
-  const [enDetail, setEnDetail] = useState("");
+  const [formData, setFormData] = useState<{
+    question: string;
+    detail: string;
+    frequentlyAskedQuestionsLocalized: {
+      languageId: number;
+      question: string;
+      detail: string;
+    }[];
+  }>({
+    question: "",
+    detail: "",
+    frequentlyAskedQuestionsLocalized: [],
+  });
+  useEffect(() => {
+    dispatch(fetchLanguages());
+  }, [dispatch]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const questionsToSend = [];
-
-    // Turkish Question
-    if (trTitle || trDetail) {
-      questionsToSend.push({
-        title: trTitle,
-        detail: trDetail,
-        mobileLanguageId: 1, // Turkish
-      });
+  useEffect(() => {
+    if (languages.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        frequentlyAskedQuestionsLocalized: languages.map((lang) => ({
+          languageId: lang.languageId,
+          question: "",
+          detail: "",
+        })),
+      }));
     }
+  }, [languages]);
 
-    // English Question
-    if (enTitle || enDetail) {
-      questionsToSend.push({
-        title: enTitle,
-        detail: enDetail,
-        mobileLanguageId: 2, // English
-      });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "question" || name === "detail") {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else if (name.startsWith("question_") || name.startsWith("detail_")) {
+      const [field, languageIdStr] = name.split("_");
+      const languageId = parseInt(languageIdStr, 10);
+
+      setFormData((prev) => ({
+        ...prev,
+        frequentlyAskedQuestionsLocalized:
+          prev.frequentlyAskedQuestionsLocalized.map((item) =>
+            item.languageId === languageId ? { ...item, [field]: value } : item
+          ),
+      }));
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const mainQuestion = {
+      question: formData.question,
+      detail: formData.detail,
+      frequentlyAskedQuestionsLocalized:
+        formData.frequentlyAskedQuestionsLocalized,
+    };
 
     try {
-      for (const question of questionsToSend) {
-        await dispatch(addQuestion(question)).unwrap();
-      }
-      setTrTitle("");
-      setTrDetail("");
-      setEnTitle("");
-      setEnDetail("");
+      await dispatch(addQuestion(mainQuestion)).unwrap();
+
+      setFormData({
+        question: "",
+        detail: "",
+        frequentlyAskedQuestionsLocalized: languages.map((lang) => ({
+          languageId: lang.languageId,
+          question: "",
+          detail: "",
+        })),
+      });
       alert(t("faq.messages.createSuccess"));
       router.replace("/dashboard/faqs");
     } catch (err) {
@@ -64,77 +102,82 @@ export default function Form() {
       alert(t("faq.messages.createFailure"));
     }
   };
-
   return (
-    <form className="my-6" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="my-6">
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <Image
-          src={trFlag}
-          alt="Turkish Flag"
-          width={36}
-          height={36}
-          className="rounded-full"
-        />
         <div className="mb-4">
-          <label htmlFor="trTitle" className="mb-2 block text-sm font-medium">
-            {t("faq.form.title")}{" "}
+          <label htmlFor="question" className="mb-2 block text-sm font-medium">
+            {t("faq.form.title")}
           </label>
           <input
-            id="trTitle"
-            name="trTitle"
-            value={trTitle}
-            onChange={(e) => setTrTitle(e.target.value)}
+            id="question"
+            name="question"
+            value={formData.question}
+            onChange={handleChange}
             className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             required
-            placeholder={t("faq.form.enterTitleTr")}
+            placeholder={t("faq.form.enterTitle")}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="trDetail" className="mb-2 block text-sm font-medium">
-            {t("faq.form.detail")}{" "}
+          <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+            {t("faq.form.detail")}
           </label>
           <textarea
-            id="trDetail"
-            name="trDetail"
-            value={trDetail}
-            onChange={(e) => setTrDetail(e.target.value)}
+            id="detail"
+            name="detail"
+            value={formData.detail}
+            onChange={handleChange}
             className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("faq.form.enterDetailTr")}
+            placeholder={t("faq.form.enterDetail")}
+            required
           />
         </div>
-        <Image
-          src={ukFlag}
-          alt="English Flag"
-          width={36}
-          height={36}
-          className="rounded-full"
-        />
-        <div className="mb-4">
-          <label htmlFor="enTitle" className="mb-2 block text-sm font-medium">
-            {t("faq.form.title")}{" "}
-          </label>
-          <input
-            id="enTitle"
-            name="enTitle"
-            value={enTitle}
-            placeholder={t("faq.form.enterTitleEn")}
-            onChange={(e) => setEnTitle(e.target.value)}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="enDetail" className="mb-2 block text-sm font-medium">
-            {t("faq.form.detail")}{" "}
-          </label>
-          <textarea
-            id="enDetail"
-            name="enDetail"
-            value={enDetail}
-            onChange={(e) => setEnDetail(e.target.value)}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("faq.form.enterDetailTr")}
-          />
-        </div>
+
+        {languages.map((lang) => (
+          <div key={lang.languageId} className="mb-4 mt-4">
+            <label
+              htmlFor={`question_${lang.languageId}`}
+              className="mb-2 flex justify-between text-sm font-medium"
+            >
+              <p>{t("faq.form.title")}</p>
+              {`${lang.languageAbbreviation}/ ${lang.languageName} `}
+            </label>
+            <input
+              type="text"
+              id={`question_${lang.languageId}`}
+              name={`question_${lang.languageId}`}
+              value={
+                formData.frequentlyAskedQuestionsLocalized.find(
+                  (q) => q.languageId === lang.languageId
+                )?.question || ""
+              }
+              onChange={handleChange}
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              placeholder={t("faq.form.enterTitle")}
+            />
+
+            <label
+              htmlFor={`detail_${lang.languageId}`}
+              className="mb-2 mt-2 flex justify-between  text-sm font-medium"
+            >
+              <p> {t("faq.form.detail")}</p>
+              {`${lang.languageAbbreviation}/${lang.languageName} `}
+            </label>
+            <textarea
+              id={`detail_${lang.languageId}`}
+              name={`detail_${lang.languageId}`}
+              value={
+                formData.frequentlyAskedQuestionsLocalized.find(
+                  (q) => q.languageId === lang.languageId
+                )?.detail || ""
+              }
+              onChange={handleChange}
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              placeholder={t("faq.form.enterDetail")}
+            />
+          </div>
+        ))}
 
         {status === "failed" && error && (
           <div className="mb-4 text-red-500">{error}</div>
@@ -151,7 +194,7 @@ export default function Form() {
             className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             disabled={status === "loading"}
           >
-            {status === t("load")
+            {status === "loading"
               ? t("faq.submit.creating")
               : t("faq.submit.create")}
           </button>

@@ -25,16 +25,20 @@ export const getAllQuestions = createAsyncThunk(
       const data = await response.json();
       return data.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({ message: error.message });
     }
   }
 );
+
 export const getQuestionDetail = createAsyncThunk(
   "questions/getQuestionDetail",
-  async (id: number, { rejectWithValue }) => {
+  async (
+    { questionId, languageId }: { questionId: number; languageId: number },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await fetch(
-        `${CONST.getQuestionDetailURL}?questionId=${id}`,
+        `${CONST.getQuestionDetailURL}?questionId=${questionId}&languageId=${languageId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +50,7 @@ export const getQuestionDetail = createAsyncThunk(
       if (!response.ok) {
         const errorDetail = await response.text();
         throw new Error(
-          `Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`
+          `Failed to fetch question detail: ${response.statusText} - ${errorDetail}`
         );
       }
 
@@ -57,7 +61,6 @@ export const getQuestionDetail = createAsyncThunk(
     }
   }
 );
-
 export const deleteQuestion = createAsyncThunk(
   "questions/deleteQuestion",
   async (questionId: number, { rejectWithValue }) => {
@@ -89,7 +92,7 @@ export const deleteQuestion = createAsyncThunk(
 
 export const addQuestion = createAsyncThunk(
   "questions/addQuestion",
-  async (newQuestion: NewQuestion, { rejectWithValue }) => {
+  async (newQuestion: FrequentlyAskedQuestionAdd, { rejectWithValue }) => {
     try {
       const response = await fetch(CONST.addQuestionURL, {
         method: "POST",
@@ -97,7 +100,7 @@ export const addQuestion = createAsyncThunk(
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([newQuestion]),
+        body: JSON.stringify(newQuestion),
       });
 
       if (!response.ok) {
@@ -118,7 +121,10 @@ export const addQuestion = createAsyncThunk(
 export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
 
-  async (updatedQuestion: UpdateQuestion, { rejectWithValue }) => {
+  async (
+    updatedQuestion: FrequentlyAskedQuestionUpdate,
+    { rejectWithValue }
+  ) => {
     try {
       const response = await fetch(CONST.updateQuestionURL, {
         method: "POST",
@@ -151,18 +157,38 @@ export interface Question {
   title: string;
   detail: string;
 }
-
-interface NewQuestion {
-  title: string;
-  detail: string;
-  mobileLanguageId: number;
-}
-export interface UpdateQuestion {
+export interface QuestionDetail {
   id: number;
   mobileLanguageId: number;
   title: string;
   detail: string;
+  languages: {
+    languageId: number;
+    title: string;
+    detail: string;
+  }[];
 }
+export interface FrequentlyAskedQuestionAdd {
+  question: string;
+  detail: string;
+  frequentlyAskedQuestionsLocalized: {
+    languageId: number;
+    question: string;
+    detail: string;
+  }[];
+}
+
+export interface FrequentlyAskedQuestionUpdate {
+  id: number;
+  question: string;
+  detail: string;
+  frequentlyAskedQuestionsLocalized: {
+    languageId: number;
+    question: string;
+    detail: string;
+  }[];
+}
+
 interface QuestionSliceState {
   question: Question[];
   questionDetail: Question | null;
@@ -170,8 +196,8 @@ interface QuestionSliceState {
   loading: boolean;
   error: string | null;
   success: boolean;
+  frequentlyAskedQuestionAdd: FrequentlyAskedQuestionAdd[];
 }
-
 const initialState: QuestionSliceState = {
   question: [],
   questionDetail: null,
@@ -179,6 +205,7 @@ const initialState: QuestionSliceState = {
   success: false,
   status: "idle",
   error: null,
+  frequentlyAskedQuestionAdd: [],
 };
 
 export const questionSlice = createSlice({
@@ -201,6 +228,7 @@ export const questionSlice = createSlice({
       .addCase(getAllQuestions.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
+        state.loading = false;
       })
       .addCase(addQuestion.pending, (state) => {
         state.loading = true;
@@ -227,7 +255,10 @@ export const questionSlice = createSlice({
       })
       .addCase(
         updateQuestion.fulfilled,
-        (state, action: PayloadAction<UpdateQuestion | null>) => {
+        (
+          state,
+          action: PayloadAction<FrequentlyAskedQuestionUpdate | null>
+        ) => {
           state.status = "succeeded";
           const index = state.question.findIndex(
             (faq) => faq?.id === action.payload?.id
@@ -254,7 +285,7 @@ export const questionSlice = createSlice({
       })
       .addCase(
         getQuestionDetail.fulfilled,
-        (state, action: PayloadAction<UpdateQuestion>) => {
+        (state, action: PayloadAction<QuestionDetail>) => {
           state.loading = false;
           state.questionDetail = action.payload;
         }

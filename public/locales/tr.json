@@ -191,6 +191,8 @@
     "form": {
       "title": "Soru Başlığı",
       "detail": "Soru Detayı",
+      "enterTitle": "Soru Başlığı Giriniz",
+      "enterDetail": "Soru Detayı Giriniz",
       "enterTitleEn": "İngilizce Başlık Giriniz",
       "enterDetailEn": "İngilizce Detayı Giriniz",
       "enterTitleTr": "Türkçe Başlık Giriniz",
@@ -374,7 +376,5 @@
       "creating": "Oluşturuluyor...",
       "loading": "Kullanım Şartları Yükleniyor..."
     }
-
-    
   }
 }

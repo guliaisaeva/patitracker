@@ -194,6 +194,8 @@
     "form": {
       "title": "Question Title ",
       "detail": "Question Details",
+      "enterTitle": "Enter Question Title",
+      "enterDetail": "Enter Question Detail",
       "enterTitleEn": "Enter English Question Title",
       "enterDetailEn": "Enter English Question Detail",
       "enterTitleTr": "Enter Turkish Question Title",
@@ -376,7 +378,6 @@
       "create": "Create Terms of Use",
       "creating": "Creating...",
       "loading": "Loading Terms Of Use..."
-
     }
   }
 }

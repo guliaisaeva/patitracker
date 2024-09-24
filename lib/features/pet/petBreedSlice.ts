@@ -38,36 +38,6 @@ export const getAllPetBreeds = createAsyncThunk(
   }
 );
 
-// export const getPetBreedDetail = createAsyncThunk(
-//   "pets/getPetBreedDetail",
-//   async (petBreedId: number, { rejectWithValue }) => {
-//     try {
-//       const response = await fetch(
-//         `${CONST.getPetBreedDetailURL}?petBreedId=${petBreedId}`,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//             Accept: "application/json",
-//           },
-//         }
-//       );
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-//       console.log(data);
-//       return data.data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 export const getPetBreedDetail = createAsyncThunk(
   "pets/getPetBreedDetail",
   async (petBreedId: number, { rejectWithValue }) => {
@@ -91,14 +61,12 @@ export const getPetBreedDetail = createAsyncThunk(
 
       const data = await response.json();
 
-      // Process the languages array to get only the last updated entry for each unique id
       const latestLanguages: { [key: number]: { id: number; text: string } } =
         {};
       data.data.languages.forEach((language: { id: number; text: string }) => {
         latestLanguages[language.id] = language; // Overwrite duplicate ids with the latest entry
       });
 
-      // Convert the result back into an array and assign it to the data
       data.data.languages = Object.values(latestLanguages);
       console.log(data);
       return data.data;

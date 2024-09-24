@@ -2,28 +2,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import {
-  addPetBreed,
-  getAllPetBreeds,
-  PetBreedRequest,
-  selectPetBreeds,
-} from "@/lib/features/pet/petBreedSlice";
-import Image from "next/image";
+import { addPetBreed, getAllPetBreeds } from "@/lib/features/pet/petBreedSlice";
 import { AppDispatch } from "@/lib/store";
-import {
-  getAllPetTypes,
-  selectPetTypes,
-} from "@/lib/features/pet/petTypesSlice";
+import { getAllPetTypes } from "@/lib/features/pet/petTypesSlice";
 import { useTranslation } from "react-i18next";
-import trFlag from "@/public/images/turkey.png";
-import ukFlag from "@/public/images/uk.png";
 import Link from "next/link";
 import {
   fetchLanguages,
   selectLanguages,
 } from "@/lib/features/languages/languagesSlice";
 interface FormProps {
-  selectedPetType: string; 
+  selectedPetType: string;
 }
 export default function Form({ selectedPetType }: FormProps) {
   const { t } = useTranslation();
@@ -31,15 +20,6 @@ export default function Form({ selectedPetType }: FormProps) {
   const router = useRouter();
   const languages = useSelector(selectLanguages);
 
-  // const [petBreedData, setPetBreedData] = useState({
-  //   breedName: "",
-  //   languageId: 1, // Turkish language ID
-  // });
-
-  // const [petBreedDataEn, setPetBreedDataEn] = useState({
-  //   breedName: "",
-  //   languageId: 2, // English language ID
-  // });
   const [formData, setFormData] = useState<{
     petTypeId: number;
     breedName: string;
@@ -241,64 +221,6 @@ export default function Form({ selectedPetType }: FormProps) {
             <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
           )}
         </div>
-        {/* 
-        <div className="mb-4">
-          <label
-            htmlFor="breedName_tr"
-            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
-          >
-            {t("petBreed.form.newPetType")}
-            {languages.length > 0 &&
-              languages
-                .filter((lang: any) => lang.languageId === 1)
-                .map((lang: any) => (
-                  <p key={lang.languageId}>
-                    {lang.languageName} ({lang.languageAbbreviation})
-                  </p>
-                ))}
-          </label>
-          <input
-            type="text"
-            id="breedName_tr"
-            name="breedName_tr"
-            value={
-              formData.petBreedsLocalized.find((item) => item.languageId === 1)
-                ?.breedName || ""
-            }
-            onChange={handleChange}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("petBreed.form.enterPetTypeTr")}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="breedName_en"
-            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
-          >
-            {t("petBreed.form.newPetType")}
-            {languages.length > 0 &&
-              languages
-                .filter((lang: any) => lang.languageId === 2)
-                .map((lang: any) => (
-                  <p key={lang.languageId}>
-                    {lang.languageName} ({lang.languageAbbreviation})
-                  </p>
-                ))}
-          </label>
-          <input
-            type="text"
-            id="breedName_en"
-            name="breedName_en"
-            value={
-              formData.petBreedsLocalized.find((item) => item.languageId === 2)
-                ?.breedName || ""
-            }
-            onChange={handleChange}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("petBreed.form.enterPetTypeEn")}
-          />
-        </div> */}
 
         {languages.map((lang) => (
           <div key={lang.languageId} className="mb-4">
