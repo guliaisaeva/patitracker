@@ -186,7 +186,8 @@
       "createSuccess": "Soru(lar) başarıyla eklendi.",
       "createFailure": "Soru eklenemedi",
       "updateSuccess": "Soru(lar) başarıyla güncellendi.",
-      "updateFailure": "Soru güncellenemedi. Lütfen tekrar deneyin."
+      "updateFailure": "Soru güncellenemedi. Lütfen tekrar deneyin.",
+      "nothingToUpdate": "Güncellenecek bir şey yok. Lütfen tekrar deneyin veya iptal edin."
     },
     "form": {
       "title": "Soru Başlığı",

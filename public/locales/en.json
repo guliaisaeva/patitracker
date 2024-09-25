@@ -189,7 +189,8 @@
       "createSuccess": "Question(s) added successfully",
       "createFailure": "Failed to add question",
       "updateSuccess": "Question(s) updated successfully.",
-      "updateFailure": "Failed to update question. Please try again."
+      "updateFailure": "Failed to update question. Please try again.",
+      "nothingToUpdate": "Nothing to update.Please try again or cancel."
     },
     "form": {
       "title": "Question Title ",

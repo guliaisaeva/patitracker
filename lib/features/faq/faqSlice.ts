@@ -30,103 +30,6 @@ export const getAllQuestions = createAsyncThunk(
   }
 );
 
-// export const getQuestionDetail = createAsyncThunk(
-//   "questions/getQuestionDetail",
-//   async (
-//     { questionId, languageId }: { questionId: number; languageId?: number },
-//     { rejectWithValue }
-//   ) => {
-//     try {
-//       const url = new URL(`${CONST.getQuestionDetailURL}`);
-//       url.searchParams.append("questionId", questionId.toString());
-//       if (languageId) {
-//         url.searchParams.append("languageId", languageId.toString());
-//       }
-//       const response = await fetch(url.toString(), {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//         },
-//       });
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to fetch question detail: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-
-//       const latestLanguages: {
-//         [key: number]: { languageId: number; title: string; detail: string };
-//       } = {};
-//       data.data.frequentlyAskedQuestionsLocalized.forEach(
-//         (localized: { languageId: number; title: string; detail: string }) => {
-//           latestLanguages[localized.languageId] = localized; // Overwrite duplicate ids with the latest entry
-//         }
-//       );
-//       // Convert the object back to an array
-//       data.data.frequentlyAskedQuestionsLocalized =
-//         Object.values(latestLanguages);
-//       return data.data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-// export const getQuestionDetail = createAsyncThunk<
-//   QuestionDetail,
-//   { questionId: number; languageId?: number }
-// >(
-//   "questions/getQuestionDetail",
-//   async ({ questionId, languageId }, { rejectWithValue }) => {
-//     try {
-//       const url = new URL(`${CONST.getQuestionDetailURL}`);
-//       url.searchParams.append("questionId", questionId.toString());
-//       if (languageId) {
-//         url.searchParams.append("languageId", languageId.toString());
-//       }
-//       const response = await fetch(url.toString(), {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//         },
-//       });
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to fetch question detail: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-
-//       // Extracting the first question from the data array
-//       const questionDetail = data.data[0];
-//       if (!questionDetail || !questionDetail.languages) {
-//         throw new Error("No question detail found");
-//       }
-
-//       // Ensure we only get the latest localized data for each languageId
-//       const latestLanguages: {
-//         [key: number]: { languageId: number; title: string; detail: string };
-//       } = {};
-//       questionDetail.languages.forEach((localized: any) => {
-//         latestLanguages[localized.languageId] = localized;
-//       });
-
-//       // Convert the object back to an array
-//       questionDetail.languages = Object.values(latestLanguages);
-
-//       return questionDetail; // Return the question detail with updated languages
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
 
 export const getQuestionDetail = createAsyncThunk<
   QuestionDetail,
@@ -155,6 +58,7 @@ export const getQuestionDetail = createAsyncThunk<
       }
 
       const data = await response.json();
+
       const questionDetail = data.data[0]; // Assuming data.data is an array
       if (!questionDetail || !questionDetail.languages) {
         throw new Error("No question detail found");
@@ -170,7 +74,7 @@ export const getQuestionDetail = createAsyncThunk<
 
       // Convert the object back to an array
       questionDetail.languages = Object.values(latestLanguages);
-      return questionDetail; // Return the question detail with updated languages
+      return questionDetail;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -233,175 +137,6 @@ export const addQuestion = createAsyncThunk(
   }
 );
 
-// export const updateQuestion = createAsyncThunk(
-//   "questions/updateQuestion",
-
-//   async (
-//     updatedQuestion: FrequentlyAskedQuestionUpdate,
-//     { rejectWithValue }
-//   ) => {
-//     try {
-//       const uniqueLocalized =
-//         updatedQuestion.frequentlyAskedQuestionsLocalized.reduce(
-//           (acc, curr) => {
-//             const existingIndex = acc.findIndex(
-//               (item) => item.languageId === curr.languageId
-//             );
-//             if (existingIndex === -1) {
-//               acc.push(curr);
-//             } else {
-//               acc[existingIndex] = curr; // Update with the latest entry
-//             }
-//             return acc;
-//           },
-//           [] as FrequentlyAskedQuestionUpdate["frequentlyAskedQuestionsLocalized"]
-//         );
-
-//       // Prepare the cleaned payload
-//       const cleanedPayload = {
-//         ...updatedQuestion,
-//         frequentlyAskedQuestionsLocalized: uniqueLocalized,
-//       };
-
-//       const response = await fetch(CONST.updateQuestionURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to update question: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-//       return data.data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-// export const updateQuestion = createAsyncThunk(
-//   "questions/updateQuestion",
-//   async (
-//     updatedQuestion: FrequentlyAskedQuestionUpdate,
-//     { rejectWithValue }
-//   ) => {
-//     try {
-//       const uniqueLocalized =
-//         updatedQuestion.frequentlyAskedQuestionsLocalized.reduce(
-//           (acc, curr) => {
-//             const existingIndex = acc.findIndex(
-//               (item) => item.languageId === curr.languageId
-//             );
-//             if (existingIndex === -1) {
-//               acc.push(curr);
-//             } else {
-//               acc[existingIndex] = curr; // Update with the latest entry
-//             }
-//             return acc;
-//           },
-//           [] as FrequentlyAskedQuestionUpdate["frequentlyAskedQuestionsLocalized"]
-//         );
-
-//       const cleanedPayload = {
-//         ...updatedQuestion,
-//         frequentlyAskedQuestionsLocalized: uniqueLocalized,
-//       };
-
-//       console.log(
-//         "Payload to be sent:",
-//         JSON.stringify(cleanedPayload, null, 2)
-//       );
-
-//       const response = await fetch(CONST.updateQuestionURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(
-//           `Failed to update question: ${response.statusText} - ${errorDetail}`
-//         );
-//       }
-
-//       const data = await response.json();
-//       console.log("Updated question data:", data.data); // Log the returned data
-//       return data.data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-// export const updateQuestion = createAsyncThunk(
-//   "questions/updateQuestion",
-//   async (
-//     updatedQuestion: FrequentlyAskedQuestionUpdate,
-//     { rejectWithValue, dispatch }
-//   ) => {
-//     try {
-//       const uniqueLocalized =
-//         updatedQuestion.frequentlyAskedQuestionsLocalized.reduce(
-//           (acc, curr) => {
-//             const existingIndex = acc.findIndex(
-//               (item) => item.languageId === curr.languageId
-//             );
-//             if (existingIndex === -1) {
-//               acc.push(curr);
-//             } else {
-//               acc[existingIndex] = curr;
-//             }
-//             return acc;
-//           },
-//           [] as FrequentlyAskedQuestionUpdate["frequentlyAskedQuestionsLocalized"]
-//         );
-
-//       const cleanedPayload = {
-//         ...updatedQuestion,
-//         frequentlyAskedQuestionsLocalized: uniqueLocalized,
-//       };
-
-//       const response = await fetch(CONST.updateQuestionURL, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(cleanedPayload),
-//       });
-//       if (!response.ok) {
-//         const errorDetail = await response.text();
-//         throw new Error(`Failed to update question: ${errorDetail}`);
-//       }
-//       const data = await response.json();
-
-//       return (
-//         data.data ??
-//         (await dispatch(
-//           getQuestionDetail({ questionId: updatedQuestion.id ?? 0 })
-//         ).unwrap())
-//       );
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
   async (
@@ -446,7 +181,13 @@ export const updateQuestion = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data.data; // Return the updated question data
+
+      const updatedData =
+        data.data ??
+        (await dispatch(
+          getQuestionDetail({ questionId: updatedQuestion.id ?? 0 })
+        ).unwrap());
+      return updatedData || "No updated data available.";
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -555,25 +296,25 @@ export const questionSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(updateQuestion.fulfilled, (state, action) => {
-        state.loading = false;
+      // .addCase(updateQuestion.fulfilled, (state, action) => {
+      //   state.loading = false;
 
-        if (action.payload) {
-          const index = state.question.findIndex(
-            (faq) => faq.id === action.payload.id
-          );
-          if (index !== -1) {
-            state.question[index] = {
-              ...state.question[index],
-              ...action.payload,
-            };
-          } else {
-            console.error(`Question with ID ${action.payload.id} not found.`);
-          }
-        } else {
-          console.error("No payload received.");
-        }
-      })
+      //   if (action.payload) {
+      //     const index = state.question.findIndex(
+      //       (faq) => faq.id === action.payload.id
+      //     );
+      //     if (index !== -1) {
+      //       state.question[index] = {
+      //         ...state.question[index],
+      //         ...action.payload,
+      //       };
+      //     } else {
+      //       console.error(`Question with ID ${action.payload.id} not found.`);
+      //     }
+      //   } else {
+      //     console.error("No payload received.");
+      //   }
+      // })
 
       // .addCase(updateQuestion.fulfilled, (state, action: PayloadAction<Question>) => {
       //   state.status = "succeeded";
@@ -584,6 +325,15 @@ export const questionSlice = createSlice({
       //   }
       //   state.loading = false; // Set loading to false
       // })
+
+      .addCase(updateQuestion.fulfilled, (state, action) => {
+        const index = state.question.findIndex(
+          (question) => question.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.question[index] = action.payload; // Update the question
+        }
+      })
       .addCase(updateQuestion.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;

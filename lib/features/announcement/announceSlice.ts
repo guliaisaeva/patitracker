@@ -164,7 +164,11 @@ interface NewAnnouncement {
   detail: string;
   announcementTypeId: number;
   mobileLanguageId: number;
-  userProfileId: number[];
+  announcementsLocalized: {
+    languageId: number;
+    title: string;
+    detail: string;
+  }[];
 }
 export interface UpdateAnnouncement {
   id: number;
