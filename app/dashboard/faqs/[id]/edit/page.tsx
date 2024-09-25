@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { id: number } }) {
           },
         ]}
       />
-      <Form questionId={id} />
+      <Form questionId={id} languageId={0} />
     </main>
   );
 }

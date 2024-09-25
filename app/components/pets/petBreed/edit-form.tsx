@@ -83,7 +83,6 @@ export default function UpdateBreedForm({
       });
     }
   }, [selectedBreedDetail]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prevState) => ({

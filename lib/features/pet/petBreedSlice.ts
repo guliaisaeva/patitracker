@@ -107,7 +107,6 @@ export const updatePetBreed = createAsyncThunk(
   "petBreeds/updatePetBreed",
   async (updatedPetBreed: PetBreedUpdate, { rejectWithValue, dispatch }) => {
     try {
-      // Ensure only unique petBreedsLocalized entries are included
       const uniqueBreedsLocalized = updatedPetBreed.petBreedsLocalized.reduce(
         (acc, curr) => {
           const existingIndex = acc.findIndex(
@@ -123,7 +122,6 @@ export const updatePetBreed = createAsyncThunk(
         [] as PetBreedUpdate["petBreedsLocalized"]
       );
 
-      // Prepare the cleaned payload
       const cleanedPayload = {
         ...updatedPetBreed,
         petBreedsLocalized: uniqueBreedsLocalized,
