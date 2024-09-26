@@ -16,72 +16,10 @@ import { selectPetBreeds } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter } from "next/navigation";
 import LanguageTabs from "@/app/components/languageTabs";
-import TermsOfUseTableInfo from "@/app/components/termsOfUse/infoPage";
 
-const ITEMS_PER_PAGE = 10;
-
-export default function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-    selectedPetType?: string;
-  };
-}) {
+export default function Page() {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-
-  const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
-  const initialSelectedPetType = searchParams?.selectedPetType || "";
-
-  const petTypes = useSelector(selectPetTypes);
-  const petBreeds = useSelector(selectPetBreeds);
-  const [filteredResultsCount, setFilteredResultsCount] = useState(0);
-  const [selectedPetType, setSelectedPetType] = useState<string>(
-    initialSelectedPetType
-  );
-
-  useEffect(() => {
-    dispatch(getAllPetTypes());
-  }, [dispatch]);
-
-  const handlePetTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    setSelectedPetType(value);
-    router.replace(`/dashboard/pets/petBreed?selectedPetType=${value}`);
-  };
-
-  // useEffect(() => {
-  //   if (query.trim() && selectedPetType) {
-  //     dispatch(
-  //       searchPetBreeds({
-  //         petTypeId: Number(selectedPetType),
-  //         searchWord: query,
-  //         languageId: 2,
-
-  //       })
-  //     );
-  //   } else {
-  //     dispatch(resetSearchResults());
-  //   }
-  // }, [query, selectedPetType, currentPage, dispatch]);
-
-  useEffect(() => {
-    // if (petBreeds) {
-    //   const filteredPetBreeds = petBreeds?.filter((petBreed) =>
-    //     petBreed?.breedName?.toLowerCase().includes(query.toLowerCase())
-    //   ).length;
-    //   setFilteredResultsCount(filteredPetBreeds);
-    // }
-    // if (petBreeds && petBreeds.length > 0) {
-    //   setFilteredResultsCount(petBreeds.length);
-    // }
-  }, [petBreeds, query]);
-
-
   return (
     <>
       <div className="w-full">
@@ -93,7 +31,7 @@ export default function Page({
         <div className="flex mt-6 gap-4">
           <LanguageTabs />
         </div>
-        {/* <TermsOfUseTableInfo/> */}
+        
       </div>
     </>
   );

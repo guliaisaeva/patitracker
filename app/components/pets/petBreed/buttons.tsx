@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import {
   deletePetBreed,
-  getAllPetBreeds,
 } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
 

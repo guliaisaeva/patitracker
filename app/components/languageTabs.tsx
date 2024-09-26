@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLanguages,
   selectLanguages,
-  selectCurrentLanguage,
-  setLanguage,
 } from "@/lib/features/languages/languagesSlice";
 import { useTranslation } from "react-i18next";
 import TermsOfUseTable from "./termsOfUse/table";
@@ -14,8 +12,8 @@ import { AppDispatch } from "@/lib/store";
 function LanguageTabs() {
   const dispatch = useDispatch<AppDispatch>();
   const languages = useSelector(selectLanguages);
-
   const [openTab, setOpenTab] = useState<number>(1);
+
   useEffect(() => {
     dispatch(fetchLanguages());
   }, [dispatch]);
@@ -43,6 +41,9 @@ function LanguageTabs() {
                 handleTabClick(language.languageId);
               }}
               href={`#${language.languageAbbreviation}`}
+              role="tab"
+              aria-selected={openTab === language.languageId}
+              aria-controls={language.languageAbbreviation}
             >
               {language.languageName}
             </a>
@@ -58,6 +59,8 @@ function LanguageTabs() {
                 key={language.languageId}
                 className={openTab === language.languageId ? "block" : "hidden"}
                 id={language.languageAbbreviation}
+                role="tabpanel"
+                aria-labelledby={`tab-${language.languageId}`}
               >
                 <TermsOfUseTable languageId={language.languageId} />
               </div>

@@ -7,10 +7,9 @@ import {
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import {
-  deletePetBreed,
-} from "@/lib/features/pet/petBreedSlice";
+import { deletePetBreed } from "@/lib/features/pet/petBreedSlice";
 import { useTranslation } from "react-i18next";
+import Tooltip from "@mui/material/Tooltip";
 
 export function CreatePetBreed({
   selectedPetType,
@@ -39,14 +38,23 @@ export function PetBreedInfo({ id }: { id: string }) {
   );
 }
 
-export function UpdatePetBreed({ id }: { id: string }) {
+interface UpdateTermsOfUseProps {
+  id: number;
+  languageId?: number;
+}
+
+export function UpdateTermsOfUse({ id, languageId }: UpdateTermsOfUseProps) {
+  const { t } = useTranslation();
+
   return (
-    <Link
-      href={`/dashboard/pets/petBreed/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
-      <PencilIcon className="w-5" />
-    </Link>
+    <Tooltip title={t("Edit")} arrow placement="top">
+      <Link
+        href={`/dashboard/termsOfUse/${id}/edit?languageId=${languageId}`}
+        className="rounded-md border p-2 hover:bg-green-200"
+      >
+        <PencilIcon className="w-5" />
+      </Link>
+    </Tooltip>
   );
 }
 

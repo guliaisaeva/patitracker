@@ -10,7 +10,11 @@ import {
 } from "@/lib/features/termsPrivacy/termsPrivacySlice";
 import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/navigation";
-
+import { UpdateTermsOfUse } from "./buttons";
+import {
+  fetchLanguages,
+  selectLanguages,
+} from "@/lib/features/languages/languagesSlice";
 interface TermsOfUseTableProps {
   languageId?: number;
 }
@@ -21,14 +25,19 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
 
   const [selectedLanguageId, setSelectedLanguageId] = useState(languageId || 1);
 
+  // useEffect(() => {
+  //   dispatch(fetchLanguages());
+  // }, [dispatch]);
   const termsOfUse = useSelector((state: RootState) =>
     selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
   );
 
   const status = useSelector((state: RootState) => state.termsPrivacy.status);
   useEffect(() => {
-    dispatch(fetchTermsOfUse());
-  }, [dispatch, selectedLanguageId]);
+    if (languageId) {
+      dispatch(fetchTermsOfUse(languageId));
+    }
+  }, [dispatch, languageId]);
 
   if (status === "loading") {
     return <div>{t("terms.submit.loading")}</div>;
@@ -41,14 +50,9 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
     <div className="mt-6 flow-root">
       {termsOfUse?.map((item) => (
         <div key={item.id} className="mb-2 w-full  bg-white p-4">
-          <button
-            onClick={() =>
-              router.replace(`/dashboard/termsOfUse/${item.id}/edit`)
-            }
-            className="mt-2 text-blue-500 underline"
-          >
-            Edit
-          </button>
+          <div className="flex justify-end">
+            <UpdateTermsOfUse id={item.id} languageId={item.languageId} />
+          </div>
           <h2 className="text-sm text-gray-500 text-center font-bold p-2">
             {item.title}
           </h2>

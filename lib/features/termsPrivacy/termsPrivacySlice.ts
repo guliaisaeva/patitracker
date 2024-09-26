@@ -34,7 +34,7 @@ const initialState: PrivacyPolicyState = {
 
 export const fetchTermsOfUse = createAsyncThunk(
   "termsOfUse/fetchTermsOfUse",
-  async (_, { rejectWithValue }) => {
+  async (languageId: number | undefined, { rejectWithValue }) => {
     try {
       const response = await fetch(CONST.getAllTermsOfUse, {
         headers: {
@@ -71,7 +71,7 @@ export const updateTermsOfUse = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([termsOfUse]),
+        body: JSON.stringify(termsOfUse),
       });
 
       if (!response.ok) {
@@ -140,8 +140,9 @@ export const termsPrivacySlice = createSlice({
 export const selectPrivacyPoliciesByLanguage = (
   state: RootState,
   languageId: number
-) =>
-  state?.termsPrivacy?.terms.filter((term) => term.languageId === languageId);
+) => state.termsPrivacy.terms.filter((term) => term.languageId === languageId);
+
+
 export const selectLoading = (state: { privacyPolicy: PrivacyPolicyState }) =>
   state?.privacyPolicy?.loading;
 export const selectError = (state: { privacyPolicy: PrivacyPolicyState }) =>
