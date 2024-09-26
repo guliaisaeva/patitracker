@@ -28,35 +28,85 @@ export const getAllAnnouncement = createAsyncThunk(
     }
   }
 );
-export const getAnnouncementDetail = createAsyncThunk(
+// export const getAnnouncementDetail = createAsyncThunk(
+//   "announcement/getAnnouncementDetail",
+//   async (id: number, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(
+//         `${CONST.getAnnouncementDetailURL}?announcementId=${id}`,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             Accept: "application/json",
+//           },
+//         }
+//       );
+
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       const data = await response.json();
+//       return data.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
+export const getAnnouncementDetail = createAsyncThunk<
+  AnnouncementDetail,
+  { announcementId: number; languageId?: number }
+>(
   "announcement/getAnnouncementDetail",
-  async (id: number, { rejectWithValue }) => {
+  async ({ announcementId, languageId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `${CONST.getAnnouncementDetailURL}?announcementId=${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const url = new URL(`${CONST.getAnnouncementDetailURL}`);
+      url.searchParams.append("announcementId", announcementId.toString());
+      if (languageId) {
+        url.searchParams.append("languageId", languageId.toString());
+      }
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         const errorDetail = await response.text();
         throw new Error(
-          `Failed to fetch pet detail: ${response.statusText} - ${errorDetail}`
+          `Failed to fetch announcement detail: ${response.statusText} - ${errorDetail}`
         );
       }
 
       const data = await response.json();
-      return data.data;
+      const announcementDetail = data.data[0]; // Assuming data.data is an array
+
+      if (!announcementDetail || !announcementDetail.languages) {
+        throw new Error("No announcement detail found");
+      }
+
+      // Ensure we only get the latest localized data for each languageId
+      const latestLanguages: {
+        [key: number]: { languageId: number; title: string; detail: string };
+      } = {};
+      announcementDetail.languages.forEach((localized: any) => {
+        latestLanguages[localized.languageId] = localized;
+      });
+
+      // Convert the object back to an array
+      announcementDetail.languages = Object.values(latestLanguages);
+      return announcementDetail;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
   }
 );
-
 export const deleteAnnouncement = createAsyncThunk(
   "announcement/deleteAnnouncement",
   async (announcementId: number, { rejectWithValue }) => {
@@ -114,36 +164,90 @@ export const addAnnouncement = createAsyncThunk(
   }
 );
 
+// export const updateAnnouncement = createAsyncThunk(
+//   "announcement/updateAnnouncement",
+
+//   async (updateAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
+//     try {
+
+//       const response = await fetch(CONST.updateAnnouncementURL, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(updateAnnouncement),
+//       });
+
+//       if (!response.ok) {
+//         const errorDetail = await response.text();
+//         throw new Error(
+//           `Failed to update pet type: ${response.statusText} - ${errorDetail}`
+//         );
+//       }
+
+//       const data = await response.json();
+//       return data.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 export const updateAnnouncement = createAsyncThunk(
   "announcement/updateAnnouncement",
-
-  async (updateAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
+  async (updatedAnnouncement: UpdateAnnouncement, { rejectWithValue }) => {
     try {
+      // Reduce to ensure unique localized entries based on languageId
+      const uniqueLocalized = updatedAnnouncement.announcementsLocalized.reduce(
+        (acc, curr) => {
+          const existingIndex = acc.findIndex(
+            (item) => item.languageId === curr.languageId
+          );
+          if (existingIndex === -1) {
+            acc.push(curr);
+          } else {
+            acc[existingIndex] = curr; // Update existing entry if found
+          }
+          return acc;
+        },
+        [] as UpdateAnnouncement["announcementsLocalized"]
+      );
+
+      // Prepare the cleaned payload with unique localized announcements
+      const cleanedPayload = {
+        ...updatedAnnouncement,
+        announcementsLocalized: uniqueLocalized,
+      };
+
+      // Send the POST request to update the announcement
       const response = await fetch(CONST.updateAnnouncementURL, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Make sure 'token' is defined in your context
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updateAnnouncement),
+        body: JSON.stringify(cleanedPayload), // Use cleanedPayload
       });
 
+      // Check if the response is not ok and throw an error
       if (!response.ok) {
         const errorDetail = await response.text();
         throw new Error(
-          `Failed to update pet type: ${response.statusText} - ${errorDetail}`
+          `Failed to update announcement: ${response.statusText} - ${errorDetail}`
         );
       }
 
+      // Parse the response data
       const data = await response.json();
-      return data.data;
+      return data.data; // Return the updated announcement data
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.message); // Handle errors gracefully
     }
   }
 );
-
 export interface Announcement {
   id: number;
   title: string;
@@ -151,19 +255,17 @@ export interface Announcement {
   isRead: boolean;
 }
 interface AnnouncementDetail {
-  id: number;
   title: string;
   detail: string;
   typeId: number;
   isRead: boolean;
   userProfileId: number;
-  mobileLanguageId: number;
+  languages: { languageId: number; title: string; detail: string }[];
 }
 interface NewAnnouncement {
   title: string;
   detail: string;
   announcementTypeId: number;
-  mobileLanguageId: number;
   announcementsLocalized: {
     languageId: number;
     title: string;
@@ -172,9 +274,13 @@ interface NewAnnouncement {
 }
 export interface UpdateAnnouncement {
   id: number;
-  mobileLanguageId: number;
   title: string;
   detail: string;
+  announcementsLocalized: {
+    languageId: number;
+    title: string;
+    detail: string;
+  }[];
 }
 interface AnnouncementSliceState {
   announcement: Announcement[];

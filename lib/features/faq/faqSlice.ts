@@ -32,9 +32,7 @@ export const getAllQuestions = createAsyncThunk(
 
 
 export const getQuestionDetail = createAsyncThunk<
-  QuestionDetail,
-  { questionId: number; languageId?: number }
->(
+  QuestionDetail, { questionId: number; languageId?: number }>(
   "questions/getQuestionDetail",
   async ({ questionId, languageId }, { rejectWithValue }) => {
     try {
@@ -64,7 +62,6 @@ export const getQuestionDetail = createAsyncThunk<
         throw new Error("No question detail found");
       }
 
-      // Ensure we only get the latest localized data for each languageId
       const latestLanguages: {
         [key: number]: { languageId: number; title: string; detail: string };
       } = {};
@@ -72,7 +69,6 @@ export const getQuestionDetail = createAsyncThunk<
         latestLanguages[localized.languageId] = localized;
       });
 
-      // Convert the object back to an array
       questionDetail.languages = Object.values(latestLanguages);
       return questionDetail;
     } catch (error: any) {
@@ -153,7 +149,7 @@ export const updateQuestion = createAsyncThunk(
             if (existingIndex === -1) {
               acc.push(curr);
             } else {
-              acc[existingIndex] = curr; // Update with the latest entry
+              acc[existingIndex] = curr; 
             }
             return acc;
           },
@@ -296,42 +292,13 @@ export const questionSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      // .addCase(updateQuestion.fulfilled, (state, action) => {
-      //   state.loading = false;
-
-      //   if (action.payload) {
-      //     const index = state.question.findIndex(
-      //       (faq) => faq.id === action.payload.id
-      //     );
-      //     if (index !== -1) {
-      //       state.question[index] = {
-      //         ...state.question[index],
-      //         ...action.payload,
-      //       };
-      //     } else {
-      //       console.error(`Question with ID ${action.payload.id} not found.`);
-      //     }
-      //   } else {
-      //     console.error("No payload received.");
-      //   }
-      // })
-
-      // .addCase(updateQuestion.fulfilled, (state, action: PayloadAction<Question>) => {
-      //   state.status = "succeeded";
-      //   // Update the existing question in the state
-      //   const index = state.question.findIndex((q) => q.id === action.payload.id);
-      //   if (index !== -1) {
-      //     state.question[index] = action.payload;
-      //   }
-      //   state.loading = false; // Set loading to false
-      // })
-
+ 
       .addCase(updateQuestion.fulfilled, (state, action) => {
         const index = state.question.findIndex(
           (question) => question.id === action.payload.id
         );
         if (index !== -1) {
-          state.question[index] = action.payload; // Update the question
+          state.question[index] = action.payload;
         }
       })
       .addCase(updateQuestion.rejected, (state, action) => {

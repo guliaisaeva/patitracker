@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
 import {
@@ -48,13 +47,7 @@ export default function Form() {
     detail: "",
     announcementTypeId: 1,
     userProfileId: [0],
-    announcementsLocalized: [
-      {
-        languageId: 2,
-        title: "",
-        detail: "",
-      },
-    ],
+    announcementsLocalized: [],
   });
 
   useEffect(() => {
@@ -66,57 +59,76 @@ export default function Form() {
     if (languages.length > 0) {
       setFormData((prev) => ({
         ...prev,
-        frequentlyAskedQuestionsLocalized: languages.map((lang) => ({
+        announcementsLocalized: languages.map((lang) => ({
           languageId: lang.languageId,
-          question: "",
+          title: "",
           detail: "",
         })),
       }));
     }
   }, [languages]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const userProfileIds: number[] = Array.isArray(userProfileId)
-      ? userProfileId.filter((id): id is number => id !== null) // Filter out null values
-      : [userProfileId].filter((id): id is number => id !== null); // Handle single number
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-    if (userProfileIds.length === 0) {
-      userProfileIds.push(DEFAULT_USER_PROFILE_ID);
+    // Check if the change is for the main announcement title or detail
+    if (name === "title" || name === "detail") {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
+    // For localized titles or details
+    else if (
+      name.startsWith("announcement_") ||
+      name.startsWith("announcementDetail_")
+    ) {
+      const [field, languageIdStr] = name.split("_");
+      const languageId = parseInt(languageIdStr, 10);
+      const fieldName = field === "announcement" ? "title" : "detail";
+      setFormData((prev) => ({
+        ...prev,
+        announcementsLocalized: prev.announcementsLocalized.map((item) =>
+          item.languageId === languageId
+            ? { ...item, [fieldName]: value }
+            : item
+        ),
+      }));
+    }
+  };
 
-    const announcementsToSend = [];
-    // Turkish Announcement
-    // if (trTitle || trDetail) {
-    //   announcementsToSend.push({
-    //     title: trTitle,
-    //     detail: trDetail,
-    //     announcementTypeId,
-    //     mobileLanguageId: 1, // Turkish
-    //     userProfileId: userProfileIds,
-    //   });
-    // }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    // // English Announcement
-    // if (enTitle || enDetail) {
-    //   announcementsToSend.push({
-    //     title: enTitle,
-    //     detail: enDetail,
-    //     announcementTypeId,
-    //     mobileLanguageId: 2, // English
-    //     userProfileId: userProfileIds,
-    //   });
-    // }
+    const announcementData = {
+      title: formData.title,
+      detail: formData.detail,
+      announcementTypeId: formData.announcementTypeId,
+      userProfileId:
+        formData.userProfileId.length > 0 ? formData.userProfileId : [1],
+      announcementsLocalized: formData.announcementsLocalized.map(
+        (localized) => ({
+          languageId: localized.languageId,
+          title: localized.title,
+          detail: localized.detail,
+        })
+      ),
+    };
 
     try {
-      // Send announcements to API
-      // for (const announcement of announcementsToSend) {
-      //   dispatch(addAnnouncement(announcement));
-      // }
-      // setTrTitle("");
-      // setTrDetail("");
-      // setEnTitle("");
-      // setEnDetail("");
+      await dispatch(addAnnouncement(announcementData)).unwrap();
+
+      setFormData({
+        title: "",
+        detail: "",
+        announcementTypeId: 1,
+        userProfileId: [1],
+        announcementsLocalized: languages.map((lang) => ({
+          languageId: lang.languageId,
+          title: "",
+          detail: "",
+        })),
+      });
+
       alert(t("announcement.messages.createSuccess"));
       router.replace("/dashboard/announcements");
     } catch (err) {
@@ -124,7 +136,6 @@ export default function Form() {
       alert(t("announcement.messages.createFailure"));
     }
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -139,9 +150,10 @@ export default function Form() {
             id="title"
             name="title"
             value={formData.title}
-            // onChange={(e) => setTrTitle(e.target.value)}
+            onChange={handleChange}
             className=" text-gray-500 block w-full text-gray rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("announcement.form.enterTitleTr")}
+            required
           />
         </div>
         <div className="mb-4">
@@ -152,7 +164,7 @@ export default function Form() {
             id="detail"
             name="detail"
             value={formData.detail}
-            // onChange={handleChange}
+            onChange={handleChange}
             className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
             placeholder={t("faq.form.enterDetail")}
             required
@@ -164,7 +176,7 @@ export default function Form() {
               htmlFor={`announcement_${lang.languageId}`}
               className="mb-2 mt-2 flex justify-between  text-sm font-medium"
             >
-              {t("announcement.form.title")}
+              <p> {t("announcement.form.title")}</p>
               {`${lang.languageAbbreviation}/ ${lang.languageName} `}
             </label>
             <input
@@ -176,9 +188,10 @@ export default function Form() {
                   (q) => q.languageId === lang.languageId
                 )?.title || ""
               }
-              // onChange={handleChange}
+              onChange={handleChange}
               className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("faq.form.enterTitle")}
+              required
             />
 
             <label
@@ -196,9 +209,10 @@ export default function Form() {
                   (q) => q.languageId === lang.languageId
                 )?.detail || ""
               }
-              // onChange={handleChange}
+              onChange={handleChange}
               className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("faq.form.enterDetail")}
+              required
             />
           </div>
         ))}
