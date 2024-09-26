@@ -1,156 +1,167 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
 import { AppDispatch } from "@/lib/store";
+import { useParams, useRouter } from "next/navigation";
 import {
   getAnnouncementDetail,
   selectAnnouncementDetail,
+  UpdateAnnouncement,
+  updateAnnouncement,
 } from "@/lib/features/announcement/announceSlice";
-import { getUsersAsync } from "@/lib/features/users/usersSlice";
 import Link from "next/link";
-import trFlag from "@/public/images/turkey.png";
-import ukFlag from "@/public/images/uk.png";
+import { Button } from "../button";
 import { useTranslation } from "react-i18next";
+
 import {
   fetchLanguages,
   selectLanguages,
 } from "@/lib/features/languages/languagesSlice";
 
+interface AnnouncementsLocalized {
+  languageId: number;
+  title: string;
+  detail: string;
+}
+
+interface FormState {
+  id: number | null;
+  title: string;
+  detail: string;
+  announcementsLocalized: AnnouncementsLocalized[];
+}
+
 export default function AnnouncementInfoForm({
   announcementId,
+  languageId,
 }: {
   announcementId: number;
+  languageId: number;
 }) {
   const { t } = useTranslation();
-
   const dispatch = useDispatch<AppDispatch>();
-  const announcementDetail = useSelector(selectAnnouncementDetail);
+  const router = useRouter();
+  const selectedAnnouncementDetail = useSelector(selectAnnouncementDetail);
   const languages = useSelector(selectLanguages);
+  const { id } = useParams();
 
-  const [trTitle, setTrTitle] = useState("");
-  const [trDetail, setTrDetail] = useState("");
-  const [enTitle, setEnTitle] = useState("");
-  const [enDetail, setEnDetail] = useState("");
+  const [formState, setFormState] = useState<FormState>({
+    id: 0,
+    title: "",
+    detail: "",
+    announcementsLocalized: [],
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    dispatch(getUsersAsync());
-    dispatch(fetchLanguages());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if ({ announcementId }) {
-      dispatch(getAnnouncementDetail(announcementId));
+    if (announcementId !== null) {
+      dispatch(getAnnouncementDetail({ announcementId, languageId }));
     }
-  }, [dispatch, announcementId]);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
+    dispatch(fetchLanguages());
+  }, [dispatch, announcementId, languageId]);
+
+  useEffect(() => {
+    if (selectedAnnouncementDetail) {
+      setFormState({
+        id: Number(id),
+        title: selectedAnnouncementDetail.title || "",
+        detail: selectedAnnouncementDetail.detail || "",
+        announcementsLocalized:
+          selectedAnnouncementDetail?.languages?.map((lang) => ({
+            languageId: lang.languageId,
+            title: lang.title || "",
+            detail: lang.detail || "",
+          })) || [],
+      });
+    }
+  }, [selectedAnnouncementDetail]);
 
   return (
-    <form className="my-6" onSubmit={handleSubmit}>
+    <form className="my-6">
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* <Image
-          src={trFlag}
-          alt="Turkish Flag"
-          width={36}
-          height={36}
-          className="rounded-full"
-        /> */}
+        <div className="mb-4">
+          <label
+            htmlFor="title"
+            className="mb-2  text-sm font-medium flex justify-between"
+          >
+            {t("announcement.form.title")}
+          </label>
+          <input
+            id="title"
+            name="title"
+            defaultValue={formState.title}
+            className=" text-gray-500 block w-full text-gray rounded-md border border-gray-200 py-2 px-3 text-sm"
+            placeholder={t("announcement.form.enterTitleTr")}
+            readOnly
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="detail" className="mb-2 block text-sm font-medium">
+            {t("announcement.form.detail")}
+          </label>
+          <textarea
+            id="detail"
+            name="detail"
+            defaultValue={formState.detail}
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            placeholder={t("faq.form.enterDetail")}
+            readOnly
+          />
+        </div>
+        {languages.map((lang) => {
+          const localizedData = formState.announcementsLocalized.find(
+            (item) => item.languageId === lang.languageId
+          ) || { title: "", detail: "" };
 
-        <div className="mb-4">
-          <label
-            htmlFor="trTitle"
-            className="mb-2 text-sm font-medium flex justify-between"
+          return (
+            <div key={lang.languageId} className="mb-4 mt-4">
+              <label
+                htmlFor={`announcement_${lang.languageId}`}
+                className="mb-2 mt-2 flex justify-between  text-sm font-medium"
+              >
+                <p> {t("announcement.form.title")}</p>
+                {`${lang.languageAbbreviation}/ ${lang.languageName} `}
+              </label>
+              <input
+                type="text"
+                id={`announcement_${lang.languageId}`}
+                name="title"
+                defaultValue={localizedData.title || ""}
+                className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+                placeholder={t("faq.form.enterTitle")}
+                readOnly
+              />
+
+              <label
+                htmlFor={`announcementDetail_${lang.languageId}`}
+                className="mb-2 mt-2 flex justify-between  text-sm font-medium"
+              >
+                <p> {t("announcement.form.detail")}</p>
+                {`${lang.languageAbbreviation}/${lang.languageName} `}
+              </label>
+              <textarea
+                id={`announcementDetail_${lang.languageId}`}
+                name="detail"
+                defaultValue={localizedData.detail || ""}
+                className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+                placeholder={t("faq.form.enterDetail")}
+                readOnly
+              />
+            </div>
+          );
+        })}
+        {/* Action Buttons */}
+        <div className="mt-6 flex justify-end gap-4">
+          <Link
+            href="/dashboard/announcements"
+            className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
           >
-            {t("announcement.form.title")}
-            {languages.map(
-              (lang) =>
-                lang.languageId === 1 && (
-                  <p>
-                    {lang.languageAbbreviation}/{lang.languageName}
-                  </p>
-                )
-            )}{" "}
-          </label>
-          <input
-            id="trTitle"
-            name="trTitle"
-            value={announcementDetail?.title || ""}
-            className="block w-full rounded-md text-gray-500 border border-gray-200 py-2 px-3 text-sm"
-            required
-            readOnly
-          />
+            {t("close")}
+          </Link>
+          {/* <Button type="submit">Edit Device</Button> */}
         </div>
-        <div className="mb-4">
-          <label htmlFor="trDetail" className="mb-2 block text-sm font-medium">
-            {t("announcement.form.detail")}
-          </label>
-          <textarea
-            id="trDetail"
-            name="trDetail"
-            value={announcementDetail?.detail || ""}
-            onChange={(e) => setTrDetail(e.target.value)}
-            className="block  text-gray-500  w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            style={{ height: "150px", width: "100%" }}
-            readOnly
-          />
-        </div>
-        {/* <Image
-          src={ukFlag}
-          alt="English Flag"
-          width={36}
-          height={36}
-          className="rounded-full"
-        /> */}
-        <div className="mb-4">
-          <label
-            htmlFor="enTitle"
-            className="mb-2 text-sm font-medium flex justify-between"
-          >
-            {t("announcement.form.title")}
-            {languages.map(
-              (lang) =>
-                lang.languageId === 2 && (
-                  <p>
-                    {lang.languageAbbreviation}/{lang.languageName}
-                  </p>
-                )
-            )}{" "}
-          </label>
-          <input
-            id="enTitle"
-            name="enTitle"
-            value={enTitle}
-            onChange={(e) => setEnTitle(e.target.value)}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            readOnly
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="enDetail" className="mb-2 block text-sm font-medium">
-            {t("announcement.form.detail")}
-          </label>
-          <textarea
-            id="enDetail"
-            name="enDetail"
-            value={enDetail}
-            onChange={(e) => setEnDetail(e.target.value)}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            style={{ height: "150px", width: "100%" }}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* Action Buttons */}
-      <div className="mt-6 flex justify-end gap-4">
-        <Link
-          href="/dashboard/announcements"
-          className="flex h-10 items-center rounded-lg bg-green-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          {t("close")}
-        </Link>
-        {/* <Button type="submit">Edit Device</Button> */}
       </div>
     </form>
   );
