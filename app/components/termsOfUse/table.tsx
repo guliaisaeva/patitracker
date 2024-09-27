@@ -9,7 +9,6 @@ import {
   selectPrivacyPoliciesByLanguage,
 } from "@/lib/features/termsPrivacy/termsPrivacySlice";
 import "react-quill/dist/quill.snow.css";
-import { useRouter } from "next/navigation";
 import { UpdateTermsOfUse } from "./buttons";
 import {
   fetchLanguages,
@@ -21,24 +20,28 @@ interface TermsOfUseTableProps {
 export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
 
-  const [selectedLanguageId, setSelectedLanguageId] = useState(languageId || 1);
+  useEffect(() => {
+    dispatch(fetchLanguages());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(fetchLanguages());
-  // }, [dispatch]);
-  const termsOfUse = useSelector((state: RootState) =>
-    selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
+  const selectedLanguages = useSelector(selectLanguages);
+  const lang = selectedLanguages.find((lang) => lang.languageId === 1) ? 1 : 2;
+  const [selectedLanguageId, setSelectedLanguageId] = useState(
+    languageId || lang
   );
 
   const status = useSelector((state: RootState) => state.termsPrivacy.status);
-  useEffect(() => {
-    if (languageId) {
-      dispatch(fetchTermsOfUse(languageId));
-    }
-  }, [dispatch, languageId]);
 
+  useEffect(() => {
+    if (selectedLanguageId) {
+      dispatch(fetchTermsOfUse(selectedLanguageId));
+    }
+  }, [dispatch, selectedLanguageId]);
+
+  const termsOfUse = useSelector((state: RootState) =>
+    selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
+  );
   if (status === "loading") {
     return <div>{t("terms.submit.loading")}</div>;
   }
@@ -51,16 +54,12 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
       {termsOfUse?.map((item) => (
         <div key={item.id} className="mb-2 w-full  bg-white p-4">
           <div className="flex justify-end">
-            <UpdateTermsOfUse id={item.id} languageId={item.languageId} />
+            <UpdateTermsOfUse id={item.id} languageId={selectedLanguageId} />
           </div>
           <h2 className="text-sm text-gray-500 text-center font-bold p-2">
             {item.title}
           </h2>
-          {/* <p> {item.detail}</p> */}
-          <div
-            className="mt-4"
-            dangerouslySetInnerHTML={{ __html: item.detail }}
-          />
+          <p> {item.detail}</p>
         </div>
       ))}
     </div>

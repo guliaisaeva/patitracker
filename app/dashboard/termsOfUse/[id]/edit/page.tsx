@@ -26,7 +26,7 @@ export default function Page({
           },
         ]}
       />
-      <TermsOfUseTableEdit languageId={languageId} />
+      <TermsOfUseTableEdit />
     </main>
   );
 }

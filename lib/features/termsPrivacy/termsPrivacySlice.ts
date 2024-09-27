@@ -1,21 +1,13 @@
-import {
-  AsyncThunkAction,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-  ThunkDispatch,
-  UnknownAction,
-} from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "@/lib/store";
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "@/lib/store";
 import { CONST } from "@/lib/const";
-import { useDispatch } from "react-redux";
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export interface TermsOfUse {
   id: number;
   title: string;
-  languageId: number;
   detail: string;
+  languageId: number;
 }
 
 interface PrivacyPolicyState {
@@ -43,11 +35,13 @@ export const fetchTermsOfUse = createAsyncThunk(
         },
       });
 
-      console.log(response);
       if (!response.ok) {
-        const errorDetail = await response.text();
-        throw new Error(
-          `Failed to fetch terms of use: ${response.statusText} - ${errorDetail}`
+        const errorDetail = await response.json();
+        console.error("Backend Error Response:", errorDetail);
+        return rejectWithValue(
+          `Failed to update terms of use: ${
+            errorDetail.message || response.statusText
+          }`
         );
       }
 
@@ -71,7 +65,7 @@ export const updateTermsOfUse = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(termsOfUse),
+        body: JSON.stringify([termsOfUse]),
       });
 
       if (!response.ok) {
@@ -82,7 +76,7 @@ export const updateTermsOfUse = createAsyncThunk(
       }
 
       const data = await response.json();
-
+      console.log("Updated data:", data);
       return data.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -117,19 +111,19 @@ export const termsPrivacySlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        updateTermsOfUse.fulfilled,
-        (state, action: PayloadAction<TermsOfUse>) => {
-          const index = state?.terms.findIndex(
-            (term) => term?.id === action.payload?.id
-          );
-          if (index !== -1) {
-            state.terms[index] = action.payload;
-          }
-          state.loading = false;
-          state.status = "succeeded";
+      .addCase(updateTermsOfUse.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload && Array.isArray(action.payload)) {
+          action.payload.forEach((updatedTerm) => {
+            const index = state.terms.findIndex(
+              (term) => term.id === updatedTerm.id
+            );
+            if (index !== -1) {
+              state.terms[index] = updatedTerm; 
+            }
+          });
         }
-      )
+      })
       .addCase(updateTermsOfUse.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -137,11 +131,13 @@ export const termsPrivacySlice = createSlice({
   },
 });
 
-export const selectPrivacyPoliciesByLanguage = (
-  state: RootState,
-  languageId: number
-) => state.termsPrivacy.terms.filter((term) => term.languageId === languageId);
 
+export const selectPrivacyPoliciesByLanguage = createSelector(
+  (state: RootState) => state.termsPrivacy.terms,
+  (state: RootState, languageId: number) => languageId,
+  (terms, languageId) => terms.filter((term) => term.languageId === languageId)
+);
+export const selectAllTerms = (state: RootState) => state.termsPrivacy.terms;
 
 export const selectLoading = (state: { privacyPolicy: PrivacyPolicyState }) =>
   state?.privacyPolicy?.loading;

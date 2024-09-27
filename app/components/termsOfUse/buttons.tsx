@@ -45,6 +45,8 @@ interface UpdateTermsOfUseProps {
 
 export function UpdateTermsOfUse({ id, languageId }: UpdateTermsOfUseProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+
 
   return (
     <Tooltip title={t("Edit")} arrow placement="top">
