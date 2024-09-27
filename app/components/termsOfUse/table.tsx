@@ -14,16 +14,17 @@ import {
   fetchLanguages,
   selectLanguages,
 } from "@/lib/features/languages/languagesSlice";
+import DOMPurify from "dompurify";
+
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
+
 interface TermsOfUseTableProps {
   languageId?: number;
 }
 export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchLanguages());
-  }, [dispatch]);
 
   const selectedLanguages = useSelector(selectLanguages);
   const lang = selectedLanguages.find((lang) => lang.languageId === 1) ? 1 : 2;
@@ -37,6 +38,7 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
     if (selectedLanguageId) {
       dispatch(fetchTermsOfUse(selectedLanguageId));
     }
+    dispatch(fetchLanguages());
   }, [dispatch, selectedLanguageId]);
 
   const termsOfUse = useSelector((state: RootState) =>
@@ -56,10 +58,30 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
           <div className="flex justify-end">
             <UpdateTermsOfUse id={item.id} languageId={selectedLanguageId} />
           </div>
-          <h2 className="text-sm text-gray-500 text-center font-bold p-2">
-            {item.title}
-          </h2>
-          <p> {item.detail}</p>
+          {/* {item.title} */}
+          {/* <p> {item.detail}</p> */}
+          {/* <h2 dangerouslySetInnerHTML={{ __html: item.title }} />
+          <div
+            className="mt-4"
+            dangerouslySetInnerHTML={{ __html: item.detail }}
+          /> */}
+          <h2
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(item.title, {
+                ALLOWED_TAGS: ["h2", "strong", "u", "em", "a"], // Allowed tags
+                ALLOWED_ATTR: ["href", "rel", "target"], // Allowed attributes for links
+              }),
+            }}
+          />
+          <div
+            className="mt-4"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(item.detail, {
+                ALLOWED_TAGS: ["p", "strong", "u", "em", "a", "ul", "ol", "li"], // Allowed tags
+                ALLOWED_ATTR: ["href", "rel", "target"], // Allowed attributes for links
+              }),
+            }}
+          />
         </div>
       ))}
     </div>

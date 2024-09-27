@@ -80,10 +80,10 @@ export default function QuestionTable({
                     İD
                   </th>
                   <th scope="col" className="px-3 py-5 font-medium">
-                    {t("announcement.form.title")}
+                    {t("faq.form.title")}
                   </th>
                   <th scope="col" className="px-3 py-5 font-medium">
-                    {t("announcement.form.detail")}
+                    {t("faq.form.detail")}
                   </th>
 
                   <th scope="col" className="relative py-3 pl-6 pr-3">

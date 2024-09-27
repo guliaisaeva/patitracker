@@ -194,7 +194,7 @@
     },
     "form": {
       "title": "Question Title ",
-      "detail": "Question Details",
+      "detail": "Question Answer",
       "enterTitle": "Enter Question Title",
       "enterDetail": "Enter Question Detail",
       "enterTitleEn": "Enter English Question Title",

@@ -191,7 +191,7 @@
     },
     "form": {
       "title": "Soru Başlığı",
-      "detail": "Soru Detayı",
+      "detail": "Soru Cevabı",
       "enterTitle": "Soru Başlığı Giriniz",
       "enterDetail": "Soru Detayı Giriniz",
       "enterTitleEn": "İngilizce Başlık Giriniz",

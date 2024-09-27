@@ -1,35 +1,35 @@
-.quill-editor {
+.quillEditor {
   text-decoration: underline !important;
   color: black;
 }
 
-.quill-editor b,
-.quill-editor strong {
+.quillEditor b,
+.quillEditor strong {
   font-weight: bold;
   color: #22c55e;
 }
 
-.quill-editor ol {
+.quillEditor ol {
   list-style-type: decimal;
   margin-left: 20px;
   padding-left: 0;
   color: black;
 }
 
-.quill-editor ul {
+.quillEditor ul {
   list-style-type: disc;
   margin-left: 20px;
   padding-left: 0;
   color: black;
 }
 
-.quill-editor h1 {
+.quillEditor h1 {
   font-size: 2.25rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.quill-editor h2 {
+.quillEditor h2 {
   font-size: 1.875rem;
   font-weight: bold;
   margin-bottom: 0.75rem;

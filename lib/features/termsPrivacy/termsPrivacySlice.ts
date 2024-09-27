@@ -1,6 +1,13 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
 import { CONST } from "@/lib/const";
+import DOMPurify from "dompurify";
+
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export interface TermsOfUse {
@@ -58,6 +65,18 @@ export const updateTermsOfUse = createAsyncThunk(
   "termsOfUse/updateTermsOfUse",
   async (termsOfUse: TermsOfUse, { rejectWithValue }) => {
     try {
+      const sanitizedTermsOfUse = {
+        ...termsOfUse,
+        title: DOMPurify.sanitize(termsOfUse.title, {
+          ALLOWED_TAGS: ["h2", "strong", "u", "em", "a"], // Customize as needed
+          ALLOWED_ATTR: ["href", "rel", "target"], // Customize as needed
+        }),
+        detail: DOMPurify.sanitize(termsOfUse.detail, {
+          ALLOWED_TAGS: ["p", "strong", "u", "em", "a", "ul", "ol", "li"], // Customize as needed
+          ALLOWED_ATTR: ["href", "rel", "target"], // Customize as needed
+        }),
+      };
+
       const response = await fetch(CONST.updateTermsOfUse, {
         method: "POST",
         headers: {
@@ -65,7 +84,7 @@ export const updateTermsOfUse = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([termsOfUse]),
+        body: JSON.stringify([sanitizedTermsOfUse]),
       });
 
       if (!response.ok) {
@@ -119,7 +138,7 @@ export const termsPrivacySlice = createSlice({
               (term) => term.id === updatedTerm.id
             );
             if (index !== -1) {
-              state.terms[index] = updatedTerm; 
+              state.terms[index] = updatedTerm;
             }
           });
         }
@@ -131,14 +150,12 @@ export const termsPrivacySlice = createSlice({
   },
 });
 
-
 export const selectPrivacyPoliciesByLanguage = createSelector(
   (state: RootState) => state.termsPrivacy.terms,
   (state: RootState, languageId: number) => languageId,
   (terms, languageId) => terms.filter((term) => term.languageId === languageId)
 );
 export const selectAllTerms = (state: RootState) => state.termsPrivacy.terms;
-
 export const selectLoading = (state: { privacyPolicy: PrivacyPolicyState }) =>
   state?.privacyPolicy?.loading;
 export const selectError = (state: { privacyPolicy: PrivacyPolicyState }) =>
