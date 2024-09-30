@@ -40,10 +40,6 @@ export default function Form() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (deviceNumberError || deviceModelError) {
-      alert(t("Please fix the errors before submitting."));
-      return;
-    }
     try {
       const dataToSend: DeviceToAdd[] = [
         {

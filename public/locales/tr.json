@@ -333,6 +333,8 @@
       "expirationDate": "Üyelik Bitiş Tarihi",
       "isSimToDevice": "Cihaza Kaydet",
       "deviceId": "Cihaz Numarası",
+      "expirationDateValid": "Son tarih, kayıt tarihinden önce olamaz!",
+
       "placeholders": {
         "companyName": "Şirket Adını Girin",
         "apn": "Apn Girin",

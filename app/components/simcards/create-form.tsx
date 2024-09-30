@@ -40,6 +40,7 @@ export default function Form() {
   const CountryPhoneCodes = useSelector(selectCountryPhoneCode);
   const devicesWithSim = useSelector(selectDevicesWithSim);
   const [phoneError, setPhoneError] = useState("");
+  const [dateError, setDateError] = useState("");
 
   const [simData, setSimData] = useState<AddSimCard>({
     countryPhoneCodeId: 0,
@@ -60,6 +61,11 @@ export default function Form() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (new Date(simData.expirationDate) < new Date(simData.registerDate)) {
+      setDateError(t("simCard.form.errors.expirationDate"));
+      return;
+    }
 
     try {
       const dataToSend = {
@@ -134,6 +140,15 @@ export default function Form() {
       ...prevData,
       [name]: value,
     }));
+
+    if (
+      name === "expirationDate" &&
+      new Date(value) < new Date(simData.registerDate)
+    ) {
+      setDateError(t("simCard.form.expirationDateValid"));
+    } else {
+      setDateError("");
+    }
   };
   return (
     <form className="my-6" onSubmit={handleSubmit}>
@@ -223,7 +238,7 @@ export default function Form() {
               required
             />
             {phoneError && (
-              <div className="mt-1 text-red-500 text-sm">{phoneError}</div>
+              <div className="mt-1 text-green-500 text-sm">{phoneError}</div>
             )}
           </div>
         </div>
@@ -282,6 +297,10 @@ export default function Form() {
               className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               required
             />
+
+            {dateError && (
+              <div className="mt-1 text-green-500 text-sm">{dateError}</div>
+            )}
           </div>
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center md:space-x-4">
@@ -329,7 +348,6 @@ export default function Form() {
             </div>
           )}
         </div>
-        {/* Error Message */}
         {status === "failed" && error && (
           <div className="mb-4 text-red-500">{error}</div>
         )}

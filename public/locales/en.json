@@ -337,6 +337,7 @@
       "expirationDate": "Expiration Date",
       "isSimToDevice": "Save to Device",
       "deviceId": "Device Number",
+      "expirationDateValid": "Expiration date cannot be earlier than registration date!",
       "placeholders": {
         "companyName": "Enter Company Name",
         "apn": "Enter Apn",
