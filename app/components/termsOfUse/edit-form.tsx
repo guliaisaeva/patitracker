@@ -22,9 +22,9 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function TermsOfUseTableEdit() {
   const router = useRouter();
-  const params = useParams(); // Access route parameters (id)
+  const params = useParams();
   const searchParams = useSearchParams();
-  const id = params.id; // Extract the id from URL
+  const id = params.id;
   const languageId = searchParams.get("languageId");
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ export default function TermsOfUseTableEdit() {
 
   const modules = {
     toolbar: [
-      [{ header: "2" },{ header: "3" }],
+      [{ header: [2, 3] }, { header: "3" }],
       [{ list: "ordered" }, { list: "bullet" }],
       ["bold", "italic", "underline"],
       ["link"],
@@ -79,18 +79,33 @@ export default function TermsOfUseTableEdit() {
           "i",
           "em",
           "strong",
-          "u",
           "a",
           "ul",
           "ol",
           "li",
+          "h1",
+          "h2",
+          "h3",
           "u",
-        ], 
+        ],
       });
 
       // Sanitize detail with allowed tags and attributes
       const sanitizedDetail = DOMPurify.sanitize(detail, {
-        ALLOWED_TAGS: ["b", "i", "em", "strong", "a", "ul", "ol", "li", "u"], // Allowed tags for detail
+        ALLOWED_TAGS: [
+          "b",
+          "i",
+          "em",
+          "strong",
+          "a",
+          "ul",
+          "ol",
+          "li",
+          "h1",
+          "h2",
+          "h3",
+          "u",
+        ], // Allowed tags for detail
         ALLOWED_ATTR: ["href", "target", "rel"], // Allowed attributes for links
       });
 
@@ -125,14 +140,11 @@ export default function TermsOfUseTableEdit() {
             className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
           /> */}
         </div>
-        <ReactQuill
+        <input
           id="title"
           value={title}
-          onChange={setTitle} // Update the title state on change
-          theme="snow" // You can choose a theme here
-          className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-          modules={modules}
-          formats={formats}
+          onChange={(e) => setTitle(e.target.value)} // Update the title state on change
+          className={`text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm`}
         />
         <div className={styles["quill-editor"]}>
           <label className="block text-gray-700" htmlFor="detail">
@@ -152,6 +164,7 @@ export default function TermsOfUseTableEdit() {
             theme="snow" // You can choose a theme here
             modules={modules}
             formats={formats}
+            className={`text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm`}
           />
         </div>
 

@@ -18,6 +18,7 @@ import DOMPurify from "dompurify";
 
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
+import styles from "./terms.module.css";
 
 interface TermsOfUseTableProps {
   languageId?: number;
@@ -65,20 +66,29 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
             className="mt-4"
             dangerouslySetInnerHTML={{ __html: item.detail }}
           /> */}
-          <h2
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(item.title, {
-                ALLOWED_TAGS: ["h2", "strong", "u", "em", "a"], // Allowed tags
-                ALLOWED_ATTR: ["href", "rel", "target"], // Allowed attributes for links
-              }),
-            }}
+          <h1
+            className={`${styles.quillEditor} text-center font-bold`}
+            dangerouslySetInnerHTML={{ __html: item.title }}
           />
           <div
-            className="mt-4"
+            className={`${styles.quillEditor} mt-4`}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(item.detail, {
-                ALLOWED_TAGS: ["p", "strong", "u", "em", "a", "ul", "ol", "li"], // Allowed tags
-                ALLOWED_ATTR: ["href", "rel", "target"], // Allowed attributes for links
+                ALLOWED_TAGS: [
+                  "b",
+                  "i",
+                  "em",
+                  "strong",
+                  "a",
+                  "ul",
+                  "ol",
+                  "li",
+                  "h1",
+                  "h2",
+                  "h3",
+                  "u",
+                ],
+                ALLOWED_ATTR: ["href", "rel", "target"],
               }),
             }}
           />

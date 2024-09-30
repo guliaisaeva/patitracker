@@ -1,6 +1,10 @@
-.quillEditor {
+.quillEditor a {
   text-decoration: underline !important;
-  color: black;
+  color: blue;
+}
+.quillEditor u {
+  text-decoration: underline !important;
+  color: black !important;
 }
 
 .quillEditor b,
@@ -10,14 +14,14 @@
 }
 
 .quillEditor ol {
-  list-style-type: decimal;
+  list-style-type: decimal !important;
   margin-left: 20px;
   padding-left: 0;
   color: black;
 }
 
 .quillEditor ul {
-  list-style-type: disc;
+  list-style-type: disc !important;
   margin-left: 20px;
   padding-left: 0;
   color: black;
