@@ -147,6 +147,8 @@
       "saveToSimCard": "Sim Karta Kaydet",
       "simNumber": "Sim Numarası",
       "selectSimNumber": "Sim Numarası Seçin",
+      "deviceModelValid": "Cihaz modeli alan uzunluğu en fazla 20 karakter olmalıdır!",
+      "deviceNumberValid": "Cihaz numarası 15 haneli olmalıdır!",
 
       "userName": "Kullanıcı İsmi",
       "userEmail": "Kullanıcı E-postası",

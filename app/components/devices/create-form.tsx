@@ -23,8 +23,8 @@ export default function Form() {
   const status = useSelector(selectDevicesStatus);
   const error = useSelector(selectDevicesError);
   const SimWithDevice = useSelector(selectSimWithDevice);
-
   const [deviceNumberError, setDeviceNumberError] = useState("");
+  const [deviceModelError, setDeviceModelError] = useState("");
 
   const [deviceData, setDeviceData] = useState<DeviceToAdd>({
     deviceNumber: "",
@@ -37,68 +37,13 @@ export default function Form() {
     dispatch(getAllSimsForConnectDeviceAsync());
   }, [dispatch]);
 
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     const dataToSend: DeviceToAdd[] = [
-  //       {
-  //         ...deviceData,
-  //         simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
-  //       },
-  //     ];
-  //     const resultAction = await dispatch(addDeviceAsync(dataToSend));
-
-  //     if (addDeviceAsync.rejected.match(resultAction)) {
-  //       console.error("Action rejected:", resultAction);
-  //       alert(t("device.messages.createFailure"));
-  //     } else {
-  //       // Check if the resultAction has a statusCode of 200
-  //       if (resultAction.payload && resultAction.payload.statusCode === 200) {
-  //         setDeviceData({
-  //           deviceNumber: "",
-  //           deviceModel: "",
-  //           isDeviceToSim: false,
-  //           simCardId: 0,
-  //         });
-  //         alert(t("device.messages.createSuccess")); // Ensure this line ends with a semicolon
-  //         router.replace("/dashboard/devices"); // Ensure this line ends with a semicolon
-  //       } else {
-  //         alert(t("device.messages.createFailure"));
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error("Error during device addition:", err); // Ensure this line ends with a semicolon
-  //     alert(t("device.messages.createFailure")); // Ensure this line ends with a semicolon
-  //   }
-  // };
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value, type, checked } = event.target;
-
-  //   if (name === "deviceModel") {
-  //     const numericValue = value.replace(/\D/g, "").slice(0, 15);
-  //     setDeviceData((prevData) => ({
-  //       ...prevData,
-  //       [name]: numericValue,
-  //     }));
-
-  //     if (numericValue.length === 15) {
-  //       setDeviceNumberError("");
-  //     } else {
-  //       setDeviceNumberError(t("simCard.form.placeholders.phoneNumber"));
-  //     }
-  //   } else {
-  //     setDeviceData((prevData) => ({
-  //       ...prevData,
-  //       [name]: type === "checkbox" ? checked : value,
-  //     }));
-  //   }
-  // };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (deviceNumberError || deviceModelError) {
+      alert(t("Please fix the errors before submitting."));
+      return;
+    }
     try {
       const dataToSend: DeviceToAdd[] = [
         {
@@ -108,14 +53,12 @@ export default function Form() {
       ];
       const resultAction = await dispatch(addDeviceAsync(dataToSend));
 
-      // Check if the action was rejected
       if (addDeviceAsync.rejected.match(resultAction)) {
         console.error("Action rejected:", resultAction);
         alert(t("device.messages.createFailure"));
-        return; // Exit if the action was rejected
+        return;
       }
 
-      // Check if resultAction contains the expected payload
       if (resultAction.payload && resultAction.payload.statusCode === 200) {
         setDeviceData({
           deviceNumber: "",
@@ -133,10 +76,32 @@ export default function Form() {
       alert(t("device.messages.createFailure"));
     }
   };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value, type, checked } = event.target;
+
+  //   if (name === "deviceNumber") {
+  //     const numericValue = value.replace(/\D/g, "").slice(0, 15);
+  //     setDeviceData((prevData) => ({
+  //       ...prevData,
+  //       [name]: numericValue,
+  //     }));
+
+  //     if (numericValue.length === 15) {
+  //       setDeviceNumberError("");
+  //     } else {
+  //       setDeviceNumberError(t("Cihaz Numarasi  15 haneli olmalı!"));
+  //     }
+  //   } else {
+  //     setDeviceData((prevData) => ({
+  //       ...prevData,
+  //       [name]: type === "checkbox" ? checked : value,
+  //     }));
+  //   }
+  // };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
 
-    // If the field is deviceNumber, apply the numeric validation and error checking
     if (name === "deviceNumber") {
       const numericValue = value.replace(/\D/g, "").slice(0, 15);
       setDeviceData((prevData) => ({
@@ -144,11 +109,22 @@ export default function Form() {
         [name]: numericValue,
       }));
 
-      // Validate the length of the deviceNumber
       if (numericValue.length === 15) {
         setDeviceNumberError("");
       } else {
-        setDeviceNumberError(t("Cihaz Numarasi  15 haneli olmalı!"));
+        setDeviceNumberError(t("device.form.deviceNumberValid"));
+      }
+    } else if (name === "deviceModel") {
+      const trimmedValue = value.slice(0, 20);
+      setDeviceData((prevData) => ({
+        ...prevData,
+        [name]: trimmedValue,
+      }));
+
+      if (trimmedValue.length < 20) {
+        setDeviceModelError("");
+      } else {
+        setDeviceModelError(t("device.form.deviceModelValid"));
       }
     } else {
       setDeviceData((prevData) => ({
@@ -157,6 +133,7 @@ export default function Form() {
       }));
     }
   };
+
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setDeviceData((prevData) => ({
@@ -186,7 +163,9 @@ export default function Form() {
             placeholder={t("device.form.enterDeviceNumber")}
           />
           {deviceNumberError && (
-            <div className="text-red-500 text-sm mt-1">{deviceNumberError}</div>
+            <div className="text-green-500 text-sm mt-1">
+              {deviceNumberError}
+            </div>
           )}
         </div>
         <div className="mb-4">
@@ -206,6 +185,12 @@ export default function Form() {
             placeholder={t("device.form.enterDeviceModel")}
             required
           />
+
+          {deviceModelError && (
+            <div className="text-green-500 text-sm mt-1">
+              {deviceModelError}
+            </div>
+          )}
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center md:space-x-4">
           <div className=" mb-4 md:mb-0 md:w-1/4 flex items-center ">

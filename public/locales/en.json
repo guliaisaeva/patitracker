@@ -150,6 +150,8 @@
       "saveToSimCard": "Save to Sim Card",
       "simNumber": "Sim Number",
       "selectSimNumber": "Select Sim Number",
+      "deviceModelValid": "The length of the device model field must be at most 20 characters!",
+      "deviceNumberValid": "The device number must be 15 digits long!",
 
       "userName": "User Name",
       "userEmail": "User Email",
