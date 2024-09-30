@@ -39,6 +39,7 @@ export default function Form() {
   const error = useSelector(selectDevicesError);
   const CountryPhoneCodes = useSelector(selectCountryPhoneCode);
   const devicesWithSim = useSelector(selectDevicesWithSim);
+  const [phoneError, setPhoneError] = useState("");
 
   const [simData, setSimData] = useState<AddSimCard>({
     countryPhoneCodeId: 0,
@@ -86,12 +87,37 @@ export default function Form() {
     }
   };
 
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value, type, checked } = event.target;
+  //   setSimData((prevData) => ({
+  //     ...prevData,
+  //     [name]: type === "checkbox" ? checked : value,
+  //   }));
+  // };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
-    setSimData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    if (name === "phoneNumber") {
+      // Allow only digits and limit to 10 characters
+      const numericValue = value.replace(/\D/g, "").slice(0, 10);
+      setSimData((prevData) => ({
+        ...prevData,
+        [name]: numericValue,
+      }));
+
+      // Clear error message if valid
+      if (numericValue.length === 10) {
+        setPhoneError("");
+      } else {
+        setPhoneError(t("simCard.form.placeholders.phoneNumber"));
+      }
+    } else {
+      setSimData((prevData) => ({
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -189,13 +215,16 @@ export default function Form() {
             <input
               id="phoneNumber"
               name="phoneNumber"
-              type="number"
+              type="text"
               value={simData.phoneNumber}
               onChange={handleChange}
               className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               placeholder={t("simCard.form.placeholders.phoneNumber")}
               required
             />
+            {phoneError && (
+              <div className="mt-1 text-red-500 text-sm">{phoneError}</div>
+            )}
           </div>
         </div>
 

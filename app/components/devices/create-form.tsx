@@ -24,6 +24,8 @@ export default function Form() {
   const error = useSelector(selectDevicesError);
   const SimWithDevice = useSelector(selectSimWithDevice);
 
+  const [deviceNumberError, setDeviceNumberError] = useState("");
+
   const [deviceData, setDeviceData] = useState<DeviceToAdd>({
     deviceNumber: "",
     deviceModel: "",
@@ -45,24 +47,58 @@ export default function Form() {
   //         simCardId: deviceData.isDeviceToSim ? deviceData.simCardId : 0,
   //       },
   //     ];
+  //     const resultAction = await dispatch(addDeviceAsync(dataToSend));
 
-  //     await dispatch(addDeviceAsync(dataToSend)).unwrap();
-  //     setDeviceData({
-  //       deviceNumber: "",
-  //       deviceModel: "",
-  //       isDeviceToSim: false,
-  //       simCardId: 0,
-  //     });
-  //     alert(t("device.messages.createSuccess"));
-  //     router.replace("/dashboard/devices");
+  //     if (addDeviceAsync.rejected.match(resultAction)) {
+  //       console.error("Action rejected:", resultAction);
+  //       alert(t("device.messages.createFailure"));
+  //     } else {
+  //       // Check if the resultAction has a statusCode of 200
+  //       if (resultAction.payload && resultAction.payload.statusCode === 200) {
+  //         setDeviceData({
+  //           deviceNumber: "",
+  //           deviceModel: "",
+  //           isDeviceToSim: false,
+  //           simCardId: 0,
+  //         });
+  //         alert(t("device.messages.createSuccess")); // Ensure this line ends with a semicolon
+  //         router.replace("/dashboard/devices"); // Ensure this line ends with a semicolon
+  //       } else {
+  //         alert(t("device.messages.createFailure"));
+  //       }
+  //     }
   //   } catch (err) {
-  //     console.error("Failed to add device:", err);
-  //     alert("Failed to add device");
+  //     console.error("Error during device addition:", err); // Ensure this line ends with a semicolon
+  //     alert(t("device.messages.createFailure")); // Ensure this line ends with a semicolon
+  //   }
+  // };
+
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value, type, checked } = event.target;
+
+  //   if (name === "deviceModel") {
+  //     const numericValue = value.replace(/\D/g, "").slice(0, 15);
+  //     setDeviceData((prevData) => ({
+  //       ...prevData,
+  //       [name]: numericValue,
+  //     }));
+
+  //     if (numericValue.length === 15) {
+  //       setDeviceNumberError("");
+  //     } else {
+  //       setDeviceNumberError(t("simCard.form.placeholders.phoneNumber"));
+  //     }
+  //   } else {
+  //     setDeviceData((prevData) => ({
+  //       ...prevData,
+  //       [name]: type === "checkbox" ? checked : value,
+  //     }));
   //   }
   // };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
       const dataToSend: DeviceToAdd[] = [
         {
@@ -72,9 +108,15 @@ export default function Form() {
       ];
       const resultAction = await dispatch(addDeviceAsync(dataToSend));
 
+      // Check if the action was rejected
       if (addDeviceAsync.rejected.match(resultAction)) {
+        console.error("Action rejected:", resultAction);
         alert(t("device.messages.createFailure"));
-      } else {
+        return; // Exit if the action was rejected
+      }
+
+      // Check if resultAction contains the expected payload
+      if (resultAction.payload && resultAction.payload.statusCode === 200) {
         setDeviceData({
           deviceNumber: "",
           deviceModel: "",
@@ -83,20 +125,38 @@ export default function Form() {
         });
         alert(t("device.messages.createSuccess"));
         router.replace("/dashboard/devices");
+      } else {
+        alert(t("device.messages.createFailure"));
       }
     } catch (err) {
+      console.error("Error during device addition:", err);
       alert(t("device.messages.createFailure"));
     }
   };
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
-    setDeviceData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
+    // If the field is deviceNumber, apply the numeric validation and error checking
+    if (name === "deviceNumber") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 15);
+      setDeviceData((prevData) => ({
+        ...prevData,
+        [name]: numericValue,
+      }));
+
+      // Validate the length of the deviceNumber
+      if (numericValue.length === 15) {
+        setDeviceNumberError("");
+      } else {
+        setDeviceNumberError(t("Cihaz Numarasi  15 haneli olmalı!"));
+      }
+    } else {
+      setDeviceData((prevData) => ({
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+  };
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setDeviceData((prevData) => ({
@@ -125,6 +185,9 @@ export default function Form() {
             required
             placeholder={t("device.form.enterDeviceNumber")}
           />
+          {deviceNumberError && (
+            <div className="text-red-500 text-sm mt-1">{deviceNumberError}</div>
+          )}
         </div>
         <div className="mb-4">
           <label

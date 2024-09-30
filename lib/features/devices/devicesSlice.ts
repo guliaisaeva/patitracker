@@ -50,12 +50,12 @@ export const addDeviceAsync = createAsyncThunk(
       }
 
       const data = await response.json();
-      if (!data || !data.data || !data.data[0]) {
-        throw new Error("Invalid response format");
+      if (typeof data !== "object" || data === null) {
+        console.error("Unexpected response format or no device added:", data);
+        return rejectWithValue("Invalid response format or no device added.");
       }
-
       console.log("Device added successfully:", data);
-      return data.data[0];
+      return data;
     } catch (error: any) {
       console.error("Error adding device:", error);
       return rejectWithValue(
@@ -271,9 +271,13 @@ export const devicesSlice = createSlice({
       })
       .addCase(
         addDeviceAsync.fulfilled,
-        (state, action: PayloadAction<DeviceToAdd>) => {
+        (state, action: PayloadAction<DeviceToAdd[]>) => {
           state.status = "succeeded";
-          state.devicesAdd.push(action.payload);
+          if (Array.isArray(action.payload)) {
+            state.devicesAdd.push(...action.payload);
+          } else {
+            state.devicesAdd.push(action.payload);
+          }
           state.error = null;
         }
       )
