@@ -149,7 +149,16 @@ export const GetAllPhoneCode = async (): Promise<CountryPhoneCode[]> => {
   }
 
   const data = await response.json();
-  return data.data;
+  const sortedData = data.data.sort(
+    (a: CountryPhoneCode, b: CountryPhoneCode) => {
+      const aStartsWith90 = a.phoneCode.startsWith("+90");
+      const bStartsWith90 = b.phoneCode.startsWith("+90");
+
+      return aStartsWith90 === bStartsWith90 ? 0 : aStartsWith90 ? -1 : 1;
+    }
+  );
+
+  return sortedData;
 };
 
 export const GetAllPhoneCodeAsync = createAsyncThunk(
