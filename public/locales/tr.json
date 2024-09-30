@@ -377,5 +377,26 @@
       "creating": "Oluşturuluyor...",
       "loading": "Kullanım Şartları Yükleniyor..."
     }
+  },
+  "privacy": {
+    "update": "Gizlilik Politikasi Güncellenmesi",
+    "errorLoadingTerms": "Hata: Gizlilik Politikasi yüklenirken hata oluştu",
+    "privacy": "Gizlilik Politikasi",
+    "search.placeholder": "Gizlilik Politikasi Ara...",
+
+    "messages": {
+      "deleteSuccess": "Gizlilik Politikası başarıyla silindi.",
+      "deleteFailure": "Gizlilik Politikası silinirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "createSuccess": "Gizlilik Politikası başarıyla eklendi.",
+      "createFailure": "Gizlilik Politikası eklenemedi",
+      "updateSuccess": "Gizlilik Politikası başarıyla güncellendi.",
+      "updateFailure": "Gizlilik Politikası güncellenemedi. Lütfen tekrar deneyin."
+    },
+
+    "submit": {
+      "create": "Gizlilik Politikası Oluştur",
+      "creating": "Oluşturuluyor...",
+      "loading": "Gizlilik Politikası Yükleniyor..."
+    }
   }
 }

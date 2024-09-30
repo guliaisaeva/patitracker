@@ -5,11 +5,10 @@ import { AppDispatch, RootState } from "@/lib/store";
 import NoResultsMessage from "@/app/components/noResultMessage";
 import { useTranslation } from "react-i18next";
 import {
-  fetchTermsOfUse,
-  selectTermsOfUseByLanguage,
+  fetchPrivacyPolicy,
+  selectPrivacyPoliciesByLanguage,
 } from "@/lib/features/termsPrivacy/termsPrivacySlice";
 import "react-quill/dist/quill.snow.css";
-import { UpdateTermsOfUse } from "./buttons";
 import {
   fetchLanguages,
   selectLanguages,
@@ -19,11 +18,14 @@ import DOMPurify from "dompurify";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import styles from "./terms.module.css";
+import { UpdatePrivacyPolicy } from "./buttons";
 
 interface TermsOfUseTableProps {
   languageId?: number;
 }
-export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
+export default function PrivacyPolicyTable({
+  languageId,
+}: TermsOfUseTableProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -37,27 +39,30 @@ export default function TermsOfUseTable({ languageId }: TermsOfUseTableProps) {
 
   useEffect(() => {
     if (selectedLanguageId) {
-      dispatch(fetchTermsOfUse(selectedLanguageId));
+      dispatch(fetchPrivacyPolicy(selectedLanguageId));
     }
     dispatch(fetchLanguages());
   }, [dispatch, selectedLanguageId]);
 
-  const termsOfUse = useSelector((state: RootState) =>
-    selectTermsOfUseByLanguage(state, selectedLanguageId)
+  const pPolicy = useSelector((state: RootState) =>
+    selectPrivacyPoliciesByLanguage(state, selectedLanguageId)
   );
   if (status === "loading") {
     return <div>{t("terms.submit.loading")}</div>;
   }
 
-  if (!termsOfUse || termsOfUse.length === 0) {
+  if (!pPolicy || pPolicy.length === 0) {
     return <NoResultsMessage />;
   }
   return (
     <div className="mt-6 flow-root">
-      {termsOfUse?.map((item) => (
+      {pPolicy?.map((item) => (
         <div key={item.id} className="mb-2 w-full  bg-white p-4">
           <div className="flex justify-end">
-            <UpdateTermsOfUse id={item.id} languageId={selectedLanguageId} />
+            <UpdatePrivacyPolicy
+              id={item.id}
+              mobileLanguageId={selectedLanguageId}
+            />
           </div>
 
           <h1

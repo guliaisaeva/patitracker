@@ -38,7 +38,7 @@ const links = [
   { name: "announcements", href: "/dashboard/announcements", icon: Campaign },
   { name: "faqs", href: "/dashboard/faqs", icon: QuestionMark },
   { name: "terms", href: "/dashboard/termsOfUse", icon: Grading },
-  { name: "privacy", href: "/dashboard/privacy", icon: PrivacyTip },
+  { name: "privacy", href: "/dashboard/privacyPolicy", icon: PrivacyTip },
 ];
 
 export default function NavLinks() {

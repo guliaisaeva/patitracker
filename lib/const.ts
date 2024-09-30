@@ -58,4 +58,7 @@ export const CONST = {
 
   getAllTermsOfUse: `${BASE_URL}/api/v1/Information/GetTermsOfUse`,
   updateTermsOfUse: `${BASE_URL}/api/v1/Information/UpdateTermsOfUse`,
+
+  getAllPrivacyPolicy: `${BASE_URL}/api/v1/Information/GetPrivacyPolicy`,
+  updatePrivacyPolicy: `${BASE_URL}/api/v1/Information/UpdatePrivacyPolicy`,
 };

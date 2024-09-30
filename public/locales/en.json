@@ -380,5 +380,26 @@
       "creating": "Creating...",
       "loading": "Loading Terms Of Use..."
     }
+  },
+  "privacy": {
+    "update": "Edit Privacy Policy",
+    "errorLoadingTerms": "Error: An error occurred while loading the Privacy Policy",
+    "privacy": "Privacy Policy",
+    "search.placeholder": "Search Privacy Policy...",
+
+    "messages": {
+      "deleteSuccess": "Privacy Policy successfully deleted.",
+      "deleteFailure": "An error occurred while deleting the Privacy Policy. Please try again.",
+      "createSuccess": "Privacy Policy successfully added.",
+      "createFailure": "Failed to add the Privacy Policy.",
+      "updateSuccess": "Privacy Policy successfully updated.",
+      "updateFailure": "Failed to update the Privacy Policy. Please try again."
+    },
+
+    "submit": {
+      "create": "Create Privacy Policy",
+      "creating": "Creating...",
+      "loading": "Loading Privacy Policy..."
+    }
   }
 }
