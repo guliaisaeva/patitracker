@@ -72,28 +72,6 @@ export default function Form() {
       alert(t("device.messages.createFailure"));
     }
   };
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value, type, checked } = event.target;
-
-  //   if (name === "deviceNumber") {
-  //     const numericValue = value.replace(/\D/g, "").slice(0, 15);
-  //     setDeviceData((prevData) => ({
-  //       ...prevData,
-  //       [name]: numericValue,
-  //     }));
-
-  //     if (numericValue.length === 15) {
-  //       setDeviceNumberError("");
-  //     } else {
-  //       setDeviceNumberError(t("Cihaz Numarasi  15 haneli olmalı!"));
-  //     }
-  //   } else {
-  //     setDeviceData((prevData) => ({
-  //       ...prevData,
-  //       [name]: type === "checkbox" ? checked : value,
-  //     }));
-  //   }
-  // };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
@@ -181,7 +159,6 @@ export default function Form() {
             placeholder={t("device.form.enterDeviceModel")}
             required
           />
-
           {deviceModelError && (
             <div className="text-green-500 text-sm mt-1">
               {deviceModelError}
