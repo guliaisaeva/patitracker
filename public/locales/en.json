@@ -303,7 +303,8 @@
       "petTypeTr": "Pet Breed Name",
       "petTypeEn": "Pet Breed Name (English)",
       "typeId": "Pet Breed ID",
-      "language": "Language"
+      "language": "Language",
+      "averageStepLength": "Average Step Length"
     },
     "submit": {
       "create": "Create Pet Breed",

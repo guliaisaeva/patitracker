@@ -300,7 +300,8 @@
       "petTypeTr": "Evcil Hayvan Cins İsmi ",
       "petTypeEn": "Evcil Hayvan Cins İsmi (İngilizce)",
       "typeId": "Evcil Hayvan ID",
-      "language": "Dil"
+      "language": "Dil",
+      "averageStepLength": "Ortalama Adım Uzunluğu"
     },
     "submit": {
       "create": "Hayvan Cinsi Oluştur",

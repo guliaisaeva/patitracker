@@ -9,6 +9,7 @@ import {
 import NoResultsMessage from "@/app/components/noResultMessage";
 import { DeleteBreed, PetBreedInfo, UpdatePetBreed } from "./buttons";
 import { useTranslation } from "react-i18next";
+import { Language } from "@mui/icons-material";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -20,16 +21,23 @@ export default function PetBreedTable({
   query: string;
   currentPage: number;
   selectedPetType: string;
+  lang: string;
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const petBreeds = useSelector(selectPetBreeds);
+  console.log(petBreeds);
   const status = useSelector((state: RootState) => state.petBreeds.status);
   const error = useSelector((state: RootState) => state.petBreeds.error);
 
   useEffect(() => {
-    if (selectedPetType) {
-      dispatch(getAllPetBreeds(selectedPetType));
+    if (selectedPetType === "1") {
+      dispatch(
+        getAllPetBreeds({
+          petTypeId: selectedPetType,
+          languageId: 1 | 2,
+        })
+      );
     }
   }, [dispatch, selectedPetType]);
 
@@ -39,8 +47,7 @@ export default function PetBreedTable({
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const petBreedsToShow = filteredPetBreeds?.slice(startIndex, endIndex);
-
-  // if (status === 'loading') {
+  console.log(petBreedsToShow); // if (status === 'loading') {
   //   return <div>Loading pet breeds...</div>;
   // }
 
@@ -94,6 +101,9 @@ export default function PetBreedTable({
                   <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                     {t("petBreed.form.petTypeTr")}{" "}
                   </th>
+                  <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                    {t("petBreed.form.averageStepLength")}{" "}
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white">
@@ -107,6 +117,9 @@ export default function PetBreedTable({
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
                       {petBreed.breedName}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3">
+                      {petBreed.averageStepLength}
                     </td>
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">

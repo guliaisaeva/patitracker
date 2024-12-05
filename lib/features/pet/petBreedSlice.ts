@@ -11,10 +11,13 @@ const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export const getAllPetBreeds = createAsyncThunk(
   "pets/getAllPetBreeds",
-  async (petTypeId: string, { rejectWithValue }) => {
+  async (
+    { petTypeId, languageId }: { petTypeId: string; languageId: number },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await fetch(
-        `${CONST.getAllPetBreedURL}?petTypeId=${petTypeId}`,
+        `${CONST.getAllPetBreedURL}?petTypeId=${petTypeId}&languageId=${languageId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
