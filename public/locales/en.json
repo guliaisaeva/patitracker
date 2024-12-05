@@ -267,6 +267,8 @@
       "newPetType": "New Pet Type",
       "enterPetTypeEn": "Enter Pet Type in English",
       "enterPetTypeTr": "Enter Pet Type in Turkish",
+      "enterPetAverageStepLengthEn": "Enter Pet Average Step Length EN",
+      "enterPetAverageStepLengthTR": "Enter Pet Average Step Length TR",
       "petTypeTr": "Pet Type Name",
       "petTypeEn": "Pet Type Name (English)",
       "typeId": "Pet Type ID",

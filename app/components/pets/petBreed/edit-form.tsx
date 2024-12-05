@@ -12,7 +12,6 @@ import {
 import {
   getPetBreedDetail,
   selectBreedDetail,
-  selectPetBreeds,
   updatePetBreed,
 } from "@/lib/features/pet/petBreedSlice";
 import { Button } from "../../button";
@@ -48,6 +47,7 @@ export default function UpdateBreedForm({
     breedId: number | null;
     petTypeId: number | null;
     breedName: string;
+    averageStepLength: number | null;
     petBreedsLocalized: PetBreedLocalized[];
   }
 
@@ -55,6 +55,8 @@ export default function UpdateBreedForm({
     breedId: breedId,
     petTypeId: Number(selectedPetType),
     breedName: "",
+    averageStepLength: null,
+
     petBreedsLocalized: [],
   });
 
@@ -64,25 +66,35 @@ export default function UpdateBreedForm({
   }, []);
 
   useEffect(() => {
-    if (breedId !== null) {
-      dispatch(getPetBreedDetail(breedId));
-    }
-  }, [breedId]);
+    const fetchBreedDetail = async () => {
+      if (breedId !== null) {
+        try {
+          // Dispatching the action and waiting for the result (response)
+          const selectedBreedDetail = await dispatch(
+            getPetBreedDetail(breedId)
+          ).unwrap();
 
-  useEffect(() => {
-    if (selectedBreedDetail) {
-      setFormState({
-        breedId: selectedBreedDetail.breedId || null,
-        breedName: selectedBreedDetail.breedName || "",
-        petTypeId: selectedBreedDetail.petTypeId || null,
-        petBreedsLocalized:
-          selectedBreedDetail.languages?.map((lang: any) => ({
-            languageId: lang.id || 0,
-            breedName: lang.text || "",
-          })) || [],
-      });
-    }
-  }, [selectedBreedDetail]);
+          setFormState({
+            breedId: selectedBreedDetail.breedId || null,
+            breedName: selectedBreedDetail.breedName || "",
+            petTypeId: selectedBreedDetail.petTypeId || null,
+            averageStepLength: selectedBreedDetail.averageStepLength || null,
+            petBreedsLocalized:
+              selectedBreedDetail.languages?.map((lang: any) => ({
+                languageId: lang.id || 0,
+                breedName: lang.text || "",
+              })) || [],
+          });
+        } catch (error) {
+          console.error("Error fetching breed details:", error);
+        }
+      }
+    };
+
+    fetchBreedDetail();
+  }, [breedId, dispatch]);
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prevState) => ({
@@ -192,6 +204,22 @@ export default function UpdateBreedForm({
             placeholder={t("petBreed.form.enterPetType")}
             required
           />
+          <label
+            htmlFor="averageStepLength"
+            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
+          >
+            {t("petBreed.form.averageStepLength")}
+          </label>
+          <input
+            type="number"
+            id="averageStepLength"
+            name="averageStepLength"
+            value={formState.averageStepLength || ""}
+            onChange={handleInputChange}
+            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+            placeholder={t("petBreed.form.enterPetType")}
+            required
+          />
           {/* {errors.breedName && (
             <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
           )} */}
@@ -205,7 +233,7 @@ export default function UpdateBreedForm({
             <div className="mb-4" key={language.languageId}>
               <label
                 htmlFor={`breedName${language.languageId}`}
-                className="mb-2 block text-sm font-medium flex flex-row items-center gap-3 justify-between"
+                className="mb-2 text-sm font-medium flex flex-row items-center gap-3 justify-between"
               >
                 {t("petBreed.form.newPetType")}
                 <p>

@@ -21,7 +21,6 @@ export default function PetBreedTable({
   query: string;
   currentPage: number;
   selectedPetType: string;
-  lang: string;
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
@@ -110,7 +109,7 @@ export default function PetBreedTable({
                 {petBreedsToShow.map((petBreed: any) => (
                   <tr
                     key={petBreed.breedId}
-                    className="w-full border-b py-3 text-sm last-of-type:border-none"
+                    className="w-full border-b py-3 text-sm last-of-type:border-none text-center"
                   >
                     <td className="whitespace-nowrap px-3 py-3">
                       {petBreed.breedId}

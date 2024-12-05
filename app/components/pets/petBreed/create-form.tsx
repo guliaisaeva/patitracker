@@ -23,10 +23,12 @@ export default function Form({ selectedPetType }: FormProps) {
   const [formData, setFormData] = useState<{
     petTypeId: number;
     breedName: string;
+    averageStepLength: number;
     petBreedsLocalized: { languageId: number; breedName: string }[];
   }>({
     petTypeId: Number(selectedPetType),
     breedName: "",
+    averageStepLength: 0,
     petBreedsLocalized: [],
   });
 
@@ -36,8 +38,13 @@ export default function Form({ selectedPetType }: FormProps) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedPetType) {
-      dispatch(getAllPetBreeds(selectedPetType));
+    if (selectedPetType === "1") {
+      dispatch(
+        getAllPetBreeds({
+          petTypeId: selectedPetType,
+          languageId: 1 | 2,
+        })
+      );
     }
   }, [dispatch, selectedPetType]);
 
@@ -121,15 +128,51 @@ export default function Form({ selectedPetType }: FormProps) {
     }
   }, [languages]);
 
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "breedName") {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       breedName: value,
+  //     }));
+  //   } else if (name.startsWith("breedName_")) {
+  //     const languageId = parseInt(name.split("_")[1], 10);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       petBreedsLocalized: prev.petBreedsLocalized.map((localized) =>
+  //         localized.languageId === languageId
+  //           ? { ...localized, breedName: value }
+  //           : localized
+  //       ),
+  //     }));
+  //   }
+  // };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
+    // Handling breedName for the default (non-localized)
     if (name === "breedName") {
       setFormData((prev) => ({
         ...prev,
         breedName: value,
       }));
-    } else if (name.startsWith("breedName_")) {
+    }
+
+    // Handling averageStepLength
+    else if (name === "averageStepLength") {
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue)) {
+        setFormData((prev) => ({
+          ...prev,
+          averageStepLength: numericValue,
+        }));
+      }
+    }
+
+    // Handling breedName for localized languages
+    else if (name.startsWith("breedName_")) {
       const languageId = parseInt(name.split("_")[1], 10);
       setFormData((prev) => ({
         ...prev,
@@ -143,6 +186,7 @@ export default function Form({ selectedPetType }: FormProps) {
   };
   interface FormErrors {
     breedName?: string;
+    averageStepLength?: number;
   }
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -166,12 +210,15 @@ export default function Form({ selectedPetType }: FormProps) {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log(formData);
     if (!validateForm()) {
       return;
     }
     const newPetBreed = {
       petTypeId: formData.petTypeId,
       breedName: formData.breedName,
+      averageStepLength: formData.averageStepLength,
       petBreedsLocalized: formData.petBreedsLocalized,
     };
 
@@ -181,6 +228,7 @@ export default function Form({ selectedPetType }: FormProps) {
       setFormData({
         petTypeId: 0,
         breedName: "",
+        averageStepLength: 0,
         petBreedsLocalized: languages.map((lang) => ({
           languageId: lang.languageId,
           breedName: "",
@@ -201,25 +249,50 @@ export default function Form({ selectedPetType }: FormProps) {
     <form onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-4">
-          <label
-            htmlFor="breedName"
-            className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
-          >
-            {t("petBreed.form.newPetType")}
-          </label>
-          <input
-            type="text"
-            id="breedName"
-            name="breedName"
-            value={formData.breedName}
-            onChange={handleChange}
-            className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
-            placeholder={t("petBreed.form.enterPetType")}
-            required
-          />
-          {errors.breedName && (
-            <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
-          )}
+          <div>
+            <label
+              htmlFor="breedName"
+              className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
+            >
+              {t("petBreed.form.newPetType")}
+            </label>
+            <input
+              type="text"
+              id="breedName"
+              name="breedName"
+              value={formData.breedName}
+              onChange={handleChange}
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              placeholder={t("petBreed.form.enterPetType")}
+              required
+            />
+            {errors.breedName && (
+              <p className="text-red-500 text-sm mt-1">{errors.breedName}</p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="averageStepLength"
+              className="mb-2 flex flex-row items-center gap-3 text-sm font-medium justify-between"
+            >
+              {t("petBreed.form.averageStepLength")}
+            </label>
+            <input
+              type="number"
+              id="averageStepLength"
+              name="averageStepLength"
+              value={formData.averageStepLength}
+              onChange={handleChange}
+              className="text-gray-500 block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              placeholder={t("petBreed.form.enterPetType")}
+              required
+            />
+            {errors.averageStepLength && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.averageStepLength}
+              </p>
+            )}
+          </div>
         </div>
 
         {languages.map((lang) => (
