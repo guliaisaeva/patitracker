@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { id: number } }) {
           },
         ]}
       />
-      <Form breedId={id} />
+      <Form breedId={id} selectedPetType={""} />
     </main>
   );
 }

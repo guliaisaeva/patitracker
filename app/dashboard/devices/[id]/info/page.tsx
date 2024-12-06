@@ -1,10 +1,11 @@
 "use client";
 import Form from "@/app/components/devices/infoPage";
 import Breadcrumbs from "@/app/components/managers/breadcrumbs";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use(params);
   const { t } = useTranslation();
 
   return (

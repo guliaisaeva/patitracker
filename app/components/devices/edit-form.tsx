@@ -17,7 +17,7 @@ export default function EditDeviceForm({ deviceId }: { deviceId: string }) {
   const dispatch = useDispatch<AppDispatch>();
   const selectedDevice = useSelector(selectDeviceDetails);
   useEffect(() => {
-    if ({ deviceId }) {
+    if (deviceId !== null && deviceId !== undefined) {
       dispatch(getDeviceDetailsAsync(deviceId));
     }
   }, [dispatch, deviceId]);
